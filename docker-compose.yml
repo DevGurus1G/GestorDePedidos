@@ -1,0 +1,33 @@
+version: "3"
+services:
+  laravel:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - ./Servidor:/var/www/html/
+    depends_on:
+      - database
+    networks:
+      - default
+  database:
+    image: mysql:8.0.31
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+  vue:
+    build:
+      context: .
+      dockerfile: DockerfileVue
+    ports:
+      - "8080:5173"
+    volumes:
+      - ./Cliente:/media
+volumes:
+  dbdata:
