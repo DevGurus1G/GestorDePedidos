@@ -1,0 +1,42 @@
+@extends('layouts.app')
+@section('aside')
+    @include('layouts.aside')
+@endsection
+@section('nav')
+    @include('layouts.nav')
+@endsection
+
+
+
+@section('content')
+<div class="col-12 mt-4">
+    <div class="row">
+        <div class="col">
+            <a href="{{route("clientes.index")}}" class="btn btn-secondary">Volver</a>
+            <h1>Crear cliente</h1>
+            <form action="{{route("clientes.store")}}" method="post" class="row mt-2">
+                @csrf
+                @if (session("success"))
+                    <div class="col-12 alert alert-success">
+                        {{ session('success')}}
+                    </div>
+                @endif
+
+                <div class="col-12 form-floating mb-3">
+                    <div class="form-floating ">
+                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre">
+                        <label for="nombre">Nombre</label>
+                    </div>
+                </div>
+                <div class="col-12 input-group">
+                    <input type="text" class="form-control" readonly name="codigo_acceso" id="codigo_acceso" placeholder="Codigo de acceso" >
+                    <button class="btn btn-outline-primary" id="generar_codigo" onclick="generarCodigo()" type="button">Generar</button>
+                </div>
+                <div class="col-12 mt-2">
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection

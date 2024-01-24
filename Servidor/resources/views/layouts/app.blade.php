@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
-  <title>Sidebar con Toggle (Sin jQuery)</title>
+  @vite(['resources/sass/app.scss', 'resources/js/app.js', "resources/js/cliente.js"])
+  <script src="{{url("js/cliente.js")}}" defer></script>
+  <title>Killer Cervezas</title>
   <style>
     body {
       margin: 0;

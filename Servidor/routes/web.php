@@ -62,7 +62,7 @@ Route::controller(ClienteController::class)->group(function () {
     Route::post('clientes', "store")->name('clientes.store');
     Route::get("clientes/create", "create")->name('clientes.create');
     Route::get('clientes/{cliente}', "show")->name('clientes.show');
-    Route::delete("clientes/{cliente}", "delete")->name('clientes.delete');
+    Route::delete("clientes/{cliente}", "destroy")->name('clientes.destroy');
     Route::get('clientes/{cliente}/edit', "edit")->name('clientes.edit');
     Route::put("clientes/{cliente}", "update")->name('clientes.update');
 });

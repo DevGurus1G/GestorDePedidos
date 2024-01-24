@@ -13,7 +13,8 @@ class ClienteController extends Controller
     public function index()
     {
         //
-        return view("clientes.index");
+        $clientes = Cliente::all();
+        return view("clientes.index", ["clientes" => $clientes]);
     }
 
     /**
@@ -31,6 +32,13 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         //
+
+        $validated = $request->validate([
+            "nombre" => "required|max:255",
+            "codigo_acceso" => "required|max:8"
+        ]);
+        Cliente::create($validated);
+        return redirect(route("clientes.create"))->with("success", "Cliente creado correctamente");
     }
 
     /**
@@ -64,5 +72,8 @@ class ClienteController extends Controller
     public function destroy(Cliente $cliente)
     {
         //
+        $cliente->delete();
+        return redirect(route("clientes.index"));
+
     }
 }
