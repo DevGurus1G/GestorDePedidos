@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
-      <img src="../public/img/logo_empresa.png" height="60" width="60" alt="logo" class="img-fluid rounded-circle ">
+      <img src="{{url('img/logo_empresa.png')}}" height="60" width="60" alt="logo" class="img-fluid rounded-circle ">
     </a>
     <button class="btn btn-primary me-auto" id="menu-toggle">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">

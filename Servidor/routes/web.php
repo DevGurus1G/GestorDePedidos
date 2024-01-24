@@ -6,6 +6,7 @@ use App\Http\Controllers\FormatoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -77,8 +78,3 @@ Route::controller(CategoriaController::class)->group(function () {
     Route::get('categorias/{categoria}/edit', "edit")->name('categorias.edit');
     Route::put("categorias/{categoria}", "update")->name('categorias.update');
 });
-
-
-
-
-

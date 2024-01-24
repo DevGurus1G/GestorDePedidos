@@ -19,7 +19,7 @@
           Pedidos
         </a>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Crear</a></li>
+          <li><a class="dropdown-item" href="{{ route('pedidos.create') }}">Crear</a></li>
           <li><hr class="dropdown-divider"></li>
           <li><a class="dropdown-item" href="#">Modificar</a></li>
           <li><hr class="dropdown-divider"></li>
