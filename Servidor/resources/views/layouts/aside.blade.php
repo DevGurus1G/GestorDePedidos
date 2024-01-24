@@ -1,5 +1,5 @@
 @section('aside')
-<div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" ">
+<div class="d-flex flex-column p-3 text-bg-dark min-vh-100 col-3 d-none " id="sidebar">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
       <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
       <span class="fs-4">Sidebar</span>
@@ -8,32 +8,56 @@
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
         <a href="#" class="nav-link active" aria-current="page">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 24 24" class="bi pe-none me-2"><path fill="#ffffff" d="m12 3l8 6v12h-5v-7H9v7H4V9z"/></svg>
           Home
         </a>
       </li>
-      <li>
-        <a href="#" class="nav-link text-white">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-          Dashboard
+      <hr>
+      {{-- Comercial --}}
+      <li class="nav-item dropdown">
+        <a class="w-100 text-start btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Pedidos
         </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Crear</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Modificar</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Consultar</a></li>
+        </ul>
       </li>
-      <li>
-        <a href="#" class="nav-link text-white">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-          Orders
+      <hr>
+      {{-- Administrativos --}}
+      <li class="nav-item dropdown">
+        <a class="w-100 text-start btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Productos
         </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Crear</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Modificar</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Consultar</a></li>
+        </ul>
       </li>
-      <li>
-        <a href="#" class="nav-link text-white">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-          Products
+      <hr>
+      <li class="nav-item dropdown">
+        <a class="w-100 text-start btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Clientes
         </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Crear</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Modificar</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Consultar</a></li>
+        </ul>
       </li>
-      <li>
+      <hr>
+      <li class="nav-item">
         <a href="#" class="nav-link text-white">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-          Customers
+          Estadisticas
         </a>
       </li>
     </ul>

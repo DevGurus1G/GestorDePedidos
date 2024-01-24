@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
             $table->date("fecha");
+            $table->enum("estado", ["solicitado", "en_preparacion", "en_entrega", "entregado"]);
             $table->unsignedBigInteger("cliente_id");
             $table->foreign("cliente_id")->references("id")->on("clientes");
             $table->timestamps();

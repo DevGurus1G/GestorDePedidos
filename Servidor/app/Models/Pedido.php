@@ -9,11 +9,21 @@ class Pedido extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "fecha"
+        "fecha",
+        "estado"
     ];
 
     public function cliente()
     {
         $this->belongsTo(Cliente::class);
+    }
+    public function formatoproducto()
+    {
+        return $this->hasMany(FormatoProducto::class);
+    }
+
+    public function pedidoformatoproducto()
+    {
+        return $this->hasMany(PedidoFormatoProducto::class);
     }
 }

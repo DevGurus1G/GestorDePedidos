@@ -1,35 +1,81 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Sidebar con Toggle (Sin jQuery)</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+    }
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    #sidebar {
+      /* width: 250px; */
+      /* position: fixed;
+      top: 0;
+      left: -250px; */
+      flex: 0 0 0;
+      opacity: 0;
+      /* background-color: #343a40; */
+      transition: all 0.3s;
+    } 
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+     #sidebar.show {
+      flex-grow: 1;
+      opacity: 1;
+    }
 
-    <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+     #content {
+      flex-grow: 1
+      transition: all 3s;
+    }
+
+    .navbar-light .navbar-nav .nav-link.active svg {
+    fill: #fff; /* Cambia el color a blanco */
+  }
+
+    
+
+  </style>
 </head>
 <body>
-    @yield('nav')
-        <main class="">
-            <div class="row h-100">
-                <div class="col-3">
 
-                    @yield('aside')
+<div class="container-fluid overflow-hidden min-vh-100 flex-grow-1 " id="wrapper">
+    <div class="row d-flex">
+        @yield("aside")
+        <div class="col" id="content">
+            <!-- Contenido de la página -->
+                <div class="row">
+                    @yield("nav")
                 </div>
-                <div class="col-9">
-
-                    @yield('content')
+                <div class="row">
+                <!-- Contenido de la página aquí -->
+                  @yield("content")
                 </div>
-            </div>
-        </main>
+        </div>
     </div>
+
+  
+
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var sidebar = document.getElementById('sidebar');
+    var content = document.getElementById('content');
+    var menuToggle = document.getElementById('menu-toggle');
+
+    menuToggle.addEventListener('click', function () {
+      sidebar.classList.toggle('show');
+      sidebar.classList.toggle('d-none');
+      content.classList.toggle('col');
+      content.classList.toggle('col-9');
+    });
+  });
+</script>
+
 </body>
 </html>
