@@ -47,6 +47,7 @@ class ClienteController extends Controller
     public function show(Cliente $cliente)
     {
         //
+        return view("clientes.show", ["cliente" => $cliente]);
     }
 
     /**
@@ -64,6 +65,12 @@ class ClienteController extends Controller
     public function update(Request $request, Cliente $cliente)
     {
         //
+        $validated = $request->validate([
+            "nombre" => "required|max:255",
+            "codigo_acceso" => "required|max:8"
+        ]);
+        $cliente->update($validated);
+        return redirect(route('clientes.show' , ["cliente" => $cliente]))->with("success", "El cliente ha sido actualizado correctamente");
     }
 
     /**

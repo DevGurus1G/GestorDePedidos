@@ -41,6 +41,7 @@
                             @method("delete")
                             <button type="submit" class="btn btn-danger">Borrar</button>
                         </form>
+                        <a href="{{route("clientes.show", $cliente)}}" class="btn btn-primary ">Ver detalles</a>
                     </td>
                 </tr> 
                 @endforeach
