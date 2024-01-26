@@ -73,7 +73,7 @@ Route::controller(CategoriaController::class)->group(function () {
     Route::post('categorias', "store")->name('categorias.store');
     Route::get("categorias/create", "create")->name('categorias.create');
     Route::get('categorias/{categoria}', "show")->name('categorias.show');
-    Route::delete("categorias/{categoria}", "delete")->name('categorias.delete');
+    Route::delete("categorias/{categoria}", "destroy")->name('categorias.destroy');
     Route::get('categorias/{categoria}/edit', "edit")->name('categorias.edit');
     Route::put("categorias/{categoria}", "update")->name('categorias.update');
 });
