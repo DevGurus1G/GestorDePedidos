@@ -2,10 +2,16 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '@/components/Login.vue';
 import ProductManagement from '@/components/ProductManagement.vue';
 import ListadoPedidos from '@/components/ListadoPedidos.vue';
+import PerfilUsuario from '@/components/PerfilUsuario.vue';
 import Inicio from '@/components/Inicio.vue';
 
 
 const routes = [
+  {
+    path: '/',
+    name: 'inicio',
+    component: Inicio,
+  },
   {
     path: '/login',
     name: 'login',
@@ -24,9 +30,9 @@ const routes = [
    meta: { requiresAuth: true }, // Asegura que solo usuarios autenticados pueden acceder
   },
   {
-    path: '/',
-    name: 'inicio',
-    component: Inicio,
+    path: '/perfil-usuario',
+    name: 'perfil-usuario',
+    component: PerfilUsuario,
   },
 ];
 
