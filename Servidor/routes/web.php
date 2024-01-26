@@ -32,7 +32,7 @@ Route::controller(ProductoController::class)->group(function () {
     Route::post('productos', "store")->name('productos.store');
     Route::get("productos/create", "create")->name('productos.create');
     Route::get('productos/{producto}', "show")->name('productos.show');
-    Route::delete("productos/{producto}", "delete")->name('productos.delete');
+    Route::delete("productos/{producto}", "destroy")->name('productos.destroy');
     Route::get('productos/{producto}/edit', "edit")->name('productos.edit');
     Route::put("productos/{producto}", "update")->name('productos.update');
 });

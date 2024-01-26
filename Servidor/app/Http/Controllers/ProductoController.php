@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,8 @@ class ProductoController extends Controller
     public function index()
     {
         //
-        return view("productos.index");
+        $productos = Producto::all();
+        return view("productos.index", ["productos" => $productos]);
     }
 
     /**
@@ -22,7 +24,8 @@ class ProductoController extends Controller
     public function create()
     {
         //
-        return view("productos.create");
+        $categorias = Categoria::all();
+        return view("productos.create", ["categorias" => $categorias]);
 
     }
 
@@ -31,8 +34,22 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            "nombre" => "required|max:255",
+            "categoria_id" => "required|exists:categorias,id",
+        ]);
+
+        $producto = new Producto([
+            'nombre' => $request->input('nombre'),
+        ]);
+
+        $categoria = Categoria::find($request->input('categoria_id'));
+
+        $categoria->productos()->save($producto);
+
+        return redirect()->route('productos.create')->with('success', 'Producto creado exitosamente.');
     }
+
 
     /**
      * Display the specified resource.
@@ -40,6 +57,8 @@ class ProductoController extends Controller
     public function show(Producto $producto)
     {
         //
+        $categorias = Categoria::all();
+        return view('productos.show', ["producto" => $producto, "categorias" => $categorias]);
     }
 
     /**
@@ -48,7 +67,9 @@ class ProductoController extends Controller
     public function edit(Producto $producto)
     {
         //
-        return view("productos.edit");
+        $categorias = Categoria::all();
+
+        return view("productos.edit", ["producto" => $producto, "categorias" => $categorias]);
 
     }
 
@@ -57,8 +78,24 @@ class ProductoController extends Controller
      */
     public function update(Request $request, Producto $producto)
     {
-        //
+        $validated = $request->validate([
+            "nombre" => "required|max:255",
+            "categoria_id" => "required|exists:categorias,id",
+        ]);
+
+        $producto->update([
+            'nombre' => $request->input('nombre'),
+        ]);
+
+        if ($producto->categoria_id != $request->input('categoria_id')) {
+            $categoria = Categoria::find($request->input('categoria_id'));
+            $producto->categoria()->associate($categoria);
+            $producto->save();
+        }
+
+        return redirect()->route('productos.show', $producto)->with('success', 'Producto actualizado exitosamente.');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -66,6 +103,8 @@ class ProductoController extends Controller
     public function destroy(Producto $producto)
     {
         //
+        $producto->delete();
+        return redirect()->route('productos.index');
     }
 
 
