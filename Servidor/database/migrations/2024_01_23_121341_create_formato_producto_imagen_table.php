@@ -10,14 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('formato_producto_imagen', function (Blueprint $table) {
+        Schema::create('formato_producto_imagens', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('formato_producto_id');
-            $table->binary("imagen");
             $table->timestamps();
 
-            $table->foreign('formato_producto_id')->references('id')->on('formato_producto')->onDelete('cascade');
+            $table->foreign('formato_producto_id')->references('id')->on('formato_productos')->onDelete('cascade');
         });
+        DB::statement("ALTER TABLE formato_producto_imagens ADD imagen LONGBLOB");
     }
 
     /**
@@ -25,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('formato_producto_imagen');
+        Schema::dropIfExists('formato_producto_imagens');
     }
 };

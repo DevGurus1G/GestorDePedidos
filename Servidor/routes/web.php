@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\FormatoController;
+use App\Http\Controllers\FormatoProductoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
@@ -77,6 +78,19 @@ Route::controller(CategoriaController::class)->group(function () {
     Route::get('categorias/{categoria}/edit', "edit")->name('categorias.edit');
     Route::put("categorias/{categoria}", "update")->name('categorias.update');
 });
+
+// ProductoFormato ----------------------------------------------------------
+
+Route::controller(FormatoProductoController::class)->group(function () {
+    Route::get('formatoproductos', "index")->name('formatoproductos.index');
+    Route::post('formatoproductos', "store")->name('formatoproductos.store');
+    Route::get("formatoproductos/create", "create")->name('formatoproductos.create');
+    Route::get('formatoproductos/{formatoproducto}', "show")->name('formatoproductos.show');
+    Route::delete("formatoproductos/{formatoproducto}", "destroy")->name('formatoproductos.destroy');
+    Route::get('formatoproductos/{formatoproducto}/edit', "edit")->name('formatoproductos.edit');
+    Route::put("formatoproductos/{formatoproducto}", "update")->name('formatoproductos.update');
+});
+
 
 
 

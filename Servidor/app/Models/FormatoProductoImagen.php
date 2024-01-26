@@ -9,7 +9,8 @@ class FormatoProductoImagen extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "imagen"
+        "imagen",
+        "formato_producto_id"
     ];
     public function formatoProducto()
     {

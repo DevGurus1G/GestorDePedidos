@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('pedido_formato_producto', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("formato_producto_id");
-            $table->foreign("formato_producto_id")->references("id")->on("formato_producto")->onDelete("cascade");
+            $table->foreign("formato_producto_id")->references("id")->on("formato_productos")->onDelete("cascade");
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('pedido_formato_producto');
+        Schema::dropIfExists('pedido_formato_productos');
     }
 };
