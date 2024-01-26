@@ -33,7 +33,7 @@ Route::controller(ProductoController::class)->group(function () {
     Route::post('productos', "store")->name('productos.store');
     Route::get("productos/create", "create")->name('productos.create');
     Route::get('productos/{producto}', "show")->name('productos.show');
-    Route::delete("productos/{producto}", "delete")->name('productos.delete');
+    Route::delete("productos/{producto}", "destroy")->name('productos.destroy');
     Route::get('productos/{producto}/edit', "edit")->name('productos.edit');
     Route::put("productos/{producto}", "update")->name('productos.update');
 });
@@ -43,7 +43,7 @@ Route::controller(FormatoController::class)->group(function () {
     Route::post('formatos', "store")->name('formatos.store');
     Route::get("formatos/create", "create")->name('formatos.create');
     Route::get('formatos/{formato}', "show")->name('formatos.show');
-    Route::delete("formatos/{formato}", "delete")->name('formatos.delete');
+    Route::delete("formatos/{formato}", "destroy")->name('formatos.destroy');
     Route::get('formatos/{formato}/edit', "edit")->name('formatos.edit');
     Route::put("formatos/{formato}", "update")->name('formatos.update');
 });
@@ -63,7 +63,7 @@ Route::controller(ClienteController::class)->group(function () {
     Route::post('clientes', "store")->name('clientes.store');
     Route::get("clientes/create", "create")->name('clientes.create');
     Route::get('clientes/{cliente}', "show")->name('clientes.show');
-    Route::delete("clientes/{cliente}", "delete")->name('clientes.delete');
+    Route::delete("clientes/{cliente}", "destroy")->name('clientes.destroy');
     Route::get('clientes/{cliente}/edit', "edit")->name('clientes.edit');
     Route::put("clientes/{cliente}", "update")->name('clientes.update');
 });
@@ -74,7 +74,7 @@ Route::controller(CategoriaController::class)->group(function () {
     Route::post('categorias', "store")->name('categorias.store');
     Route::get("categorias/create", "create")->name('categorias.create');
     Route::get('categorias/{categoria}', "show")->name('categorias.show');
-    Route::delete("categorias/{categoria}", "delete")->name('categorias.delete');
+    Route::delete("categorias/{categoria}", "destroy")->name('categorias.destroy');
     Route::get('categorias/{categoria}/edit', "edit")->name('categorias.edit');
     Route::put("categorias/{categoria}", "update")->name('categorias.update');
 });
