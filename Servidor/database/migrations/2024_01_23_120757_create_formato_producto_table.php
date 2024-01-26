@@ -10,12 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('formato_producto', function (Blueprint $table) {
+        Schema::create('formato_productos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('producto_id');
             $table->unsignedBigInteger('formato_id');
             $table->decimal('precio', 8, 2);
-            $table->integer('disponibilidad');
+            $table->boolean('disponibilidad')->default(0);
             $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
             $table->foreign('formato_id')->references('id')->on('formatos')->onDelete('cascade');
             $table->timestamps();
@@ -27,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('formato_producto');
+        Schema::dropIfExists('formato_productos');
     }
 };

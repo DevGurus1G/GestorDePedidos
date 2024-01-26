@@ -8,9 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 class FormatoProducto extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        "producto_id",
+        "formato_id",
+        "precio",
+        "disponibilidad"
+    ];
     public function imagenes()
     {
         return $this->hasMany(FormatoProductoImagen::class, 'formato_producto_id');
+    }
+
+    public function producto()
+    {
+        return $this->belongsTo(Producto::class, 'producto_id');
+    }
+
+    public function formato()
+    {
+        return $this->belongsTo(Formato::class, 'formato_id');
     }
 }
 
