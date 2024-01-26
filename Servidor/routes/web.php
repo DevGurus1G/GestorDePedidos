@@ -53,7 +53,7 @@ Route::controller(PedidoController::class)->group(function () {
     Route::post('pedidos', "store")->name('pedidos.store');
     Route::get("pedidos/create", "create")->name('pedidos.create');
     Route::get('pedidos/{pedido}', "show")->name('pedidos.show');
-    Route::delete("pedidos/{pedido}", "delete")->name('pedidos.delete');
+    Route::delete("pedidos/{pedido}", "destroy")->name('pedidos.destroy');
     Route::get('pedidos/{pedido}/edit', "edit")->name('pedidos.edit');
     Route::put("pedidos/{pedido}", "update")->name('pedidos.update');
 });

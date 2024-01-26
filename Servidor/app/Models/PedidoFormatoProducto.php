@@ -13,4 +13,9 @@ class PedidoFormatoProducto extends Model
     {
         return $this->belongsTo(Pedido::class);
     }
+
+    public function formatoproducto()
+    {
+        return $this->belongsTo(FormatoProducto::class);
+    }
 }

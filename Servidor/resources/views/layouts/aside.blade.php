@@ -7,7 +7,7 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <a href="#" class="nav-link active" aria-current="page">
+        <a href="{{route('home')}}" class="nav-link active" aria-current="page">
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 24 24" class="bi pe-none me-2"><path fill="#ffffff" d="m12 3l8 6v12h-5v-7H9v7H4V9z"/></svg>
           Home
         </a>
@@ -21,9 +21,7 @@
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="{{ route('pedidos.create') }}">Crear</a></li>
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Modificar</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Consultar</a></li>
+          <li><a class="dropdown-item" href="{{ route('pedidos.index')}}">Consultar</a></li>
         </ul>
       </li>
       <hr>
@@ -33,11 +31,9 @@
           Productos
         </a>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Crear</a></li>
+          <li><a class="dropdown-item" href="{{route('productos.create')}}">Crear</a></li>
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Modificar</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Consultar</a></li>
+          <li><a class="dropdown-item" href="{{ route('productos.index')}}">Consultar</a></li>
         </ul>
       </li>
       <hr>
@@ -46,11 +42,9 @@
           Clientes
         </a>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Crear</a></li>
+          <li><a class="dropdown-item" href="{{ route('clientes.create')}}">Crear</a></li>
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Modificar</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Consultar</a></li>
+          <li><a class="dropdown-item" href="{{ route('clientes.index')}}">Consultar</a></li>
         </ul>
       </li>
       <hr>

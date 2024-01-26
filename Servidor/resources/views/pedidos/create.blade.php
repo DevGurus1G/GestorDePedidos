@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <input type="date" class="form-control" name="fecha" placeholder="dd/MM/YYYY">
-                    <label for="floatingInput">Fecha (DD/MM/YYYY): </label>
+                    <label for="floatingInput">Fecha de Entrega: </label>
                 </div>
                 <div class="form-floating mb-3">
                     <select class="form-select" name="cliente_id">
@@ -47,7 +47,9 @@
                     </select>
                     <label for="clienteSelect">Clientes</label>
                 </div>
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                <div class="col-12 mt-2">
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                </div>
             </form>
         </div>
     </div>

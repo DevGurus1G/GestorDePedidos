@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\Formato;
 use App\Models\Pedido;
+use App\Models\PedidoFormatoProducto;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,8 @@ class PedidoController extends Controller
     public function index()
     {
         //
-        return view("pedidos.index");
+        $pedidoFormatoProductos = PedidoFormatoProducto::all();
+        return view('pedidos.index', ["pedidoFormatoProductos" => $pedidoFormatoProductos]);
     }
 
     /**
@@ -79,9 +81,9 @@ class PedidoController extends Controller
                 ]);
             });
 
-            return redirect()->route('home');
+            return redirect()->route('pedidos.index');
         } else {
-            return redirect()->route('home')->with('error', 'El producto que seleccionaste no esta en ese formato.');
+            return redirect()->route('pedidos.create')->with('error', 'El producto que seleccionaste no esta en ese formato.');
         }
     }
 
@@ -90,8 +92,7 @@ class PedidoController extends Controller
      */
     public function show(Pedido $pedido)
     {
-        //
-
+        return view('pedidos.show', ["pedido" => $pedido]);
     }
 
     /**
@@ -100,7 +101,7 @@ class PedidoController extends Controller
     public function edit(Pedido $pedido)
     {
         //
-        return view("pedidos.edit");
+        return view("pedidos.edit", ['pedido' => $pedido]);
     }
 
     /**
@@ -108,7 +109,14 @@ class PedidoController extends Controller
      */
     public function update(Request $request, Pedido $pedido)
     {
-        //
+        $validated = $request->validate([
+            'fecha' => 'required',
+            'estado' => 'required'
+        ]);
+
+        $pedido->update($validated);
+
+        return redirect(route("pedidos.show", ["pedido" => $pedido]))->with("success", "Pedido actualizado correctamente");
     }
 
     /**
@@ -117,5 +125,7 @@ class PedidoController extends Controller
     public function destroy(Pedido $pedido)
     {
         //
+        $pedido->delete();
+        return redirect()->route('pedidos.index');
     }
 }
