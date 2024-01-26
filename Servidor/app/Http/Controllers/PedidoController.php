@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Formato;
 use App\Models\Pedido;
-use App\Models\PedidoFormatoProducto;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 
 class PedidoController extends Controller
 {
@@ -28,10 +30,12 @@ class PedidoController extends Controller
         //
         $productos = Producto::all();
         $clientes = Cliente::all();
+        $formatos = Formato::all();
 
         return view("pedidos.create")
             ->with('productos', $productos)
-            ->with('clientes', $clientes);
+            ->with('clientes', $clientes)
+            ->with('formatos', $formatos);
     }
 
     /**
@@ -39,27 +43,46 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
+
         //Validacion
         $request->validate([
-            'fecha' => 'required|date_format:d/m/Y',
+            'producto_id' => 'required',
+            'formato_id' => 'required',
+            'cliente_id' => 'required',
+            'fecha' => 'required',
         ]);
+
 
         $productoId = $request->input('producto_id');
         $fecha = $request->input('fecha');
-        $estado = 'solictado';
+        $estado = 'solicitado';
         $clienteId = $request->input('cliente_id');
+        $formatoId = $request->input('formato_id');
 
-        DB::transaction(function () use ($fecha, $estado, $clienteId, $productoId) {
-            $pedido = Pedido::create([
-                'fecha' => $fecha,
-                'estado' => $estado,
-                'cliente_id' => $clienteId,
-            ]);
+        // Obtener el id de FormatoPedido
+        $formatoPedidoId = DB::table('formato_producto')
+            ->where('producto_id', $productoId)
+            ->where('formato_id', $formatoId)
+            ->value('id');
 
-            $pedido->formatoProducto()->create([
-                'formato_producto_id' => $productoId,
-            ]);
-        });
+        if ($formatoPedidoId) {
+
+            DB::transaction(function () use ($fecha, $estado, $clienteId, $formatoPedidoId) {
+                $pedido = Pedido::create([
+                    'fecha' => $fecha,
+                    'estado' => $estado,
+                    'cliente_id' => $clienteId,
+                ]);
+
+                $pedido->pedidoformatoproducto()->create([
+                    'formato_producto_id' => $formatoPedidoId,
+                ]);
+            });
+
+            return redirect()->route('home');
+        } else {
+            return redirect()->route('home')->with('error', 'El producto que seleccionaste no esta en ese formato.');
+        }
     }
 
     /**
