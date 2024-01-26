@@ -42,7 +42,7 @@ Route::controller(FormatoController::class)->group(function () {
     Route::post('formatos', "store")->name('formatos.store');
     Route::get("formatos/create", "create")->name('formatos.create');
     Route::get('formatos/{formato}', "show")->name('formatos.show');
-    Route::delete("formatos/{formato}", "delete")->name('formatos.delete');
+    Route::delete("formatos/{formato}", "destroy")->name('formatos.destroy');
     Route::get('formatos/{formato}/edit', "edit")->name('formatos.edit');
     Route::put("formatos/{formato}", "update")->name('formatos.update');
 });

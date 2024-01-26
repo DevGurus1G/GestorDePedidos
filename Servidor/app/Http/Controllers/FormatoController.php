@@ -13,7 +13,8 @@ class FormatoController extends Controller
     public function index()
     {
         //
-        return view('formatos.index');
+        $formatos = Formato::all();
+        return view('formatos.index', ["formatos" => $formatos]);
     }
 
     /**
@@ -23,7 +24,6 @@ class FormatoController extends Controller
     {
         //
         return view('formatos.create');
-
     }
 
     /**
@@ -32,6 +32,12 @@ class FormatoController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate([
+            "tipo" => "required|max:255",
+        ]);
+
+        Formato::create($validated);
+        return redirect(route("formatos.create"))->with("success", "Formato creado correctamente");
     }
 
     /**
@@ -40,6 +46,7 @@ class FormatoController extends Controller
     public function show(Formato $formato)
     {
         //
+        return view('formatos.show', ["formato" => $formato]);
     }
 
     /**
@@ -48,7 +55,7 @@ class FormatoController extends Controller
     public function edit(Formato $formato)
     {
         //
-        return view('formatos.edit');
+        return view('formatos.edit', ["formato" => $formato]);
 
     }
 
@@ -58,6 +65,12 @@ class FormatoController extends Controller
     public function update(Request $request, Formato $formato)
     {
         //
+        $validated = $request->validate([
+            "tipo" => "required|max:255",
+        ]);
+
+        $formato->update($validated);
+        return redirect(route("formatos.show", ["formato" => $formato]))->with("success", "Formato actualizado correctamente");
     }
 
     /**
@@ -66,5 +79,7 @@ class FormatoController extends Controller
     public function destroy(Formato $formato)
     {
         //
+        $formato->delete();
+        return redirect(route("formatos.index"));
     }
 }

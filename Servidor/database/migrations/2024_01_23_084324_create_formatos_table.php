@@ -12,7 +12,8 @@ return new class extends Migration {
     {
         Schema::create('formatos', function (Blueprint $table) {
             $table->id();
-            $table->enum("tipo", ["25cl", "33cl", "Barril", "20cl", "1l"]);
+            // $table->enum("tipo", ["25cl", "33cl", "Barril", "20cl", "1l"]);
+            $table->string('tipo');
             $table->timestamps();
         });
     }
