@@ -49,7 +49,9 @@ class PedidoControllerApi extends Controller
                 'pedidoFormatoProducto.formatoProducto.formato',
                 'pedidoFormatoProducto.formatoProducto.producto.categoria'
             ])->where('cliente_id', $cliente->id)->get();
+
             return response()->json($pedidos);
+
             // Puedes personalizar los datos según tus necesidades
             $result = $pedidos->map(function ($pedido) {
                 return [
