@@ -7,7 +7,11 @@ use App\Http\Controllers\FormatoProductoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
+<<<<<<< HEAD
+use Illuminate\Support\Facades\Auth;
+=======
 use App\Http\Controllers\UserController;
+>>>>>>> cba7b65edc5ca34fb9b5226b83ad849249f1045f
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,7 +58,7 @@ Route::controller(PedidoController::class)->group(function () {
     Route::post('pedidos', "store")->name('pedidos.store');
     Route::get("pedidos/create", "create")->name('pedidos.create');
     Route::get('pedidos/{pedido}', "show")->name('pedidos.show');
-    Route::delete("pedidos/{pedido}", "delete")->name('pedidos.delete');
+    Route::delete("pedidos/{pedido}", "destroy")->name('pedidos.destroy');
     Route::get('pedidos/{pedido}/edit', "edit")->name('pedidos.edit');
     Route::put("pedidos/{pedido}", "update")->name('pedidos.update');
 });
@@ -91,6 +95,8 @@ Route::controller(FormatoProductoController::class)->group(function () {
     Route::get('formatoproductos/{formatoproducto}/edit', "edit")->name('formatoproductos.edit');
     Route::put("formatoproductos/{formatoproducto}", "update")->name('formatoproductos.update');
 });
+<<<<<<< HEAD
+=======
 
 // Users ----------------------------------------------------------
 
@@ -109,3 +115,4 @@ Route::controller(UserController::class)->group(function () {
 
 
 
+>>>>>>> cba7b65edc5ca34fb9b5226b83ad849249f1045f

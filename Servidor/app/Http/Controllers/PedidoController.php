@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
+use App\Models\Formato;
 use App\Models\Pedido;
+use App\Models\PedidoFormatoProducto;
+use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 
 class PedidoController extends Controller
 {
@@ -13,7 +20,8 @@ class PedidoController extends Controller
     public function index()
     {
         //
-        return view("pedidos.index");
+        $pedidoFormatoProductos = PedidoFormatoProducto::all();
+        return view('pedidos.index', ["pedidoFormatoProductos" => $pedidoFormatoProductos]);
     }
 
     /**
@@ -22,7 +30,14 @@ class PedidoController extends Controller
     public function create()
     {
         //
-        return view("pedidos.create");
+        $productos = Producto::all();
+        $clientes = Cliente::all();
+        $formatos = Formato::all();
+
+        return view("pedidos.create")
+            ->with('productos', $productos)
+            ->with('clientes', $clientes)
+            ->with('formatos', $formatos);
     }
 
     /**
@@ -30,7 +45,46 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        //Validacion
+        $request->validate([
+            'producto_id' => 'required',
+            'formato_id' => 'required',
+            'cliente_id' => 'required',
+            'fecha' => 'required',
+        ]);
+
+
+        $productoId = $request->input('producto_id');
+        $fecha = $request->input('fecha');
+        $estado = 'solicitado';
+        $clienteId = $request->input('cliente_id');
+        $formatoId = $request->input('formato_id');
+
+        // Obtener el id de FormatoPedido
+        $formatoPedidoId = DB::table('formato_producto')
+            ->where('producto_id', $productoId)
+            ->where('formato_id', $formatoId)
+            ->value('id');
+
+        if ($formatoPedidoId) {
+
+            DB::transaction(function () use ($fecha, $estado, $clienteId, $formatoPedidoId) {
+                $pedido = Pedido::create([
+                    'fecha' => $fecha,
+                    'estado' => $estado,
+                    'cliente_id' => $clienteId,
+                ]);
+
+                $pedido->pedidoformatoproducto()->create([
+                    'formato_producto_id' => $formatoPedidoId,
+                ]);
+            });
+
+            return redirect()->route('pedidos.index');
+        } else {
+            return redirect()->route('pedidos.create')->with('error', 'El producto que seleccionaste no esta en ese formato.');
+        }
     }
 
     /**
@@ -38,8 +92,7 @@ class PedidoController extends Controller
      */
     public function show(Pedido $pedido)
     {
-        //
-
+        return view('pedidos.show', ["pedido" => $pedido]);
     }
 
     /**
@@ -48,7 +101,7 @@ class PedidoController extends Controller
     public function edit(Pedido $pedido)
     {
         //
-        return view("pedidos.edit");
+        return view("pedidos.edit", ['pedido' => $pedido]);
     }
 
     /**
@@ -56,7 +109,14 @@ class PedidoController extends Controller
      */
     public function update(Request $request, Pedido $pedido)
     {
-        //
+        $validated = $request->validate([
+            'fecha' => 'required',
+            'estado' => 'required'
+        ]);
+
+        $pedido->update($validated);
+
+        return redirect(route("pedidos.show", ["pedido" => $pedido]))->with("success", "Pedido actualizado correctamente");
     }
 
     /**
@@ -65,5 +125,7 @@ class PedidoController extends Controller
     public function destroy(Pedido $pedido)
     {
         //
+        $pedido->delete();
+        return redirect()->route('pedidos.index');
     }
 }
