@@ -10,40 +10,38 @@
 
 @section('content')
 <div class="col-12 mt-4">
-    <a href="{{route("formatoproductos.create")}}" class="btn btn-outline-primary">Crear producto con formato</a>
+    <a href="{{route("users.create")}}" class="btn btn-outline-primary">Crear usuarios</a>
 </div>
 <div class="col-12">
     <table class="table table-responsive table-hover ">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Producto</th>
-                <th>Formato</th>
-                <th>Imagenes</th>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th>Email</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            @if (isset($formatoproductos))
-                @foreach ($formatoproductos as $formatoproducto)
+            @if (isset($users))
+                @foreach ($users as $user)
                 <tr>
                     <td>
-                        {{$formatoproducto->id}}
+                        {{$user->id}}
                     </td>
                     <td>
-                        {{$formatoproducto->producto->nombre}}
+                        {{$user->name}}
                     </td>
                     <td>
-                        {{$formatoproducto->formato->tipo}}
+                        {{$user->rol}}
                     </td>
                     <td>
-                        @foreach ($formatoproducto->imagenes as $imagen)
-                            <img src="data:image/png;base64,{{ $imagen->imagen }}" height="32" width="32g" alt="Hola" >
-                        @endforeach
+                        {{$user->email}}
                     </td>
                     <td class="d-flex gap-2">
-                        <a href="{{route("formatoproductos.show", $formatoproducto)}}" class="btn btn-primary">Ver detalles</a>
-                        <form action="{{route("formatoproductos.destroy", $formatoproducto)}}" method="post">
+                        <a href="{{route("users.show", $user)}}" class="btn btn-primary">Ver detalles</a>
+                        <form action="{{route("users.destroy", $user)}}" method="post">
                             @csrf
                             @method("delete")
                             <button type="submit" class="btn btn-danger">Borrar</button>
@@ -53,7 +51,7 @@
                 @endforeach
             @else
                 <tr>
-                    <td colspan="4">No hay productos con formato</td>
+                    <td colspan="5">No hay usuario</td>
                 </tr>
             @endif 
         </tbody>

@@ -37,6 +37,38 @@
     fill: #fff; /* Cambia el color a blanco */
   }
 
+  .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        list-style: none;
+        padding: 0;
+    }
+
+    .pagination li {
+        margin: 0 5px; /* Ajusta el margen entre los ítems de paginación según sea necesario */
+        display: inline-block;
+    }
+
+    .pagination a,
+    .pagination span {
+        display: inline-block;
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        color: #333;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .pagination a:hover {
+        background-color: #eee;
+    }
+
+    .pagination .active {
+        background-color: #007BFF;
+        color: #fff;
+    }
+
     
 
   </style>

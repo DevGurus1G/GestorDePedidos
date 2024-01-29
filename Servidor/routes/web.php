@@ -7,6 +7,7 @@ use App\Http\Controllers\FormatoProductoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -89,6 +90,18 @@ Route::controller(FormatoProductoController::class)->group(function () {
     Route::delete("formatoproductos/{formatoproducto}", "destroy")->name('formatoproductos.destroy');
     Route::get('formatoproductos/{formatoproducto}/edit', "edit")->name('formatoproductos.edit');
     Route::put("formatoproductos/{formatoproducto}", "update")->name('formatoproductos.update');
+});
+
+// Users ----------------------------------------------------------
+
+Route::controller(UserController::class)->group(function () {
+    Route::get('users', "index")->name('users.index');
+    Route::post('users', "store")->name('users.store');
+    Route::get("users/create", "create")->name('users.create');
+    Route::get('users/{user}', "show")->name('users.show');
+    Route::delete("users/{user}", "destroy")->name('users.destroy');
+    Route::get('users/{user}/edit', "edit")->name('users.edit');
+    Route::put("users/{user}", "update")->name('users.update');
 });
 
 
