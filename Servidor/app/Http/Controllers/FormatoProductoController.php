@@ -104,9 +104,12 @@ class FormatoProductoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(FormatoProducto $formatoproducto)
     {
         //
+        $productos = Producto::all();
+        $formatos = Formato::all();
+        return view('formatoproductos.edit', ["formatoproducto" => $formatoproducto, "formatos" => $formatos, "productos" => $productos]);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use App\Models\Formato;
+use App\Models\FormatoProducto;
 use App\Models\Pedido;
 use App\Models\PedidoFormatoProducto;
 use App\Models\Producto;
@@ -30,14 +31,13 @@ class PedidoController extends Controller
     public function create()
     {
         //
-        $productos = Producto::all();
+        $formatoproductos = FormatoProducto::all();
         $clientes = Cliente::all();
-        $formatos = Formato::all();
 
-        return view("pedidos.create")
-            ->with('productos', $productos)
-            ->with('clientes', $clientes)
-            ->with('formatos', $formatos);
+        return view("pedidos.create", [
+            "formatoproductos" => $formatoproductos,
+            "clientes" => $clientes
+        ]);
     }
 
     /**
@@ -90,9 +90,9 @@ class PedidoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pedido $pedido)
+    public function show(PedidoFormatoProducto $pedidoFormatoProducto)
     {
-        return view('pedidos.show', ["pedido" => $pedido]);
+        return view('pedidos.show', ["pedido" => $pedidoFormatoProducto]);
     }
 
     /**

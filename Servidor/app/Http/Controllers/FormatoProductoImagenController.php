@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FormatoProductoImagen;
 use Illuminate\Http\Request;
 
-class FormatoProductoImagen extends Controller
+class FormatoProductoImagenController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -57,8 +58,10 @@ class FormatoProductoImagen extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $formatoProductoImagen)
     {
         //
+        FormatoProductoImagen::destroy($formatoProductoImagen);
+        return redirect(route("formatoproductos.index"));
     }
 }

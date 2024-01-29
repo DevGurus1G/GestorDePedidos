@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\FormatoController;
 use App\Http\Controllers\FormatoProductoController;
+use App\Http\Controllers\FormatoProductoImagenController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
@@ -103,4 +104,11 @@ Route::controller(UserController::class)->group(function () {
     Route::delete("users/{user}", "destroy")->name('users.destroy');
     Route::get('users/{user}/edit', "edit")->name('users.edit');
     Route::put("users/{user}", "update")->name('users.update');
+});
+
+
+// Para las imagenes --------------------------------------------------------
+
+Route::controller(FormatoProductoImagenController::class)->group(function () {
+    Route::delete('productos_imagenes/{imagen}', "destroy")->name('productos_imagenes.destroy');
 });

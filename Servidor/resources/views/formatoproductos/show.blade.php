@@ -71,30 +71,27 @@
                         </label>
                     </div>
                 </div>
-                {{-- <div class="col-12 mb-3">
-                    <label for="imagenes" class="form-label">Imagenes</label>
-                    <input class="form-control" type="file" id="imagenes" name="imagenes[]" multiple>
-                </div> --}}
-                <div class="col-12 mb-3">
-                    <label for="imagenes" class="form-label">Imágenes</label>
-                    <div class="image-container">
-                        @foreach($formatoproducto->imagenes as $imagen)
-                            <div class="position-relative">
-                                <img src="data:image/png;base64,{{ $imagen->imagen }}" alt="Imagen" class="img-thumbnail" style="filter: contrast(50%)">
-                                <div class="position-absolute top-50 start-50 translate-middle">
-                                    <button class="btn btn-primary change-image" data-imagen="{{ $imagen->id }}">Cambiar</button>
-                                    <form action="{{route("productos_imagenes.destroy")}}" method="post"></form>
-                                    <button class="btn btn-danger delete-image" data-imagen="{{ $imagen->id }}">Eliminar</button>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                    <input class="form-control" type="file" id="imagenes" name="imagenes[]" multiple>
-                </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Crear</button>
                 </div>
             </form>
+            <div class="col-12 mb-3">
+                <label class="form-label">Imágenes</label>
+                <div class="row">
+                    @foreach($formatoproducto->imagenes as $imagen)
+                        <div class="col-6 d-flex flex-column justify-content-center align-items-center gap-2">
+                            <img src="data:image/png;base64,{{ $imagen->imagen }}" alt="Imagen" height="100" width="100" style="filter: contrast(50%)">
+                            <div class="d-flex gap-2 mb-2">
+                                <button class="btn btn-primary change-image" data-imagen="{{ $imagen->id }}">Cambiar</button>
+                                <form action="{{route("productos_imagenes.destroy")}}" method="post">
+                                    @method("delete")
+                                    <button class="btn btn-danger" type="submit">Eliminar</button>
+                                </form>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
     </div>
 </div>

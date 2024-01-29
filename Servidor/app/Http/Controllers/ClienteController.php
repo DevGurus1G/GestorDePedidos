@@ -23,7 +23,7 @@ class ClienteController extends Controller
             $query->where('dni', 'like', '%' . $request->input('dni') . '%');
         }
 
-        $clientes = $query->simplePaginate(10);
+        $clientes = $query->simplePaginate(2);
 
         // Pasa los productos a la vista
         return view('clientes.index', compact('clientes'));

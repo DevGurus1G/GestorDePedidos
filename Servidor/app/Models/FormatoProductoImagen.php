@@ -12,8 +12,8 @@ class FormatoProductoImagen extends Model
         "imagen",
         "formato_producto_id"
     ];
-    public function formatoProducto()
+    public function formatoproducto()
     {
-        return $this->belongsTo(FormatoProducto::class, 'formato_producto_id');
+        return $this->belongsTo(FormatoProducto::class);
     }
 }
