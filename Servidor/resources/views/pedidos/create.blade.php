@@ -13,19 +13,10 @@
             <form method="POST" action="{{ route('pedidos.store')}}">
                 @csrf
                 <div class="form-floating">
-                    <select class="form-select" name="producto_id" aria-label="Floating label select example">
+                    <select class="form-select" name="formato_producto_id" aria-label="Floating label select example">
                         <option selected>Seleccione un Producto</option>
-                        @foreach ($productos as $producto)
-                        <option value="{{ $producto->id }}">{{ $producto->nombre}}</option>
-                      @endforeach
-                    </select>
-                    <label for="floatingSelect">Productos</label>
-                </div>
-                <div class="form-floating mt-3">
-                    <select class="form-select" name="formato_id" aria-label="Floating label select example">
-                        <option selected>Seleccione un Formato</option>
-                        @foreach ($formatos as $formato)
-                        <option value="{{ $formato->id }}">{{ $formato->tipo }}</option>
+                        @foreach ($formatoproductos as $formatoproducto)
+                        <option value="{{ $formatoproducto->id }}">{{ $formatoproducto->producto->nombre}} - {{$formatoproducto->formato->tipo}}</option>
                       @endforeach
                     </select>
                     <label for="floatingSelect">Productos</label>

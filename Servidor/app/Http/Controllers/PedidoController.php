@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
-use App\Models\Formato;
 use App\Models\FormatoProducto;
 use App\Models\Pedido;
 use App\Models\PedidoFormatoProducto;
-use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -47,44 +45,31 @@ class PedidoController extends Controller
     {
 
         //Validacion
-        $request->validate([
-            'producto_id' => 'required',
-            'formato_id' => 'required',
+        $validated = $request->validate([
+            'formato_producto_id' => 'required',
             'cliente_id' => 'required',
             'fecha' => 'required',
         ]);
-
-
-        $productoId = $request->input('producto_id');
-        $fecha = $request->input('fecha');
         $estado = 'solicitado';
-        $clienteId = $request->input('cliente_id');
-        $formatoId = $request->input('formato_id');
 
-        // Obtener el id de FormatoPedido
-        $formatoPedidoId = DB::table('formato_productos')
-            ->where('producto_id', $productoId)
-            ->where('formato_id', $formatoId)
-            ->value('id');
+        // Crear el pedido 
 
-        if ($formatoPedidoId) {
+        $pedido = Pedido::create([
+            "cliente_id" => $validated["cliente_id"],
+            "fecha" => $validated["fecha"],
+            "estado" => $estado
+        ]);
 
-            DB::transaction(function () use ($fecha, $estado, $clienteId, $formatoPedidoId) {
-                $pedido = Pedido::create([
-                    'fecha' => $fecha,
-                    'estado' => $estado,
-                    'cliente_id' => $clienteId,
-                ]);
+        // Crear los PedidoFormatoProducto
 
-                $pedido->pedidoformatoproducto()->create([
-                    'formato_producto_id' => $formatoPedidoId,
-                ]);
-            });
+        $formatoproducto = FormatoProducto::find($validated["formato_producto_id"]);
 
-            return redirect()->route('pedidos.index');
-        } else {
-            return redirect()->route('pedidos.create')->with('error', 'El producto que seleccionaste no esta en ese formato.');
-        }
+        $pedidoFormatoProducto = PedidoFormatoProducto::create([
+            "pedido" => $pedido->id,
+            "formato_producto_id" => $formatoproducto->id
+        ]);
+
+
     }
 
     /**

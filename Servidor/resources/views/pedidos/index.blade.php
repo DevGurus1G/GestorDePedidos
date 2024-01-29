@@ -29,7 +29,7 @@
                         {{$pedidoFormatoProducto->pedido->id}}
                     </td>
                     <td>
-                        {{-- {{$pedidoFormatoProducto->FormatoProducto->Producto->id}} --}}
+                        {{$pedidoFormatoProducto->formatoproducto->producto->id}}
                     </td>
                     <td>
                         {{$pedidoFormatoProducto->pedido->cliente->nombre}}
@@ -54,7 +54,7 @@
                         @endswitch
                     </td>
                     <td class="d-flex gap-2">
-                        <a href="{{route("pedidos.show", $pedidoFormatoProducto->pedido)}}" class="btn btn-primary">Ver detalles</a>
+                        <a href="{{route("pedidos.show", $pedidoFormatoProducto)}}" class="btn btn-primary">Ver detalles</a>
                         <form action="{{route("pedidos.destroy", ['pedido' => $pedidoFormatoProducto->pedido->id])}}" method="post">
                             @csrf
                             @method("delete")
