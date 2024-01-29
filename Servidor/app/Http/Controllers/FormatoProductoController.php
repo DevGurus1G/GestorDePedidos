@@ -13,11 +13,22 @@ class FormatoProductoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $formatoproductos = FormatoProducto::all();
-        return view("formatoproductos.index", ["formatoproductos" => $formatoproductos]);
+        // $query = FormatoProducto::query();
+
+        // if ($request->filled('formato')) {
+        //     $query->where('formato_id', 'like', '%' . $request->input('formato') . '%');
+        // }
+
+        // if ($request->filled('producto')) {
+        //     $query->where('producto_id', 'like', '%' . $request->input('producto') . '%');
+        // }
+
+
+        $formatoproductos = FormatoProducto::simplePaginate(8);
+        return view("formatoproductos.index", compact("formatoproductos"));
     }
 
     /**
@@ -44,14 +55,19 @@ class FormatoProductoController extends Controller
             "producto_id" => "required|exists:productos,id",
             "formato_id" => "required|exists:formatos,id",
             "precio" => "required|numeric",
-            "disponibilidad" => "required",
             "imagenes" => "required"
         ]);
-
-        $formatoproducto = new FormatoProducto([
-            'precio' => $request->input('precio'),
-            'disponibilidad' => $request->input('disponibilidad')
-        ]);
+        if ($request->input("disponibilidad") == true) {
+            $formatoproducto = new FormatoProducto([
+                'precio' => $request->input('precio'),
+                'disponibilidad' => $request->input('disponibilidad')
+            ]);
+        } else {
+            $formatoproducto = new FormatoProducto([
+                'precio' => $request->input('precio'),
+                'disponibilidad' => false
+            ]);
+        }
 
         $producto = Producto::find($request->input("producto_id"));
         $formato = Formato::find($request->input("formato_id"));
@@ -77,9 +93,12 @@ class FormatoProductoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(FormatoProducto $formatoproducto)
     {
         //
+        $productos = Producto::all();
+        $formatos = Formato::all();
+        return view('formatoproductos.show', ["formatoproducto" => $formatoproducto, "formatos" => $formatos, "productos" => $productos]);
     }
 
     /**

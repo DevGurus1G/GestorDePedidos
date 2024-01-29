@@ -10,11 +10,19 @@ class CategoriaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $categorias = Categoria::all();
-        return view('categorias.index', ["categorias" => $categorias]);
+        $query = Categoria::query();
+
+        // Aplicar filtros
+        if ($request->filled('nombre')) {
+            $query->where('nombre', 'like', '%' . $request->input('nombre') . '%');
+        }
+
+        $categorias = $query->simplePaginate(10);
+
+        // Pasa los productos a la vista
+        return view('categorias.index', compact('categorias'));
     }
 
     /**
