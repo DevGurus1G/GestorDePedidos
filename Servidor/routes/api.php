@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\Api\ClienteControllerApi;
+use App\Http\Controllers\Api\FormatoProductoControllerApi;
+use App\Http\Controllers\Api\PedidoControllerApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +30,19 @@ Route::controller(ClienteController::class)->group(function () {
     Route::put("clientes/{cliente}", "update")->name('clientes.update');
 });
 
-// Productos
+// FormatoProductos
+Route::controller(FormatoProductoControllerApi::class)->group(function () {
+    Route::get('productos', "show")->name('formatoProductos.show');
+});
+
+// FormatoProductos
+Route::controller(ClienteControllerApi::class)->group(function () {
+    Route::get('/login/{codigo}', "show")->name('clienteApi.show');
+    Route::get('/cliente/{codigo}', "show")->name('clienteApi.show');
+    Route::post('/cliente/update/{codigo}', "update");
+});
+
+//Pedidos
+Route::controller(PedidoControllerApi::class)->group(function () {
+    Route::get('/pedidos/{codigo}', "show")->name('pedidosApi.show');
+});

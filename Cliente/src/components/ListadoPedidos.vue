@@ -23,7 +23,7 @@
                 <li class="nav-item">
                   <router-link to="/perfil-usuario" class=" nav-link">Perfil de usuario</router-link>
                 </li>
-                <li class="nav-item ">
+                <li class="nav-item">
                   <button @click="logout" class="nav-link" type="button">Cerrar
                     Sesión</button>
                 </li>
@@ -42,20 +42,37 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">ID Pedido</th>
-            <th scope="col">Producto</th>
-            <th scope="col">Cantidad</th>
+            <th scope="col">Nombre producto</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Formato</th>
+            <th scope="col">Fotos</th>
+            <th scope="col">Añadir al pedido</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="order in orders" :key="order.id">
-            <th scope="row">{{ order.id }}</th>
-            <td>{{ order.product_name }}</td>
-            <td>{{ order.quantity }}</td>
+          <tr v-for="productoInd in  productos " :key="productoInd.id">
+            <td>{{ productoInd.producto.nombre }}</td>
+            <td>{{ productoInd.producto.categoria.nombre }}</td>
+            <td>{{ productoInd.precio }}</td>
+            <td>{{ productoInd.formato.tipo }}</td>
+            <td>
+              <div v-for="(imagen, index) in  productoInd.imagenes " :key="index">
+                <img :src="'data:image/png;base64,' + imagen" alt="Imagen" height="100" width="100" />
+              </div>
+            </td>
+            <td>
+              <!-- Botón para añadir al pedido y la lógica correspondiente -->
+              <!-- <button @click="anadirPedido(productoInd)" class="btn btn-primary">Añadir al Pedido</button> -->
+              <button class="btn btn-primary">Añadir al Pedido no func</button>
+
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
+
+
 
     <!-- FOOTER -->
     <div class="row">
@@ -75,6 +92,8 @@
       </footer>
     </div>
 
+
+
   </div>
 </template>
   
@@ -84,34 +103,34 @@ export default {
     return {
       //Se llama a la funcion para saber si ese usuario esta logeado
       isAuthenticated: this.autenticacion(),
-      orders: [], // Un array para almacenar los pedidos
+      productos: [], // Un array para almacenar los productos
     };
   },
   mounted() {
-    // Llama a la función para cargar pedidos cuando el componente se monta
-    this.loadOrders();
+    // Llama a la función para cargar productos cuando el componente se monta
+    this.loadProducts();
   },
   methods: {
-    async loadOrders() {
+    async loadProducts() {
       try {
-        const response = await fetch('URL_API_PARA_OBTENER_PEDIDOS');
-        const data = await response.json();
+        const response = await fetch('http://127.0.0.1:8000/api/productos');
+        const datos = await response.json();
 
-        if (data.success) {
-          // Actualiza la propiedad 'orders' con los datos recibidos del servidor
-          this.orders = data.orders;
+        if (datos.success) {
+          this.productos = datos.data;  // Asigna data.data a this.productos
         } else {
-          console.error('Error al obtener pedidos:', data.message);
+          console.error('Error al obtener productos:', data.message);
         }
       } catch (error) {
-        console.error('Error en la solicitud para obtener pedidos:', error);
+        console.error('Error en la solicitud para obtener productos:', error);
       }
     },
     logout() {
       console.log("Sesión cerrada");
+      //Borra el local storage y redirige a inicio
       localStorage.removeItem('autenticado');
-      // Redirige al login después de cerrar sesión
-      this.$router.push({ name: "login" });
+      localStorage.removeItem('codigo');
+      this.$router.push({ name: "inicio" });
     },
     autenticacion() {
       return localStorage.getItem('autenticado');
@@ -120,7 +139,5 @@ export default {
 };
 </script>
   
-<style scoped>
-/* Estilos específicos del componente, si es necesario */
-</style>
+<style scoped></style>
   

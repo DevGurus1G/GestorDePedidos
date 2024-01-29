@@ -62,7 +62,7 @@ class PedidoController extends Controller
         $formatoId = $request->input('formato_id');
 
         // Obtener el id de FormatoPedido
-        $formatoPedidoId = DB::table('formato_producto')
+        $formatoPedidoId = DB::table('formato_productos')
             ->where('producto_id', $productoId)
             ->where('formato_id', $formatoId)
             ->value('id');

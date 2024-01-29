@@ -23,22 +23,17 @@ export default {
     //LLAMADA AL SERVIDOR, FALTA PONERLE LA IP Y REALIZAR LAS PRUEBAS CONTRA LARAVEL
     async login() {
       try {
-        const response = await fetch('ip_server/login/' + this.code, {
-          method: 'GET',
-          // headers: {
-          //   'Content-Type': 'application/json',
-          // },
-          // body: JSON.stringify({ code: this.code }),
-        });
+        const response = await fetch('http://127.0.0.1:8000/api/login/' + this.code);
 
         const data = await response.json();
 
         if (data.success) {
           console.log("Autenticación exitosa");
           localStorage.setItem('autenticado', true);
-          this.$router.push({ name: "product-management" });
+          localStorage.setItem('codigo', data.cliente.codigo_acceso);
+          this.$router.push({ name: "inicio" });
         } else {
-          this.loginError = "Código incorrecto. Inténtalo de nuevo.";
+          this.loginError = data.message;
           console.error("Autenticación fallida");
         }
       } catch (error) {

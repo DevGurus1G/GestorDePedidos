@@ -43,17 +43,30 @@
         <thead>
           <tr>
             <th scope="col">Nombre producto</th>
+            <th scope="col">Categoria</th>
             <th scope="col">Precio</th>
             <th scope="col">Formato</th>
+            <th scope="col">Fotos</th>
             <th scope="col">Añadir al pedido</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="producto in productos" :key="producto.id">
-            <td>{{ producto.nombre }}</td>
-            <td>{{ producto.precio }}</td>
-            <td>{{ producto.formato }}</td>
-            <td><!--Boton para añadir al pedido y la logica--></td>
+          <tr v-for="productoInd in  productos " :key="productoInd.id">
+            <td>{{ productoInd.producto.nombre }}</td>
+            <td>{{ productoInd.producto.categoria.nombre }}</td>
+            <td>{{ productoInd.precio }}</td>
+            <td>{{ productoInd.formato.tipo }}</td>
+            <td>
+              <div v-for="(imagen, index) in  productoInd.imagenes " :key="index">
+                <img :src="'data:image/png;base64,' + imagen" alt="Imagen" height="100" width="100" />
+              </div>
+            </td>
+            <td>
+              <!-- Botón para añadir al pedido y la lógica correspondiente -->
+              <!-- <button @click="anadirPedido(productoInd)" class="btn btn-primary">Añadir al Pedido</button> -->
+              <button class="btn btn-primary">Añadir al Pedido no func</button>
+
+            </td>
           </tr>
         </tbody>
       </table>
@@ -100,11 +113,11 @@ export default {
   methods: {
     async loadProducts() {
       try {
-        const response = await fetch('URL/getProductos');
-        const data = await response.json();
+        const response = await fetch('http://127.0.0.1:8000/api/productos');
+        const datos = await response.json();
 
-        if (data.success) {
-          this.productos = data.productos;
+        if (datos.success) {
+          this.productos = datos.data;  // Asigna data.data a this.productos
         } else {
           console.error('Error al obtener productos:', data.message);
         }
@@ -114,9 +127,10 @@ export default {
     },
     logout() {
       console.log("Sesión cerrada");
+      //Borra el local storage y redirige a inicio
       localStorage.removeItem('autenticado');
-      // Redirige al login después de cerrar sesión
-      this.$router.push({ name: "login" });
+      localStorage.removeItem('codigo');
+      this.$router.push({ name: "inicio" });
     },
     autenticacion() {
       return localStorage.getItem('autenticado');

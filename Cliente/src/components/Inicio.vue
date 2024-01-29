@@ -143,8 +143,9 @@ export default {
   methods: {
     logout() {
       console.log("Sesión cerrada");
+      //Borra el local storage y redirige a inicio
       localStorage.removeItem('autenticado');
-      // Redirige al login después de cerrar sesión
+      localStorage.removeItem('codigo');
       this.$router.push({ name: "login" });
     },
     autenticacion() {
