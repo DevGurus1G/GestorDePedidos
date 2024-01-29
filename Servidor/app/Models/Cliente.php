@@ -10,7 +10,8 @@ class Cliente extends Model
     use HasFactory;
     protected $fillable = [
         "nombre",
-        "codigo_acceso"
+        "codigo_acceso",
+        "dni"
     ];
     public function pedidos()
     {

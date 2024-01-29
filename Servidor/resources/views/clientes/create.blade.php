@@ -28,6 +28,12 @@
                         <label for="nombre">Nombre</label>
                     </div>
                 </div>
+                <div class="col-12 form-floating mb-3">
+                    <div class="form-floating ">
+                        <input type="text" class="form-control" id="dni" name="dni" name="dni" placeholder="dni">
+                        <label for="dni">DNI</label>
+                    </div>
+                </div>
                 <div class="col-12 input-group">
                     <input type="text" class="form-control" readonly name="codigo_acceso" id="codigo_acceso" placeholder="Codigo de acceso" >
                     <button class="btn btn-outline-primary" id="generar_codigo" onclick="generarCodigo()" type="button">Generar</button>

@@ -10,12 +10,25 @@ class ClienteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $clientes = Cliente::all();
-        return view("clientes.index", ["clientes" => $clientes]);
+        $query = Cliente::query();
+
+        // Aplicar filtros
+        if ($request->filled('nombre')) {
+            $query->where('nombre', 'like', '%' . $request->input('nombre') . '%');
+        }
+
+        if ($request->filled('dni')) {
+            $query->where('dni', 'like', '%' . $request->input('dni') . '%');
+        }
+
+        $clientes = $query->simplePaginate(10);
+
+        // Pasa los productos a la vista
+        return view('clientes.index', compact('clientes'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -35,6 +48,7 @@ class ClienteController extends Controller
 
         $validated = $request->validate([
             "nombre" => "required|max:255",
+            "dni" => "required|max:9",
             "codigo_acceso" => "required|max:8"
         ]);
         Cliente::create($validated);
@@ -64,6 +78,13 @@ class ClienteController extends Controller
     public function update(Request $request, Cliente $cliente)
     {
         //
+        $validated = $request->validate([
+            "nombre" => "required|max:255",
+            "dni" => "required|min:9|max:9",
+            "codigo_acceso" => "required|max:8"
+        ]);
+        $cliente->update($validated);
+        return redirect(route("clientes.create"))->with("success", "Cliente actualizado correctamente");
     }
 
     /**
