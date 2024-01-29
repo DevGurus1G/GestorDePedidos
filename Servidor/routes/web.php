@@ -7,11 +7,8 @@ use App\Http\Controllers\FormatoProductoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Auth;
-=======
 use App\Http\Controllers\UserController;
->>>>>>> cba7b65edc5ca34fb9b5226b83ad849249f1045f
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -95,8 +92,6 @@ Route::controller(FormatoProductoController::class)->group(function () {
     Route::get('formatoproductos/{formatoproducto}/edit', "edit")->name('formatoproductos.edit');
     Route::put("formatoproductos/{formatoproducto}", "update")->name('formatoproductos.update');
 });
-<<<<<<< HEAD
-=======
 
 // Users ----------------------------------------------------------
 
@@ -115,4 +110,3 @@ Route::controller(UserController::class)->group(function () {
 
 
 
->>>>>>> cba7b65edc5ca34fb9b5226b83ad849249f1045f
