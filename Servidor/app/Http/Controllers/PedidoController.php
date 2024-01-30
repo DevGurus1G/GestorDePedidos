@@ -20,6 +20,7 @@ class PedidoController extends Controller
     {
         //
         $pedidoFormatoProductos = PedidoFormatoProducto::all();
+        // dd($pedidoFormatoProductos[0]->formatoproducto()->first()->producto->nombre);
         return view('pedidos.index', ["pedidoFormatoProductos" => $pedidoFormatoProductos]);
     }
 
@@ -65,10 +66,11 @@ class PedidoController extends Controller
         $formatoproducto = FormatoProducto::find($validated["formato_producto_id"]);
 
         $pedidoFormatoProducto = PedidoFormatoProducto::create([
-            "pedido" => $pedido->id,
+            "pedido_id" => $pedido->id,
             "formato_producto_id" => $formatoproducto->id
         ]);
 
+        return redirect(route("pedidos.index"));
 
     }
 

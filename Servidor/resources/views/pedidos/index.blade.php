@@ -15,6 +15,7 @@
             <tr>
                 <th>ID</th>
                 <th>Producto</th>
+                <th>Cantidad</th>
                 <th>Cliente</th>
                 <th>Fecha de Entrega</th>
                 <th>Estado</th>
@@ -29,7 +30,12 @@
                         {{$pedidoFormatoProducto->pedido->id}}
                     </td>
                     <td>
-                        {{$pedidoFormatoProducto->formatoproducto->producto->id}}
+                        @foreach ($pedidoFormatoProducto->formatoproducto as $formatoprod)
+                        {{$formatoprod->producto->nombre}} - {{$formatoprod->formato->tipo}}
+                        @endforeach
+                    </td>
+                    <td>
+                        {{$pedidoFormatoProducto->cantidad}}
                     </td>
                     <td>
                         {{$pedidoFormatoProducto->pedido->cliente->nombre}}
@@ -65,7 +71,7 @@
                 @endforeach
             @else
                 <tr>
-                    <td colspan="3">No hay pedidos</td>
+                    <td colspan="7">No hay pedidos</td>
                 </tr>
             @endif 
         </tbody>
