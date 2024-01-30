@@ -30,7 +30,7 @@ class FormatoProducto extends Model
     }
     public function pedidos()
     {
-        return $this->belongsToMany(PedidoFormatoProducto::class);
+        return $this->belongsToMany(PedidoFormatoProducto::class, 'pedido_formato_producto', 'formato_producto_id', 'pedido_id');
     }
 }
 

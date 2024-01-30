@@ -14,7 +14,7 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Producto</th>
+                <th>Producto/s</th>
                 <th>Cantidad</th>
                 <th>Cliente</th>
                 <th>Fecha de Entrega</th>
@@ -23,28 +23,30 @@
             </tr>
         </thead>
         <tbody>
-            @if (isset($pedidoFormatoProductos))
-                @foreach ($pedidoFormatoProductos as $pedidoFormatoProducto)
+            @if (isset($pedidos))
+                @foreach ($pedidos as $pedido)
                 <tr>
                     <td>
-                        {{$pedidoFormatoProducto->pedido->id}}
+                        {{$pedido->id}}
                     </td>
                     <td>
-                        @foreach ($pedidoFormatoProducto->formatoproducto as $formatoprod)
-                        {{$formatoprod->producto->nombre}} - {{$formatoprod->formato->tipo}}
+                        @foreach ($pedido->pedidoformatoproducto as $pedidoformatoproducto)
+                            <p>{{$pedidoformatoproducto->formatoproducto->producto->nombre}} - {{$pedidoformatoproducto->formatoproducto->formato->tipo}}</p>
                         @endforeach
                     </td>
                     <td>
-                        {{$pedidoFormatoProducto->cantidad}}
+                        @foreach ($pedido->pedidoformatoproducto as $pedidoformatoproducto)
+                            <p>{{$pedidoformatoproducto->cantidad}}</p>
+                        @endforeach
                     </td>
                     <td>
-                        {{$pedidoFormatoProducto->pedido->cliente->nombre}}
+                        {{$pedido->cliente->nombre}}
                     </td>
                     <td>
-                        {{$pedidoFormatoProducto->pedido->fecha}}
+                        {{$pedido->fecha}}
                     </td>
                     <td>
-                        @switch($pedidoFormatoProducto->pedido->estado)
+                        @switch($pedido->estado)
                             @case('solicitado')
                                 Solicitado
                                 @break
@@ -59,12 +61,12 @@
                                 @break    
                         @endswitch
                     </td>
-                    <td class="d-flex gap-2">
-                        <a href="{{route("pedidos.show", $pedidoFormatoProducto)}}" class="btn btn-primary">Ver detalles</a>
-                        <form action="{{route("pedidos.destroy", ['pedido' => $pedidoFormatoProducto->pedido->id])}}" method="post">
+                    <td class="d-flex flex-column justify-content-center gap-2">
+                        <a href="{{route("pedidos.show", $pedido)}}" class="btn btn-primary">Ver detalles</a>
+                        <form action="{{route("pedidos.destroy", ['pedido' => $pedido->id])}}" method="post">
                             @csrf
                             @method("delete")
-                            <button type="submit" class="btn btn-danger">Borrar</button>
+                            <button type="submit" class="btn btn-danger w-100">Borrar</button>
                         </form>
                     </td>
                 </tr> 

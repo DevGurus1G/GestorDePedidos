@@ -19,13 +19,8 @@ class Pedido extends Model
         return $this->belongsTo(Cliente::class);
     }
 
-    public function formatoproducto()
-    {
-        return $this->hasMany(FormatoProducto::class);
-    }
-
     public function pedidoformatoproducto()
     {
-        return $this->hasMany(PedidoFormatoProducto::class);
+        return $this->hasMany(PedidoFormatoProducto::class, "pedido_id");
     }
 }

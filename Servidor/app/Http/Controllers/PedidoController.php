@@ -7,8 +7,6 @@ use App\Models\FormatoProducto;
 use App\Models\Pedido;
 use App\Models\PedidoFormatoProducto;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 
 class PedidoController extends Controller
@@ -19,15 +17,16 @@ class PedidoController extends Controller
     public function index()
     {
         //
-        $pedidoFormatoProductos = PedidoFormatoProducto::all();
-        // dd($pedidoFormatoProductos[0]->formatoproducto()->first()->producto->nombre);
-        return view('pedidos.index', ["pedidoFormatoProductos" => $pedidoFormatoProductos]);
+        $pedidos = Pedido::all();
+        // dd($pedidos[0]->pedidoformatoproducto->id);
+        // dd($pedidos[0]->pedidoformatoproducto->first()->id);
+        return view('pedidos.index', ["pedidos" => $pedidos]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Pedido $pedido)
     {
         //
         $formatoproductos = FormatoProducto::all();
@@ -35,7 +34,8 @@ class PedidoController extends Controller
 
         return view("pedidos.create", [
             "formatoproductos" => $formatoproductos,
-            "clientes" => $clientes
+            "clientes" => $clientes,
+            "pedido" => $pedido
         ]);
     }
 
@@ -50,6 +50,8 @@ class PedidoController extends Controller
             'formato_producto_id' => 'required',
             'cliente_id' => 'required',
             'fecha' => 'required',
+            'cantidad' => 'required',
+            'mas_productos' => 'required',
         ]);
         $estado = 'solicitado';
 
@@ -58,28 +60,33 @@ class PedidoController extends Controller
         $pedido = Pedido::create([
             "cliente_id" => $validated["cliente_id"],
             "fecha" => $validated["fecha"],
-            "estado" => $estado
+            "estado" => $estado,
         ]);
 
         // Crear los PedidoFormatoProducto
 
         $formatoproducto = FormatoProducto::find($validated["formato_producto_id"]);
 
-        $pedidoFormatoProducto = PedidoFormatoProducto::create([
+        PedidoFormatoProducto::create([
             "pedido_id" => $pedido->id,
-            "formato_producto_id" => $formatoproducto->id
+            "formato_producto_id" => $formatoproducto->id,
+            "cantidad" => $validated["cantidad"]
         ]);
 
-        return redirect(route("pedidos.index"));
+        if ($validated["mas_productos"] == true) {
+            return redirect(route("pedidos.create", ["pedido" => $pedido]));
+        } else {
+            return redirect(route("pedidos.index"));
+        }
 
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(PedidoFormatoProducto $pedidoFormatoProducto)
+    public function show(Pedido $pedido)
     {
-        return view('pedidos.show', ["pedido" => $pedidoFormatoProducto]);
+        return view('pedidos.show', ["pedido" => $pedido]);
     }
 
     /**
