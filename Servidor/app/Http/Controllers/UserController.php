@@ -82,6 +82,7 @@ class UserController extends Controller
             "email" => "required|unique:users,email," . $user->id . "|max:255",
             "rol" => "required|string|max:255",
             "password" => "nullable|min:8",
+            "perfil" => "nullable"
         ]);
 
         if ($request->filled("password") && strlen($request->input("password")) >= 8) {
@@ -99,6 +100,7 @@ class UserController extends Controller
             ]);
         }
 
+
         return redirect(route("users.show", ["user" => $user]))->with("success", "Usuario actualizado correctamente");
     }
 
@@ -106,11 +108,16 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
-        //
+
         $user->delete();
-        return redirect(route("users.index"));
+
+        if ($request->filled('perfil')) {
+            return redirect(route("home"));
+        } else {
+            return redirect(route("users.index"));
+        }
     }
 
     public function indexPerfil()
@@ -129,5 +136,42 @@ class UserController extends Controller
         //
         $roles = ["responsable", "comercial", "administrativo"];
         return view("perfil.edit", ["user" => $user, "roles" => $roles]);
+    }
+
+    public function updatePerfil(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            "name" => "min:1|max:255",
+            "email" => "min:1|unique:users,email," . $user->id . "|max:255",
+            "rol" => "min:1|string|max:255",
+            "passwordA" => "nullable|min:8",
+            "passwordN" => "nullable|min:8"
+        ]);
+
+
+        if ($request->filled("passwordA") && strlen($request->input("passwordA")) >= 8) {
+
+            $user = User::where('name', Auth::user()->name)
+                ->where('password', $request->passwordA)
+                ->first();
+
+            if ($user) {
+                $user->update([
+                    "password" => Hash::make($validated["passwordN"]),
+                ]);
+            } else {
+                // Usuario no autenticado, redirigir de nuevo al formulario de inicio de sesión
+                return redirect()->back()->withInput()->withErrors(['error' => 'Contraseña Incorrecta']);
+            }
+        } else {
+            $user->update([
+                "name" => $validated["name"],
+                "email" => $validated["email"],
+                "rol" => $validated["rol"],
+            ]);
+        }
+
+
+        return redirect(route("perfil.index", ["user" => $user]))->with("success", "Usuario actualizado correctamente");
     }
 }
