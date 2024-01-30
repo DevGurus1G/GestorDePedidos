@@ -26,17 +26,24 @@ class PedidoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Pedido $pedido)
+    public function create()
     {
         //
         $formatoproductos = FormatoProducto::all();
         $clientes = Cliente::all();
+        if (session("pedido")) {
+            return view("pedidos.create", [
+                "formatoproductos" => $formatoproductos,
+                "clientes" => $clientes,
+                "pedido" => session("pedido"),
+            ]);
+        } else {
 
-        return view("pedidos.create", [
-            "formatoproductos" => $formatoproductos,
-            "clientes" => $clientes,
-            "pedido" => $pedido
-        ]);
+            return view("pedidos.create", [
+                "formatoproductos" => $formatoproductos,
+                "clientes" => $clientes,
+            ]);
+        }
     }
 
     /**
@@ -52,29 +59,38 @@ class PedidoController extends Controller
             'fecha' => 'required',
             'cantidad' => 'required',
             'mas_productos' => 'required',
+            'pedido_id' => 'nullable',
         ]);
         $estado = 'solicitado';
 
         // Crear el pedido 
-
-        $pedido = Pedido::create([
-            "cliente_id" => $validated["cliente_id"],
-            "fecha" => $validated["fecha"],
-            "estado" => $estado,
-        ]);
+        if (!isset($validated["pedido_id"])) {
+            $pedido = Pedido::create([
+                "cliente_id" => $validated["cliente_id"],
+                "fecha" => $validated["fecha"],
+                "estado" => $estado,
+            ]);
+        }
 
         // Crear los PedidoFormatoProducto
 
         $formatoproducto = FormatoProducto::find($validated["formato_producto_id"]);
+        if (isset($validated["pedido_id"])) {
+            PedidoFormatoProducto::create([
+                "pedido_id" => $validated["pedido_id"],
+                "formato_producto_id" => $formatoproducto->id,
+                "cantidad" => $validated["cantidad"]
+            ]);
+        } else {
+            PedidoFormatoProducto::create([
+                "pedido_id" => $pedido->id,
+                "formato_producto_id" => $formatoproducto->id,
+                "cantidad" => $validated["cantidad"]
+            ]);
+        }
 
-        PedidoFormatoProducto::create([
-            "pedido_id" => $pedido->id,
-            "formato_producto_id" => $formatoproducto->id,
-            "cantidad" => $validated["cantidad"]
-        ]);
-
-        if ($validated["mas_productos"] == true) {
-            return redirect(route("pedidos.create", ["pedido" => $pedido]));
+        if ($validated["mas_productos"] == "true") {
+            return redirect(route("pedidos.create"))->with("pedido", $pedido);
         } else {
             return redirect(route("pedidos.index"));
         }
