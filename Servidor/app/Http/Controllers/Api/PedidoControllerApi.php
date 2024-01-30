@@ -43,16 +43,13 @@ class PedidoControllerApi extends Controller
             // Obtener el cliente por código
             $cliente = Cliente::where('codigo_acceso', $codigo)->firstOrFail();
 
-            // Obtener los pedidos del cliente con sus relaciones
+            // Obtener todos los pedidos del cliente con sus relaciones
             $pedidos = Pedido::with([
                 'cliente',
-                'pedidoFormatoProducto.formatoProducto.formato',
-                'pedidoFormatoProducto.formatoProducto.producto.categoria'
+                'pedidoformatoproducto.formatoProducto.formato',
+                'pedidoformatoproducto.formatoProducto.producto.categoria'
             ])->where('cliente_id', $cliente->id)->get();
 
-            return response()->json($pedidos);
-
-            // Puedes personalizar los datos según tus necesidades
             $result = $pedidos->map(function ($pedido) {
                 return [
                     'id_pedido' => $pedido->id,
@@ -64,26 +61,31 @@ class PedidoControllerApi extends Controller
                         'dni' => $pedido->cliente->dni,
                         'codigo_acceso' => $pedido->cliente->codigo_acceso,
                     ],
-                    'detalles' => $pedido->pedidoFormatoProducto->map(function ($detalle) {
+                    'detalles' => $pedido->pedidoformatoproducto->map(function ($detalle) {
                         return [
                             'formato_producto_id' => $detalle->formato_producto_id,
                             'pedido_id' => $detalle->pedido_id,
-                            'formato' => $detalle->formatoproducto->formato->tipo,
-                            'producto' => [
-                                'id' => $detalle->formatoproducto->producto->id,
-                                'nombre' => $detalle->formatoproducto->producto->nombre,
-                                'categoria' => $detalle->formatoproducto->producto->categoria->nombre,
-                            ],
-                            'precio' => $detalle->formatoproducto->precio,
-                            'disponibilidad' => $detalle->formatoproducto->disponibilidad,
+                            'detalles' => $detalle->formatoproducto->map(function ($formatoProducto) {
+                                return [
+                                    'formato' => $formatoProducto->formato->tipo ?? null,
+                                    'producto' => [
+                                        'id' => $formatoProducto->producto->id ?? null,
+                                        'nombre' => $formatoProducto->producto->nombre ?? null,
+                                        'categoria' => $formatoProducto->producto->categoria->nombre ?? null,
+                                    ],
+                                    'precio' => (float)$formatoProducto->precio ?? null,
+                                    'disponibilidad' => (bool)$formatoProducto->disponibilidad ?? null,
+                                ];
+                            }),
                         ];
                     }),
                 ];
             });
 
-            return response()->json($result);
-        } catch (Exception $e) {
-            return response()->json(["a" => $e->getMessage()], 500);
+
+            return response()->json(['success' => true, 'data' => $result]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 

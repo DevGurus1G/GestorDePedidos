@@ -22,8 +22,12 @@
                     <label for="floatingSelect">Productos</label>
                 </div>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="date" class="form-control" name="fecha" placeholder="dd/MM/YYYY">
-                    <label for="floatingInput">Fecha de Entrega: </label>
+                    <input type="number" class="form-control" name="cantidad" placeholder="Cantidad" value="1">
+                    <label for="floatingInput">Cantidad</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="date" class="form-control" name="fecha" placeholder="fecha">
+                    <label for="fecha">Fecha de entrega</label>
                 </div>
                 <div class="form-floating mb-3">
                     <select class="form-select" name="cliente_id">

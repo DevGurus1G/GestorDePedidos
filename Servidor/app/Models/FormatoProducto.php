@@ -21,12 +21,16 @@ class FormatoProducto extends Model
 
     public function producto()
     {
-        return $this->belongsTo(Producto::class, 'producto_id');
+        return $this->belongsTo(Producto::class);
     }
 
     public function formato()
     {
         return $this->belongsTo(Formato::class, 'formato_id');
+    }
+    public function pedidos()
+    {
+        return $this->belongsToMany(PedidoFormatoProducto::class);
     }
 }
 

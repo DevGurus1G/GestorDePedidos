@@ -42,30 +42,30 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">Nombre producto</th>
-            <th scope="col">Categoria</th>
-            <th scope="col">Precio</th>
-            <th scope="col">Formato</th>
-            <th scope="col">Fotos</th>
-            <th scope="col">Añadir al pedido</th>
+            <th scope="col">ID Pedido</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Detalles</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="productoInd in  productos " :key="productoInd.id">
-            <td>{{ productoInd.producto.nombre }}</td>
-            <td>{{ productoInd.producto.categoria.nombre }}</td>
-            <td>{{ productoInd.precio }}</td>
-            <td>{{ productoInd.formato.tipo }}</td>
+          <tr v-for="pedido in pedidos" :key="pedido.id_pedido">
+            <td>{{ pedido.id_pedido }}</td>
+            <td>{{ pedido.fecha }}</td>
+            <td>{{ pedido.estado }}</td>
             <td>
-              <div v-for="(imagen, index) in  productoInd.imagenes " :key="index">
-                <img :src="'data:image/png;base64,' + imagen" alt="Imagen" height="100" width="100" />
-              </div>
-            </td>
-            <td>
-              <!-- Botón para añadir al pedido y la lógica correspondiente -->
-              <!-- <button @click="anadirPedido(productoInd)" class="btn btn-primary">Añadir al Pedido</button> -->
-              <button class="btn btn-primary">Añadir al Pedido no func</button>
-
+              <ul>
+                <li v-for="detalle in pedido.detalles" :key="detalle.formato_producto_id">
+                  <strong>Formato:</strong> {{ detalle.detalles[0].formato }}
+                  <br>
+                  <strong>Producto:</strong> {{ detalle.detalles[0].producto.nombre }}
+                  <br>
+                  <strong>Categoría:</strong> {{ detalle.detalles[0].producto.categoria }}
+                  <br>
+                  <strong>Precio:</strong> {{ detalle.detalles[0].precio }}
+                  <br>
+                </li>
+              </ul>
             </td>
           </tr>
         </tbody>
@@ -103,21 +103,21 @@ export default {
     return {
       //Se llama a la funcion para saber si ese usuario esta logeado
       isAuthenticated: this.autenticacion(),
-      productos: [], // Un array para almacenar los productos
+      pedidos: [], // Un array para almacenar los productos
     };
   },
   mounted() {
     // Llama a la función para cargar productos cuando el componente se monta
-    this.loadProducts();
+    this.loadPedidos();
   },
   methods: {
-    async loadProducts() {
+    async loadPedidos() {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/productos');
+        const response = await fetch('http://127.0.0.1:8000/api/pedidos/' + localStorage.getItem('codigo'));
         const datos = await response.json();
 
         if (datos.success) {
-          this.productos = datos.data;  // Asigna data.data a this.productos
+          this.pedidos = datos.data;  // Asigna data.data a this.productos
         } else {
           console.error('Error al obtener productos:', data.message);
         }
