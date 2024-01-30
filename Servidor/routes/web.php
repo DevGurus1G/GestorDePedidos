@@ -104,8 +104,9 @@ Route::controller(UserController::class)->group(function () {
     Route::delete("users/{user}", "destroy")->name('users.destroy');
     Route::get('users/{user}/edit', "edit")->name('users.edit');
     Route::put("users/{user}", "update")->name('users.update');
+    Route::get('perfil', 'indexPerfil')->name('perfil.index');
+    Route::get('perfil/{user}/edit', 'editPerfil')->name('perfil.edit');
 });
-
 
 // Para las imagenes --------------------------------------------------------
 

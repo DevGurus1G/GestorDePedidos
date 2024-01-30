@@ -60,7 +60,7 @@ class ClienteController extends Controller
      */
     public function show(Cliente $cliente)
     {
-        //
+        return view("clientes.show", ["cliente" => $cliente]);
     }
 
     /**
@@ -95,6 +95,5 @@ class ClienteController extends Controller
         //
         $cliente->delete();
         return redirect(route("clientes.index"));
-
     }
 }
