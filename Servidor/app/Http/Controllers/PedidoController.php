@@ -68,8 +68,6 @@ class PedidoController extends Controller
             "pedido" => $pedido->id,
             "formato_producto_id" => $formatoproducto->id
         ]);
-
-
     }
 
     /**

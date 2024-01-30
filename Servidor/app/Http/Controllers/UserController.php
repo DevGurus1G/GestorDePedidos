@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -110,5 +111,23 @@ class UserController extends Controller
         //
         $user->delete();
         return redirect(route("users.index"));
+    }
+
+    public function indexPerfil()
+    {
+        //
+        $user = Auth::user();
+        $roles = ["responsable", "comercial", "administrativo"];
+        return view('perfil.index', [
+            "user" => $user,
+            "roles" => $roles
+        ]);
+    }
+
+    public function editPerfil(User $user)
+    {
+        //
+        $roles = ["responsable", "comercial", "administrativo"];
+        return view("perfil.edit", ["user" => $user, "roles" => $roles]);
     }
 }

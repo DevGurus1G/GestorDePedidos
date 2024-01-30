@@ -88,7 +88,7 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-end ">
           {{-- No se donde llevara perfil --}}
-          <li><a class="dropdown-item" href="#">Perfil</a></li>
+          <li><a class="dropdown-item" href="{{ route('perfil.index')}}">Perfil</a></li>
           <li><hr class="dropdown-divider"></li>
           <li>
             <form action="{{route("logout")}}" method="post">
