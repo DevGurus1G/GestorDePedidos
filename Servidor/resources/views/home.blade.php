@@ -5,4 +5,6 @@
 
 @section('content')
 Esta por verse
+
+{{Auth::user()->rol}}
 @endsection
