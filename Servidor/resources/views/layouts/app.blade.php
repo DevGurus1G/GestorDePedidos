@@ -16,7 +16,7 @@
                 <div class="row">
                     @yield("nav")
                 </div>
-                <div class="row">
+                <div class="row" style="height: fit-content">
                 <!-- Contenido de la página aquí -->
                   @yield("content")
                 </div>

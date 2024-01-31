@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
+use App\Models\Cliente;
+use App\Models\FormatoProducto;
+use App\Models\Pedido;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +28,38 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        switch (Auth::user()->rol) {
+            case 'comercial':
+                $pedidosSolicitados = Pedido::where('estado', 'solicitado')->get();
+                $pedidosEnPreparacion = Pedido::where('estado', 'en_preparacion')->get();
+                $pedidosEnEntrega = Pedido::where('estado', 'en_entrega')->get();
+                $pedidosEntregados = Pedido::where('estado', 'entregado')->get();
+
+                return view('home', [
+                    'pedidosSolicitados' => $pedidosSolicitados,
+                    'pedidosEnPreparacion' => $pedidosEnPreparacion,
+                    'pedidosEnEntrega' => $pedidosEnEntrega,
+                    'pedidosEntregados' => $pedidosEntregados,
+                ]);
+                break;
+
+            case 'administrativo':
+
+                $clientes = Cliente::all();
+                $productos = FormatoProducto::all();
+                $categorias = Categoria::all();
+
+                return view('home', [
+                    'clientes' => $clientes,
+                    'productos' => $productos,
+                    'categorias' => $categorias,
+                ]);
+
+                break;
+            default:
+                return view('home');
+                break;
+        }
     }
 }
