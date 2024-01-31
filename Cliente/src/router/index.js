@@ -4,6 +4,7 @@ import ProductManagement from '@/components/ProductManagement.vue';
 import ListadoPedidos from '@/components/ListadoPedidos.vue';
 import PerfilUsuario from '@/components/PerfilUsuario.vue';
 import Inicio from '@/components/Inicio.vue';
+import RecuperarUsuario from '@/components/RecuperarUsuario.vue';
 
 
 const routes = [
@@ -36,6 +37,11 @@ const routes = [
     name: 'perfil-usuario',
     component: PerfilUsuario,
     meta: { requiresAuth: true, showFooter: true, showNav: true },
+  },
+  {
+    path: '/recuperar',
+    name: 'recuperar',
+    component: RecuperarUsuario,
   },
 ];
 

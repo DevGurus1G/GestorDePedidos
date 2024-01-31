@@ -1,10 +1,7 @@
 <template>
-  <div id="app" class="container-fluid">
-    <Nav v-if="$route.meta.showNav"></Nav>
-    <router-view />
-    <Footer v-if="$route.meta.showFooter"></Footer>
-
-  </div>
+  <Nav v-if="$route.meta.showNav"></Nav>
+  <router-view />
+  <Footer v-if="$route.meta.showFooter"></Footer>
 </template>
 
 <script>
