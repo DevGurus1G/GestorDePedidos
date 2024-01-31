@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\RecuperarMail;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 
@@ -102,4 +103,29 @@ class ClienteControllerApi extends Controller
     {
         //
     }
+    public function recuperar(Request $request)
+    {
+        $cliente = Cliente::where('dni', $request->input("dni"))->first();
+        if ($cliente) {
+            try {
+                $recuperarMail = new RecuperarMail($cliente);
+                \Illuminate\Support\Facades\Mail::to($request->input("email"))->send($recuperarMail);
+
+                return response()->json([
+                    "enviado" => true
+                ]);
+            } catch (\Exception $e) {
+                // Manejar errores de correo electrónico
+                return response()->json([
+                    "enviado" => false,
+                    "error" => $e->getMessage()
+                ], 500); // Código HTTP 500 para indicar un error interno del servidor
+            }
+        }
+
+        return response()->json([
+            "enviado" => false
+        ]);
+    }
+
 }
