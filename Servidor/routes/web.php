@@ -106,6 +106,7 @@ Route::controller(UserController::class)->group(function () {
     Route::put("users/{user}", "update")->name('users.update');
     Route::get('perfil', 'indexPerfil')->name('perfil.index');
     Route::get('perfil/{user}/edit', 'editPerfil')->name('perfil.edit');
+    Route::put('perfil/{user}', 'updatePerfil')->name('perfil.update');
 });
 
 // Para las imagenes --------------------------------------------------------

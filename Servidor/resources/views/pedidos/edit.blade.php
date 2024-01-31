@@ -57,7 +57,7 @@
                             <option value="entregado">Entregado</option>
                         @endif
                     </select>
-                    <label for="floatingSelect">Productos</label>
+                    <label for="floatingSelect">Estado:</label>
                 </div>
                 <div class="col-12 mt-2">
                     <button type="submit" class="btn btn-primary">Guardar</button>
