@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Cliente;
 use App\Models\Pedido;
+use App\Models\PedidoFormatoProducto;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -31,7 +32,42 @@ class PedidoControllerApi extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            //Validacion
+            // $validated = $request->validate([
+            //     'formato_productos' => 'required',
+            //     'cliente' => 'required',
+            //     'cantidad' => 'required',
+            // ]);
+
+
+            $estado = 'solicitado';
+
+            // Obtener el cliente por código
+            $cliente = Cliente::where('codigo_acceso', $request["cliente"])->firstOrFail();
+
+
+            //Crear el pedido
+            $pedido = Pedido::create([
+                "cliente_id" => $cliente->id,
+                "fecha" => now(),
+                "estado" => $estado,
+            ]);
+
+            // Crear los PedidoFormatoProducto, bucle porque pueden ser varios productos para el mismo pedido
+            foreach ($request["productos"] as $prod) {
+                PedidoFormatoProducto::create([
+                    "pedido_id" => $pedido->id,
+                    "formato_producto_id" => $prod["formato_productos"],
+                    "cantidad" => $prod["cantidad"],
+                ]);
+            }
+
+
+            return response()->json(['success' => true, 'message' => "Creado correctamente"]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => "Error al crear"]);
+        }
     }
 
     /**

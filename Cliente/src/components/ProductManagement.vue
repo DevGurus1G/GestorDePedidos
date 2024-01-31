@@ -1,6 +1,6 @@
 <template>
   <!-- Contenido principal -->
-  <div class="row mt-4 ">
+  <div class="row mt-4">
     <h1>Lista de Productos</h1>
     <div class="table-responsive">
       <table class="table">
@@ -22,8 +22,10 @@
             <td>{{ productoInd.precio }}</td>
             <td>{{ productoInd.formato.tipo }}</td>
             <td>
-              <div v-for="(imagen, index) in productoInd.imagenes" :key="index">
-                <img :src="'data:image/png;base64,' + imagen" alt="Imagen" height="100" width="100" />
+              <div>
+                <img v-if="productoInd.imagenes.length > 0" :src="'data:image/png;base64,' + productoInd.imagenes[0]"
+                  alt="Imagen" height="100" width="100" />
+                <span v-else>No hay imagen disponible</span>
               </div>
             </td>
             <td>
@@ -37,7 +39,34 @@
       </table>
     </div>
 
-    <div class="mt-4">
+    <!-- Sección para mostrar y gestionar el pedido -->
+    <div class="mt-4" v-if="pedido.length > 0">
+      <h2>Pedido Actual</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Producto</th>
+            <th scope="col">Formato</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Precio Unitario</th>
+            <th scope="col">Precio Total</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in pedido" :key="index">
+            <td>{{ item.producto.nombre }}</td>
+            <td>{{ item.formato.tipo }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>{{ item.producto_precio }}</td>
+            <td>{{ item.producto_precio * item.cantidad }}</td>
+            <td>
+              <button @click="eliminarDelPedido(index)" class="btn btn-danger">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
       <button @click="enviarPedido" class="btn btn-success">Enviar Pedido</button>
     </div>
   </div>
@@ -60,7 +89,6 @@ export default {
 
         if (datos.success) {
           this.productos = datos.data.map(producto => {
-            // Agregamos la propiedad cantidad para almacenar la cantidad seleccionada por el usuario
             producto.cantidad = 0;
             return producto;
           });
@@ -75,33 +103,49 @@ export default {
       return localStorage.getItem('autenticado');
     },
     anadirAlPedido(producto) {
-      // Añadir el producto al arreglo pedido solo si la cantidad es mayor a 0
       if (producto.cantidad > 0) {
-        this.pedido.push({
-          producto_id: producto.producto.id,
-          cantidad: producto.cantidad,
-        });
-        // Reiniciar la cantidad seleccionada para este producto
+        const index = this.pedido.findIndex(
+          item => item.producto.id === producto.producto.id && item.formato.id === producto.formato.id
+        );
+
+        if (index !== -1) {
+          this.pedido[index].cantidad += producto.cantidad;
+        } else {
+          this.pedido.push({
+            producto_id: producto.producto.id,
+            formato_id: producto.formato.id,
+            formato_productos: producto.id,
+            cantidad: producto.cantidad,
+            producto: producto.producto,
+            formato: producto.formato,
+            producto_precio: producto.precio,
+          });
+        }
+
         producto.cantidad = 0;
       }
     },
+    eliminarDelPedido(index) {
+      this.pedido.splice(index, 1);
+    },
     async enviarPedido() {
       try {
-        // Verificar si hay productos en el pedido antes de enviar la solicitud
         if (this.pedido.length === 0) {
           console.warn('No hay productos en el pedido.');
           return;
         }
 
-        // Puedes enviar una solicitud al servidor para crear el pedido con los productos seleccionados
-        const response = await fetch('http://127.0.0.1:8000/api/pedidos', {
+        const response = await fetch('http://127.0.0.1:8000/api/pedidos/crear', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            productos: this.pedido,
-            // Otros datos relacionados con el pedido que puedas necesitar enviar
+            cliente: localStorage.getItem('codigo'),
+            productos: this.pedido.map(item => ({
+              formato_productos: item.producto_id,
+              cantidad: item.cantidad,
+            })),
           }),
         });
 
@@ -109,7 +153,6 @@ export default {
 
         if (datos.success) {
           console.log('Pedido enviado correctamente:', datos.message);
-          // Limpiar el arreglo pedido después de enviar el pedido
           this.pedido = [];
         } else {
           console.error('Error al enviar el pedido:', datos.message);

@@ -45,4 +45,5 @@ Route::controller(ClienteControllerApi::class)->group(function () {
 //Pedidos
 Route::controller(PedidoControllerApi::class)->group(function () {
     Route::get('/pedidos/{codigo}', "show")->name('pedidosApi.show');
+    Route::post('/pedidos/crear', "store")->name('pedidosApi.store');
 });
