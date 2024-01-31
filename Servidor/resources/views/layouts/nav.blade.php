@@ -26,9 +26,9 @@
             Pedidos
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{route("pedidos.create")}}">Consultar</a></li>
+            <li><a class="dropdown-item" href="{{route("pedidos.index")}}">Consultar</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{{route("pedidos.index")}}">Crear</a></li>
+            <li><a class="dropdown-item" href="{{route("pedidos.create")}}">Crear</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">

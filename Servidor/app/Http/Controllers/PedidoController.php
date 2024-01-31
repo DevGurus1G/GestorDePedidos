@@ -14,13 +14,27 @@ class PedidoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $pedidos = Pedido::all();
-        // dd($pedidos[0]->pedidoformatoproducto->id);
-        // dd($pedidos[0]->pedidoformatoproducto->first()->id);
-        return view('pedidos.index', ["pedidos" => $pedidos]);
+        $query = Pedido::query();
+
+        // Filtros
+        if ($request->filled('producto')) {
+            $query->whereHas('pedidoformatoproducto.formatoproducto.producto', function ($subQuery) use ($request) {
+                $subQuery->where('nombre', 'like', '%' . $request->input('producto') . '%');
+            });
+        }
+
+        if ($request->filled('cliente')) {
+            $query->whereHas('cliente', function ($subQuery) use ($request) {
+                $subQuery->where('nombre', 'like', '%' . $request->input('cliente') . '%')
+                    ->orWhere('dni', 'like', '%' . $request->input('cliente') . '%');
+            });
+        }
+
+        $pedidos = $query->with(['cliente', 'pedidoformatoproducto.formatoproducto.producto'])->simplePaginate(10);
+
+        return view('pedidos.index', compact('pedidos'));
     }
 
     /**
