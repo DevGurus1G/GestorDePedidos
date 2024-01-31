@@ -30,8 +30,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
 Route::middleware(['can:isResponsable'])->group(function () {
-    // Usuario
+    //     // Usuario
     Route::controller(UserController::class)->group(function () {
         Route::get('users', "index")->name('users.index');
         Route::post('users', "store")->name('users.store');
@@ -41,139 +42,141 @@ Route::middleware(['can:isResponsable'])->group(function () {
         Route::get('users/{user}/edit', "edit")->name('users.edit');
         Route::put("users/{user}", "update")->name('users.update');
     });
-    // Categorias ----------------------------------------------------------------
-    Route::controller(CategoriaController::class)->group(function () {
-        Route::get('categorias', "index")->name('categorias.index');
-        Route::post('categorias', "store")->name('categorias.store');
-        Route::get("categorias/create", "create")->name('categorias.create');
-        Route::get('categorias/{categoria}', "show")->name('categorias.show');
-        Route::delete("categorias/{categoria}", "destroy")->name('categorias.destroy');
-        Route::get('categorias/{categoria}/edit', "edit")->name('categorias.edit');
-        Route::put("categorias/{categoria}", "update")->name('categorias.update');
-    });
-    // Productos ----------------------------------------------------------------
-    Route::controller(ProductoController::class)->group(function () {
-        Route::get('productos', "index")->name('productos.index');
-        Route::post('productos', "store")->name('productos.store');
-        Route::get("productos/create", "create")->name('productos.create');
-        Route::get('productos/{producto}', "show")->name('productos.show');
-        Route::delete("productos/{producto}", "destroy")->name('productos.destroy');
-        Route::get('productos/{producto}/edit', "edit")->name('productos.edit');
-        Route::put("productos/{producto}", "update")->name('productos.update');
-    });
-    // Clientes -----------------------------------------------------------------
-    Route::controller(ClienteController::class)->group(function () {
-        Route::get('clientes', "index")->name('clientes.index');
-        Route::post('clientes', "store")->name('clientes.store');
-        Route::get("clientes/create", "create")->name('clientes.create');
-        Route::get('clientes/{cliente}', "show")->name('clientes.show');
-        Route::delete("clientes/{cliente}", "destroy")->name('clientes.destroy');
-        Route::get('clientes/{cliente}/edit', "edit")->name('clientes.edit');
-        Route::put("clientes/{cliente}", "update")->name('clientes.update');
-    });
-    // Fomatos ----------------------------------------------------------------
-    Route::controller(FormatoController::class)->group(function () {
-        Route::get('formatos', "index")->name('formatos.index');
-        Route::post('formatos', "store")->name('formatos.store');
-        Route::get("formatos/create", "create")->name('formatos.create');
-        Route::get('formatos/{formato}', "show")->name('formatos.show');
-        Route::delete("formatos/{formato}", "destroy")->name('formatos.destroy');
-        Route::get('formatos/{formato}/edit', "edit")->name('formatos.edit');
-        Route::put("formatos/{formato}", "update")->name('formatos.update');
-    });
-    // ProductoFormato ----------------------------------------------------------
+    //     // Categorias ----------------------------------------------------------------
+    //     Route::controller(CategoriaController::class)->group(function () {
+    //         Route::get('categorias', "index")->name('categorias.index');
+    //         Route::post('categorias', "store")->name('categorias.store');
+    //         Route::get("categorias/create", "create")->name('categorias.create');
+    //         Route::get('categorias/{categoria}', "show")->name('categorias.show');
+    //         Route::delete("categorias/{categoria}", "destroy")->name('categorias.destroy');
+    //         Route::get('categorias/{categoria}/edit', "edit")->name('categorias.edit');
+    //         Route::put("categorias/{categoria}", "update")->name('categorias.update');
+    //     });
+    //     // Productos ----------------------------------------------------------------
+    //     Route::controller(ProductoController::class)->group(function () {
+    //         Route::get('productos', "index")->name('productos.index');
+    //         Route::post('productos', "store")->name('productos.store');
+    //         Route::get("productos/create", "create")->name('productos.create');
+    //         Route::get('productos/{producto}', "show")->name('productos.show');
+    //         Route::delete("productos/{producto}", "destroy")->name('productos.destroy');
+    //         Route::get('productos/{producto}/edit', "edit")->name('productos.edit');
+    //         Route::put("productos/{producto}", "update")->name('productos.update');
+    //     });
+    //     // Clientes -----------------------------------------------------------------
+    //     Route::controller(ClienteController::class)->group(function () {
+    //         Route::get('clientes', "index")->name('clientes.index');
+    //         Route::post('clientes', "store")->name('clientes.store');
+    //         Route::get("clientes/create", "create")->name('clientes.create');
+    //         Route::get('clientes/{cliente}', "show")->name('clientes.show');
+    //         Route::delete("clientes/{cliente}", "destroy")->name('clientes.destroy');
+    //         Route::get('clientes/{cliente}/edit', "edit")->name('clientes.edit');
+    //         Route::put("clientes/{cliente}", "update")->name('clientes.update');
+    //     });
+    //     // Fomatos ----------------------------------------------------------------
+    //     Route::controller(FormatoController::class)->group(function () {
+    //         Route::get('formatos', "index")->name('formatos.index');
+    //         Route::post('formatos', "store")->name('formatos.store');
+    //         Route::get("formatos/create", "create")->name('formatos.create');
+    //         Route::get('formatos/{formato}', "show")->name('formatos.show');
+    //         Route::delete("formatos/{formato}", "destroy")->name('formatos.destroy');
+    //         Route::get('formatos/{formato}/edit', "edit")->name('formatos.edit');
+    //         Route::put("formatos/{formato}", "update")->name('formatos.update');
+    //     });
+    //     // ProductoFormato ----------------------------------------------------------
 
-    Route::controller(FormatoProductoController::class)->group(function () {
-        Route::get('formatoproductos', "index")->name('formatoproductos.index');
-        Route::post('formatoproductos', "store")->name('formatoproductos.store');
-        Route::get("formatoproductos/create", "create")->name('formatoproductos.create');
-        Route::get('formatoproductos/{formatoproducto}', "show")->name('formatoproductos.show');
-        Route::delete("formatoproductos/{formatoproducto}", "destroy")->name('formatoproductos.destroy');
-        Route::get('formatoproductos/{formatoproducto}/edit', "edit")->name('formatoproductos.edit');
-        Route::put("formatoproductos/{formatoproducto}", "update")->name('formatoproductos.update');
-    });
-    // Para las imagenes --------------------------------------------------------
+    //     Route::controller(FormatoProductoController::class)->group(function () {
+    //         Route::get('formatoproductos', "index")->name('formatoproductos.index');
+    //         Route::post('formatoproductos', "store")->name('formatoproductos.store');
+    //         Route::get("formatoproductos/create", "create")->name('formatoproductos.create');
+    //         Route::get('formatoproductos/{formatoproducto}', "show")->name('formatoproductos.show');
+    //         Route::delete("formatoproductos/{formatoproducto}", "destroy")->name('formatoproductos.destroy');
+    //         Route::get('formatoproductos/{formatoproducto}/edit', "edit")->name('formatoproductos.edit');
+    //         Route::put("formatoproductos/{formatoproducto}", "update")->name('formatoproductos.update');
+    //     });
+    //     // Para las imagenes --------------------------------------------------------
 
-    Route::controller(FormatoProductoImagenController::class)->group(function () {
-        Route::delete('productos_imagenes/{imagen}', "destroy")->name('productos_imagenes.destroy');
-    });
+    //     Route::controller(FormatoProductoImagenController::class)->group(function () {
+    //         Route::delete('productos_imagenes/{imagen}', "destroy")->name('productos_imagenes.destroy');
+    //     });
 
-    // Pedidos --------------------------------------------------------
-    Route::controller(PedidoController::class)->group(function () {
-        // Rutas para comerciales
-        // Pedidos
-        Route::get('pedidos', "index")->name('pedidos.index');
-        Route::post('pedidos', "store")->name('pedidos.store');
-        Route::get("pedidos/create", "create")->name('pedidos.create');
-        Route::get('pedidos/{pedido}', "show")->name('pedidos.show');
-        Route::delete("pedidos/{pedido}", "destroy")->name('pedidos.destroy');
-        Route::get('pedidos/{pedido}/edit', "edit")->name('pedidos.edit');
-        Route::put("pedidos/{pedido}", "update")->name('pedidos.update');
-    });
+    //     // Pedidos --------------------------------------------------------
+    //     Route::controller(PedidoController::class)->group(function () {
+    //         // Rutas para comerciales
+    //         // Pedidos
+    //         Route::get('pedidos', "index")->name('pedidos.index');
+    //         Route::post('pedidos', "store")->name('pedidos.store');
+    //         Route::get("pedidos/create", "create")->name('pedidos.create');
+    //         Route::get('pedidos/{pedido}', "show")->name('pedidos.show');
+    //         Route::delete("pedidos/{pedido}", "destroy")->name('pedidos.destroy');
+    //         Route::get('pedidos/{pedido}/edit', "edit")->name('pedidos.edit');
+    //         Route::put("pedidos/{pedido}", "update")->name('pedidos.update');
+    //     });
 });
-Route::middleware(["can:isAdministrativo"])->group(function () {
-    // Categorias ----------------------------------------------------------------
-    Route::controller(CategoriaController::class)->group(function () {
-        Route::get('categorias', "index")->name('categorias.index');
-        Route::post('categorias', "store")->name('categorias.store');
-        Route::get("categorias/create", "create")->name('categorias.create');
-        Route::get('categorias/{categoria}', "show")->name('categorias.show');
-        Route::delete("categorias/{categoria}", "destroy")->name('categorias.destroy');
-        Route::get('categorias/{categoria}/edit', "edit")->name('categorias.edit');
-        Route::put("categorias/{categoria}", "update")->name('categorias.update');
-    });
-    // Productos ----------------------------------------------------------------
-    Route::controller(ProductoController::class)->group(function () {
-        Route::get('productos', "index")->name('productos.index');
-        Route::post('productos', "store")->name('productos.store');
-        Route::get("productos/create", "create")->name('productos.create');
-        Route::get('productos/{producto}', "show")->name('productos.show');
-        Route::delete("productos/{producto}", "destroy")->name('productos.destroy');
-        Route::get('productos/{producto}/edit', "edit")->name('productos.edit');
-        Route::put("productos/{producto}", "update")->name('productos.update');
-    });
-    // Clientes -----------------------------------------------------------------
-    Route::controller(ClienteController::class)->group(function () {
-        Route::get('clientes', "index")->name('clientes.index');
-        Route::post('clientes', "store")->name('clientes.store');
-        Route::get("clientes/create", "create")->name('clientes.create');
-        Route::get('clientes/{cliente}', "show")->name('clientes.show');
-        Route::delete("clientes/{cliente}", "destroy")->name('clientes.destroy');
-        Route::get('clientes/{cliente}/edit', "edit")->name('clientes.edit');
-        Route::put("clientes/{cliente}", "update")->name('clientes.update');
-    });
-    // Fomatos ----------------------------------------------------------------
-    Route::controller(FormatoController::class)->group(function () {
-        Route::get('formatos', "index")->name('formatos.index');
-        Route::post('formatos', "store")->name('formatos.store');
-        Route::get("formatos/create", "create")->name('formatos.create');
-        Route::get('formatos/{formato}', "show")->name('formatos.show');
-        Route::delete("formatos/{formato}", "destroy")->name('formatos.destroy');
-        Route::get('formatos/{formato}/edit', "edit")->name('formatos.edit');
-        Route::put("formatos/{formato}", "update")->name('formatos.update');
-    });
-    // ProductoFormato ----------------------------------------------------------
-
-    Route::controller(FormatoProductoController::class)->group(function () {
-        Route::get('formatoproductos', "index")->name('formatoproductos.index');
-        Route::post('formatoproductos', "store")->name('formatoproductos.store');
-        Route::get("formatoproductos/create", "create")->name('formatoproductos.create');
-        Route::get('formatoproductos/{formatoproducto}', "show")->name('formatoproductos.show');
-        Route::delete("formatoproductos/{formatoproducto}", "destroy")->name('formatoproductos.destroy');
-        Route::get('formatoproductos/{formatoproducto}/edit', "edit")->name('formatoproductos.edit');
-        Route::put("formatoproductos/{formatoproducto}", "update")->name('formatoproductos.update');
-    });
-    // Para las imagenes --------------------------------------------------------
-
-    Route::controller(FormatoProductoImagenController::class)->group(function () {
-        Route::delete('productos_imagenes/{imagen}', "destroy")->name('productos_imagenes.destroy');
-    });
-});
-
-
 
 // Pedidos
-Route::middleware(['can:isComercial'])->group(function () {
+
+Route::middleware(["canOneOf:isAdministrativo,isResponsable"])->group(function () {
+    // Categorias ----------------------------------------------------------------
+    Route::controller(CategoriaController::class)->group(function () {
+        Route::get('categorias', "index")->name('categorias.index');
+        Route::post('categorias', "store")->name('categorias.store');
+        Route::get("categorias/create", "create")->name('categorias.create');
+        Route::get('categorias/{categoria}', "show")->name('categorias.show');
+        Route::delete("categorias/{categoria}", "destroy")->name('categorias.destroy');
+        Route::get('categorias/{categoria}/edit', "edit")->name('categorias.edit');
+        Route::put("categorias/{categoria}", "update")->name('categorias.update');
+    });
+    // Productos ----------------------------------------------------------------
+    Route::controller(ProductoController::class)->group(function () {
+        Route::get('productos', "index")->name('productos.index');
+        Route::post('productos', "store")->name('productos.store');
+        Route::get("productos/create", "create")->name('productos.create');
+        Route::get('productos/{producto}', "show")->name('productos.show');
+        Route::delete("productos/{producto}", "destroy")->name('productos.destroy');
+        Route::get('productos/{producto}/edit', "edit")->name('productos.edit');
+        Route::put("productos/{producto}", "update")->name('productos.update');
+    });
+    // Clientes -----------------------------------------------------------------
+    Route::controller(ClienteController::class)->group(function () {
+        Route::get('clientes', "index")->name('clientes.index');
+        Route::post('clientes', "store")->name('clientes.store');
+        Route::get("clientes/create", "create")->name('clientes.create');
+        Route::get('clientes/{cliente}', "show")->name('clientes.show');
+        Route::delete("clientes/{cliente}", "destroy")->name('clientes.destroy');
+        Route::get('clientes/{cliente}/edit', "edit")->name('clientes.edit');
+        Route::put("clientes/{cliente}", "update")->name('clientes.update');
+    });
+    // Fomatos ----------------------------------------------------------------
+    Route::controller(FormatoController::class)->group(function () {
+        Route::get('formatos', "index")->name('formatos.index');
+        Route::post('formatos', "store")->name('formatos.store');
+        Route::get("formatos/create", "create")->name('formatos.create');
+        Route::get('formatos/{formato}', "show")->name('formatos.show');
+        Route::delete("formatos/{formato}", "destroy")->name('formatos.destroy');
+        Route::get('formatos/{formato}/edit', "edit")->name('formatos.edit');
+        Route::put("formatos/{formato}", "update")->name('formatos.update');
+    });
+    // ProductoFormato ----------------------------------------------------------
+
+    Route::controller(FormatoProductoController::class)->group(function () {
+        Route::get('formatoproductos', "index")->name('formatoproductos.index');
+        Route::post('formatoproductos', "store")->name('formatoproductos.store');
+        Route::get("formatoproductos/create", "create")->name('formatoproductos.create');
+        Route::get('formatoproductos/{formatoproducto}', "show")->name('formatoproductos.show');
+        Route::delete("formatoproductos/{formatoproducto}", "destroy")->name('formatoproductos.destroy');
+        Route::get('formatoproductos/{formatoproducto}/edit', "edit")->name('formatoproductos.edit');
+        Route::put("formatoproductos/{formatoproducto}", "update")->name('formatoproductos.update');
+    });
+    // Para las imagenes --------------------------------------------------------
+
+    Route::controller(FormatoProductoImagenController::class)->group(function () {
+        Route::delete('productos_imagenes/{imagen}', "destroy")->name('productos_imagenes.destroy');
+    });
+});
+
+
+
+Route::middleware(['canOneOf:isComercial,isResponsable'])->group(function () {
     Route::controller(PedidoController::class)->group(function () {
         // Rutas para comerciales
         // Pedidos
@@ -196,5 +199,6 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('perfil', 'indexPerfil')->name('perfil.index');
         Route::get('perfil/{user}/edit', 'editPerfil')->name('perfil.edit');
+        Route::put('perfil/{user}', 'updatePerfil')->name('perfil.update');
     });
 });
