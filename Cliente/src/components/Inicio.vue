@@ -1,48 +1,4 @@
 <template>
-  <!-- Barra de navegación -->
-  <div class="row">
-    <div class="col-12">
-      <!-- NAVBAR ================================================== -->
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-          <router-link to="/" class="navbar-brand">DevGurus</router-link>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div v-if="isAuthenticated" class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <router-link to="/product-management" class="nav-link">Gestión de Productos</router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/listado-pedidos" class=" nav-link">Lista de Pedidos</router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/perfil-usuario" class=" nav-link">Perfil de usuario</router-link>
-              </li>
-              <li class="nav-item">
-                <button @click="logout" class="nav-link" type="button">Cerrar
-                  Sesión</button>
-              </li>
-            </ul>
-
-          </div>
-
-          <div v-else class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <ul class="navbar-nav">
-              <li class="nav-item ">
-                <router-link to="/login" class="nav-link">Iniciar sesión</router-link>
-              </li>
-            </ul>
-
-          </div>
-        </div>
-      </nav>
-    </div>
-  </div>
-
   <!-- Carrousel -->
   <div id="carouselExampleIndicators" class="carousel slide bg-danger" data-bs-ride="carousel">
     <div class="carousel-indicators">
@@ -108,24 +64,6 @@
     </div>
 
   </section>
-
-  <!-- FOOTER -->
-  <div class="row">
-    <footer class="col d-flex justify-content-between mt-4 bg-light">
-      <p>DevGurus</p>
-      <p class="order-2">
-        <a href="">
-          <img src="../assets/icons/twitter-icon.svg" alt="Twitter" class="img-fluid">
-        </a>
-        <a href="">
-          <img src="../assets/icons/instagram-icon.svg" alt="Instagram" class="img-fluid">
-        </a>
-        <a href="">
-          <img src="../assets/icons/facebook-icon.svg" alt="Facebook" class="img-fluid">
-        </a>
-      </p>
-    </footer>
-  </div>
 </template>
   
 <script>
@@ -134,20 +72,12 @@ export default {
     return {
       //Se llama a la funcion para saber si ese usuario esta logeado
       isAuthenticated: this.autenticacion(),
-      orders: [], // Un array para almacenar los pedidos
     };
   },
   mounted() {
 
   },
   methods: {
-    logout() {
-      console.log("Sesión cerrada");
-      //Borra el local storage y redirige a inicio
-      localStorage.removeItem('autenticado');
-      localStorage.removeItem('codigo');
-      this.$router.push({ name: "login" });
-    },
     autenticacion() {
       return localStorage.getItem('autenticado');
     },

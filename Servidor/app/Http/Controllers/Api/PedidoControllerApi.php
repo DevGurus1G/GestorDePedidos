@@ -46,8 +46,9 @@ class PedidoControllerApi extends Controller
             // Obtener todos los pedidos del cliente con sus relaciones
             $pedidos = Pedido::with([
                 'cliente',
-                'pedidoformatoproducto.formatoProducto.formato',
-                'pedidoformatoproducto.formatoProducto.producto.categoria'
+                'pedidoformatoproducto.formatoproducto.producto.categoria',
+                'pedidoformatoproducto.formatoproducto.formato',
+                'pedidoformatoproducto.formatoproducto.imagenes'
             ])->where('cliente_id', $cliente->id)->get();
 
             $result = $pedidos->map(function ($pedido) {
@@ -63,31 +64,29 @@ class PedidoControllerApi extends Controller
                     ],
                     'detalles' => $pedido->pedidoformatoproducto->map(function ($detalle) {
                         return [
-                            'formato_producto_id' => $detalle->formato_producto_id,
+                            'formato_producto_id' => $detalle->formatoproducto->id,
                             'pedido_id' => $detalle->pedido_id,
-                            'detalles' => $detalle->formatoproducto->map(function ($formatoProducto) {
-                                return [
-                                    'formato' => $formatoProducto->formato->tipo ?? null,
-                                    'producto' => [
-                                        'id' => $formatoProducto->producto->id ?? null,
-                                        'nombre' => $formatoProducto->producto->nombre ?? null,
-                                        'categoria' => $formatoProducto->producto->categoria->nombre ?? null,
-                                    ],
-                                    'precio' => (float)$formatoProducto->precio ?? null,
-                                    'disponibilidad' => (bool)$formatoProducto->disponibilidad ?? null,
-                                ];
-                            }),
+                            'cantidad' => $detalle->cantidad,
+                            'formato' => $detalle->formatoproducto->formato->tipo ?? null,
+                            'producto' => [
+                                'id' => $detalle->formatoproducto->producto->id ?? null,
+                                'nombre' => $detalle->formatoproducto->producto->nombre ?? null,
+                                'categoria' => $detalle->formatoproducto->producto->categoria->nombre ?? null,
+                            ],
+                            'precio' => (float)$detalle->formatoproducto->precio ?? null,
+                            'disponibilidad' => (bool)$detalle->formatoproducto->disponibilidad ?? null,
+                            'imagenes' => $detalle->formatoproducto->imagenes->pluck('imagen_path')->toArray(),
                         ];
                     }),
                 ];
             });
-
 
             return response()->json(['success' => true, 'data' => $result]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
 
     /**
      * Show the form for editing the specified resource.
