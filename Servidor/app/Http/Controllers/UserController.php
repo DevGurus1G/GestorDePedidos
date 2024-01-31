@@ -145,23 +145,23 @@ class UserController extends Controller
             "email" => "min:1|unique:users,email," . $user->id . "|max:255",
             "rol" => "min:1|string|max:255",
             "passwordA" => "nullable|min:8",
-            "passwordN" => "nullable|min:8"
+            "passwordN" => "nullable|min:8",
+            "confirmNP" => "nullable|min:8"
         ]);
 
 
         if ($request->filled("passwordA") && strlen($request->input("passwordA")) >= 8) {
 
-            $user = User::where('name', Auth::user()->name)
-                ->where('password', $request->passwordA)
-                ->first();
-
-            if ($user) {
-                $user->update([
-                    "password" => Hash::make($validated["passwordN"]),
-                ]);
+            if ($request->filled("passwordN") && $request->filled("confirmNP") && $request->input("passwordN") == $request->input("confirmNP")) {
+                if (Hash::check($request->input('passwordA'), $user->password)) {
+                    $user->update([
+                        "password" => Hash::make($validated["passwordN"]),
+                    ]);
+                } else {
+                    return redirect()->back()->withInput()->withErrors(['error' => 'Contraseña Incorrecta']);
+                }
             } else {
-                // Usuario no autenticado, redirigir de nuevo al formulario de inicio de sesión
-                return redirect()->back()->withInput()->withErrors(['error' => 'Contraseña Incorrecta']);
+                return redirect()->back()->withInput()->withErrors(['error' => 'Introduzca la misma nueva contraseña en los dos campos.']);
             }
         } else {
             $user->update([

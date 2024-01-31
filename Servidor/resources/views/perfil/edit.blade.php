@@ -88,6 +88,12 @@
                         <label for="password">Contraseña Nueva:</label>
                     </div>
                 </div>
+                <div class="col-12 form-floating mb-3">
+                    <div class="form-floating ">
+                        <input type="password" class="form-control" id="confirmNP" name="confirmNP" placeholder="password">
+                        <label for="password">Confirmar contraseña:</label>
+                    </div>
+                </div>
                 <div class="col-12 mt-2">
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
