@@ -41,7 +41,7 @@
                 </div>
                 <div class="col-12 form-floating mb-3">
                     <div class="form-floating ">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="nombre" value="{{$user->rol}}" disabled>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="nombre" value="{{ucfirst($user->rol)}}" disabled>
                         <label for="name">Rol</label>
                     </div>
                 </div>
