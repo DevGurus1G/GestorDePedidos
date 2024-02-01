@@ -20,27 +20,108 @@
                 </div>
             </div>
         </div>
-        <div class="d-none d-lg-block col-lg-6" id="HoraLocal">
+        <div class="d-none d-lg-block col-lg-3" id="HoraMadrid">
             <div class="card mt-3 text-center mx-auto">
                 <div class="card-header d-flex justify-content-center align-items-center">
-                    <h3><strong>Hora Local</strong></h3>
+                    <h3><strong>Madrid</strong></h3>
                 </div>
-                <div class="card-body">
-                    
-                </div>
-            </div>
-        </div>
-        <div class="d-none d-lg-block col-lg-6" id="HoraLondres">
-            <div class="card mt-3 text-center mx-auto">
-                <div class="card-header d-flex justify-content-center align-items-center">
-                    <h3><strong>Hora Londres</strong></h3>
-                </div>
-                <div class="card-body">
-                    
-                </div>
-            </div>
-        </div>
+                    <div class="card-body">
+                        <hr>
+                        <div id="horaLocal" class="text-bold" style="font-size: 2em"></div>
+                        <hr>
+                    <script>
+                        function mostrarHoraLocal() {
 
+                            var fechaHora = new Date();
+
+                            var hora = fechaHora.toLocaleTimeString();
+                        
+                            document.getElementById("horaLocal").innerText = hora;
+                        }
+                    
+                        mostrarHoraLocal();
+                    
+                        setInterval(mostrarHoraLocal, 1000);
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="d-none d-lg-block col-lg-3" id="HoraLondres">
+            <div class="card mt-3 text-center mx-auto">
+                <div class="card-header d-flex justify-content-center align-items-center">
+                    <h3><strong>Londres</strong></h3>
+                </div>
+                <div class="card-body">
+                    <hr>
+                    <div id="horaLondres" class="text-bold" style="font-size: 2em"></div>
+                    <hr>
+                    <script>
+                        function mostrarHoraLondres() {
+                            var horaLondres = new Date().toLocaleTimeString('en-US', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        
+                            document.getElementById("horaLondres").innerText = horaLondres;
+                        }
+        
+                        mostrarHoraLondres();
+        
+                        setInterval(mostrarHoraLondres, 1000);
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="d-none d-lg-block col-lg-3" id="HoraJapon">
+            <div class="card mt-3 text-center mx-auto">
+                <div class="card-header d-flex justify-content-center align-items-center">
+                    <h3><strong>Japón</strong></h3>
+                </div>
+                <div class="card-body">
+                    <hr>
+                    <div id="horaJapon" class="text-bold" style="font-size: 2em"></div>
+                    <hr>
+                    
+                    <script>
+                        // Función para obtener y actualizar solo la hora local de Japón
+                        function mostrarHoraJapon() {
+                            // Obtener la hora actual en Japón (zona horaria GMT+9)
+                            var horaJapon = new Date().toLocaleTimeString('ja-JP', { timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        
+                            // Mostrar solo la hora de Japón en el elemento con el ID "horaJapon"
+                            document.getElementById("horaJapon").innerText = horaJapon;
+                        }
+        
+                        // Llamar a la función inicialmente
+                        mostrarHoraJapon();
+        
+                        // Actualizar la hora cada segundo (1000 milisegundos)
+                        setInterval(mostrarHoraJapon, 1000);
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="d-none d-lg-block col-lg-3" id="HoraEstadosUnidos">
+            <div class="card mt-3 text-center mx-auto">
+                <div class="card-header d-flex justify-content-center align-items-center">
+                    <h3><strong>USA</strong></h3>
+                </div>
+                <div class="card-body">
+                    <hr>
+                    <div id="horaEstadosUnidos" class="text-bold" style="font-size: 2em"></div>
+                    <hr>
+                    <script>
+                        function mostrarHoraEstadosUnidos() {
+
+                            var horaEstadosUnidos = new Date().toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        
+                            document.getElementById("horaEstadosUnidos").innerText = horaEstadosUnidos;
+                        }
+        
+                        mostrarHoraEstadosUnidos();
+        
+                        setInterval(mostrarHoraEstadosUnidos, 1000);
+                    </script>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="d-none d-lg-block col-lg-3" id="viajeRapido">
@@ -51,23 +132,33 @@
         <div class="card-body">
             @switch(Auth::user()->rol)
                 @case('comercial')
-                <p><a href="{{ route('pedidos.index')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Consultar Pedidos</a></p>
-                <p><a href="{{route('pedidos.create')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Crear Pedidos</a></p>
+                    <p><a href="{{ route('pedidos.index')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Consultar Pedidos</a></p>
+                    <p><a href="{{route('pedidos.create')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Crear Pedidos</a></p>
                     @break
 
                 @case('administrativo')
-                <p><a href="{{ route('clientes.index')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Consultar Clientes</a></p>
-                <p><a href="{{route('clientes.create')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Crear Clientes</a></p>
-                <hr>
-                <p><a href="{{ route('productos.index')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Consultar Productos</a></p>
-                <p><a href="{{route('productos.create')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Crear Productos</a></p>
-                <hr>
-                <p><a href="{{ route('categorias.index')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Consultar Categorias</a></p>
-                <p><a href="{{route('categorias.create')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Crear Categorias</a></p>   
+                    <p><a href="{{ route('clientes.index')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Consultar Clientes</a></p>
+                    <p><a href="{{route('clientes.create')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Crear Clientes</a></p>
+                    <hr>
+                    <p><a href="{{ route('productos.index')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Consultar Productos</a></p>
+                    <p><a href="{{route('productos.create')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Crear Productos</a></p>
+                    <hr>
+                    <p><a href="{{ route('categorias.index')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Consultar Categorias</a></p>
+                    <p><a href="{{route('categorias.create')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Crear Categorias</a></p>   
                     @break
 
                 @case('responsable')
-
+                    <p><a href="{{ route('pedidos.index')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Consultar Pedidos</a></p>
+                    <p><a href="{{route('pedidos.create')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Crear Pedidos</a></p>
+                    <hr>
+                    <p><a href="{{ route('clientes.index')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Consultar Clientes</a></p>
+                    <p><a href="{{route('clientes.create')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Crear Clientes</a></p>
+                    <hr>
+                    <p><a href="{{ route('productos.index')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Consultar Productos</a></p>
+                    <p><a href="{{route('productos.create')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Crear Productos</a></p>
+                    <hr>
+                    <p><a href="{{ route('users.index')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Consultar Usuarios</a></p>
+                    <p><a href="{{route('users.create')}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">Crear Usuarios</a></p>  
                     @break
                 @default
                     
@@ -313,7 +404,7 @@
                                         @foreach ($productos as $producto)
                                         <tr>
                                             <td>
-                                                <p><a href="{{ route('productos.show', $producto)}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">{{$producto->producto->id}}</a></p>
+                                                <p><a href="{{ route('productos.show', $producto)}}" class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">{{$producto->id}}</a></p>
                                             <td>
                                                 {{$producto->producto->nombre}} - {{$producto->formato->tipo}}
                                             </td>
@@ -374,7 +465,44 @@
     </div>
         @break
     @case('responsable')
-        asdf
+        <div class="row mb-3">
+            <div class="col-12 d-lg-block col-lg-4" id="PedidoProducto">
+                <div class="card mt-3 text-center mx-auto">
+                    <div class="card-header d-flex justify-content-center align-items-center">
+                        <h3><strong>Pedido - Producto</strong></h3>
+                    </div>
+                    <div class="card-body d-flex justify-content-center align-items-center">
+                        
+                        {!! $chartPP->container() !!}
+                        
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-lg-block col-lg-4" id="IngresoMes">
+                <div class="card mt-3 text-center mx-auto">
+                    <div class="card-header d-flex justify-content-center align-items-center">
+                        <h3><strong>Ingreso - Mes</strong></h3>
+                    </div>
+                    <div class="card-body">
+                        {!! $chartIM->container() !!}
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-lg-block col-lg-4" id="PedidoMes">
+                <div class="card mt-3 text-center mx-auto">
+                    <div class="card-header d-flex justify-content-center align-items-center">
+                        <h3><strong>Pedido - Mes</strong></h3>
+                    </div>
+                    <div class="card-body">
+                        {!! $chartPM->container() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {!! $chartPP->script() !!}
+        {!! $chartIM->script() !!}
+        {!! $chartPM->script() !!}
         @break
     @default
         Error: rol no asignado.
