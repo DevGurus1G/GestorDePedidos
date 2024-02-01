@@ -1,46 +1,48 @@
 <template>
   <!-- Contenido principal -->
   <div class="row mt-4">
-    <h1 class="mb-4">Lista de Productos</h1>
-    <div class="table-responsive">
-      <table class="table table-hover table-bordered table-striped text-center align-middle">
-        <thead class="table-dark">
-          <tr>
-            <th scope="col">Nombre producto</th>
-            <th scope="col">Categoria</th>
-            <th scope="col">Precio</th>
-            <th scope="col">Formato</th>
-            <th scope="col">Fotos</th>
-            <th scope="col">Cantidad</th>
-            <th scope="col">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="productoInd in productos" :key="productoInd.id">
-            <td>{{ productoInd.producto.nombre }}</td>
-            <td>{{ productoInd.producto.categoria.nombre }}</td>
-            <td>{{ productoInd.precio }}€</td>
-            <td>{{ productoInd.formato.tipo }}</td>
-            <td>
-              <div>
-                <img v-if="productoInd.imagenes.length > 0" :src="'data:image/png;base64,' + productoInd.imagenes[0]"
-                  alt="Imagen" height="100" width="100" />
-                <span v-else>No hay imagen disponible</span>
-              </div>
-            </td>
-            <td>
-              <input type="number" v-model="productoInd.cantidad" min="0" step="1" class="form-control" />
-            </td>
-            <td>
-              <button @click="anadirAlPedido(productoInd)" class="btn btn-primary">Añadir al Pedido</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div :class="{ 'col-xl-6': pedido.length > 0, 'col-12': pedido.length === 0 }">
+      <h1 class="mb-4">Lista de Productos</h1>
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered table-striped text-center align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Nombre producto</th>
+              <th scope="col">Categoria</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Formato</th>
+              <th scope="col">Fotos</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="productoInd in productos" :key="productoInd.id">
+              <td>{{ productoInd.producto.nombre }}</td>
+              <td>{{ productoInd.producto.categoria.nombre }}</td>
+              <td>{{ productoInd.precio }}€</td>
+              <td>{{ productoInd.formato.tipo }}</td>
+              <td>
+                <div>
+                  <img v-if="productoInd.imagenes.length > 0" :src="'data:image/png;base64,' + productoInd.imagenes[0]"
+                    alt="Imagen" height="100" width="100" />
+                  <span v-else>No hay imagen disponible</span>
+                </div>
+              </td>
+              <td>
+                <input type="number" v-model="productoInd.cantidad" min="0" step="1" class="form-control" />
+              </td>
+              <td>
+                <button @click="anadirAlPedido(productoInd)" class="btn btn-primary">Añadir al Pedido</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Sección para mostrar y gestionar el pedido -->
-    <div class="mt-4" v-if="pedido.length > 0">
+    <div class="mt-4 col-xl-6" v-if="pedido.length > 0">
       <h2>Pedido Actual</h2>
       <table class="table">
         <thead>

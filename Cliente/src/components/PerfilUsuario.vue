@@ -1,30 +1,32 @@
 <template>
   <!-- Contenido principal -->
   <div class="row mt-4">
-    <h1>Datos del usuario</h1>
-    <div v-if="actualizado" class="alert alert-success" role="alert">
-      ¡Actualización del cliente realizada correctamente!
-    </div>
-    <form @submit.prevent="updateCliente" v-if="Object.keys(usuario).length > 0">
-      <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre</label>
-        <input v-model="usuario.nombre" type="text" class="form-control" id="nombre">
+    <div class="col">
+      <h1>Datos del usuario</h1>
+      <div v-if="actualizado" class="alert alert-success" role="alert">
+        ¡Actualización del cliente realizada correctamente!
       </div>
-      <div class="mb-3">
-        <label for="codigo" class="form-label">Codigo</label>
-        <input v-model="usuario.codigo_acceso" type="text" class="form-control" id="codigo" readonly>
-        <div id="ayudaCodigo" class="form-text">Si desea cambiar su código de acceso, póngase en contacto con el
-          administrador</div>
+      <form @submit.prevent="updateCliente" v-if="Object.keys(usuario).length > 0">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input v-model="usuario.nombre" type="text" class="form-control" id="nombre">
+        </div>
+        <div class="mb-3">
+          <label for="codigo" class="form-label">Codigo</label>
+          <input v-model="usuario.codigo_acceso" type="text" class="form-control" id="codigo" readonly>
+          <div id="ayudaCodigo" class="form-text">Si desea cambiar su código de acceso, póngase en contacto con el
+            administrador</div>
+        </div>
+        <div class="mb-3">
+          <label for="dni" class="form-label">DNI</label>
+          <input v-model="usuario.dni" type="text" class="form-control" id="dni" readonly>
+          <div id="ayudaDni" class="form-text">Si desea cambiar su DNI, póngase en contacto con el administrador</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+      </form>
+      <div v-else>
+        <p>Ha habido algún error con su código, póngase en contacto con un administrador</p>
       </div>
-      <div class="mb-3">
-        <label for="dni" class="form-label">DNI</label>
-        <input v-model="usuario.dni" type="text" class="form-control" id="dni" readonly>
-        <div id="ayudaDni" class="form-text">Si desea cambiar su DNI, póngase en contacto con el administrador</div>
-      </div>
-      <button type="submit" class="btn btn-primary">Actualizar</button>
-    </form>
-    <div v-else>
-      <p>Ha habido algún error con su código, póngase en contacto con un administrador</p>
     </div>
   </div>
 </template>
