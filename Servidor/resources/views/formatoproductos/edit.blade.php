@@ -9,7 +9,17 @@
 <div class="col-12 mt-4 mx-auto max-w-50" >
     <div class="row">
         <div class="col">
-            <a href="{{route("formatoproductos.index")}}" class="btn btn-secondary">Volver</a>
+            <div class="d-flex justify-content-between mb-3">
+                <a href="{{route("formatoproductos.index")}}" class="btn btn-secondary">Volver</a>
+                <div class="d-flex gap-2">
+                    <a href="{{route("formatoproductos.edit", $formatoproducto)}}" class="btn btn-warning">Editar</a>
+                    <form action="{{route("formatoproductos.destroy", $formatoproducto)}}" method="post">
+                        @csrf
+                        @method("delete")
+                        <button type="submit" class="btn btn-danger">Borrar</button>
+                    </form>
+                </div>
+            </div>
             <h1>Ver detalles de producto | </h1>
             <form action="{{route("formatoproductos.store")}}" method="post" class="row mt-2" enctype="multipart/form-data">
                 @csrf
@@ -92,7 +102,7 @@
                                           <h5 class="modal-title">Editar imagen {{$key + 1}}</h5>
                                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <form action="{{route("productos_imagenes.update", $imagen->id)}}" method="post">
+                                        <form action="{{route("productos_imagenes.update", $imagen->id)}}" method="post" enctype="multipart/form-data">
                                             @csrf
                                             @method("PUT")
                                             <div class="modal-body">
@@ -100,7 +110,7 @@
                                             </div>
                                             <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" type="submit">Cambiar</button>
+                                            <button class="btn btn-primary" type="submit">Cambiar</button>
                                             </div>
                                         </form>
                                       </div>

@@ -50,9 +50,20 @@ class FormatoProductoImagenController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $formatoProductImagen)
     {
         //
+
+        $imagen = FormatoProductoImagen::find($formatoProductImagen);
+        $validated = $request->validate([
+            "imagen" => "required"
+        ]);
+        $binaryData = file_get_contents($request->file("imagen"));
+        $base64 = base64_encode($binaryData);
+        $imagen->update([
+            "imagen" => $base64
+        ]);
+        return redirect()->back();
     }
 
     /**
