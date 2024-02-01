@@ -171,6 +171,7 @@ Route::middleware(["canOneOf:isAdministrativo,isResponsable"])->group(function (
 
     Route::controller(FormatoProductoImagenController::class)->group(function () {
         Route::delete('productos_imagenes/{imagen}', "destroy")->name('productos_imagenes.destroy');
+        Route::put("productos_imagenes/{imagen}", "update")->name("productos_imagenes.update");
     });
 });
 
