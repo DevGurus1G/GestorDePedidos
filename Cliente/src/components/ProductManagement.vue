@@ -3,8 +3,8 @@
   <div class="row mt-4">
     <h1>Lista de Productos</h1>
     <div class="table-responsive">
-      <table class="table">
-        <thead>
+      <table class="table table-hover table-bordered table-striped">
+        <thead class="table-dark">
           <tr>
             <th scope="col">Nombre producto</th>
             <th scope="col">Categoria</th>

@@ -39,9 +39,9 @@ Route::controller(FormatoProductoControllerApi::class)->group(function () {
 
 // FormatoProductos
 Route::controller(ClienteControllerApi::class)->group(function () {
-    // Route::get('/login/{codigo}', "show")->name('clienteApi.show');
-    // Route::get('/cliente/{codigo}', "show")->name('clienteApi.show');
-    // Route::post('/cliente/update/{codigo}', "update");
+    Route::get('/login/{codigo}', "show")->name('clienteApi.show');
+    Route::get('/cliente/{codigo}', "show")->name('clienteApi.show');
+    Route::post('/cliente/update/{codigo}', "update");
     Route::post("recuperar", "recuperar");
     // function () {
     //     Mail::to("ikerunai.zambrano@gmail.com")
