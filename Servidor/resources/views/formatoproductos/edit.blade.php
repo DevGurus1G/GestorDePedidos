@@ -79,11 +79,34 @@
             <div class="col-12 mb-3">
                 <label class="form-label">Imágenes</label>
                 <div class="row">
-                    @foreach($formatoproducto->imagenes as $imagen)
+                    @foreach($formatoproducto->imagenes as $key => $imagen)
                         <div class="col-12">
                             <img src="data:image/png;base64,{{ $imagen->imagen }}" alt="Imagen" height="100" width="100" style="filter: contrast(50%)">
                             <div class="d-flex gap-2">
-                                <button class="btn btn-primary change-image" data-imagen="{{ $imagen->id }}">Cambiar</button>
+                                <button class="btn btn-primary change-image" data-bs-toggle="modal" data-bs-target="#imagen-{{$key}}">Cambiar</button>
+                                {{-- Modal --}}
+                                <div class="modal" tabindex="-1" id="imagen-{{$key}}">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title">Editar imagen {{$key + 1}}</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{route("productos_imagenes.update", $imagen->id)}}" method="post">
+                                            @csrf
+                                            @method("PUT")
+                                            <div class="modal-body">
+                                                <input class="form-control" type="file" id="imagen" name="imagen">
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" type="submit">Cambiar</button>
+                                            </div>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                
                                 <form action="{{route("productos_imagenes.destroy", $imagen->id)}}" method="post">
                                     @csrf
                                     @method("delete")

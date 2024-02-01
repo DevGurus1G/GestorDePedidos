@@ -47,9 +47,8 @@
                         {{$formatoproducto->formato->tipo}}
                     </td>
                     <td>
-                        @foreach ($formatoproducto->imagenes as $imagen)
-                            <img src="data:image/png;base64,{{ $imagen->imagen }}" height="32" width="32" alt="Hola" >
-                        @endforeach
+                        <img src="data:image/png;base64,{{ $formatoproducto->imagenes->first()->imagen }}" height="32" width="32" alt="Hola" class="rounded-circle ">
+                        + {{count($formatoproducto->imagenes) - 1}} imagen/es
                     </td>
                     <td class="d-flex gap-2">
                         <a href="{{route("formatoproductos.show", $formatoproducto)}}" class="btn btn-primary">Ver detalles</a>
