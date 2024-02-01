@@ -92,4 +92,7 @@
         </tbody>
     </table>
 </div>
+<div class="col-12">
+    {{ $pedidos->appends(request()->except('page'))->links() }}
+</div>
 @endsection
