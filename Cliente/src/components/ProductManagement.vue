@@ -1,10 +1,10 @@
 <template>
   <!-- Contenido principal -->
   <div class="row mt-4">
-    <h1>Lista de Productos</h1>
+    <h1 class="mb-4">Lista de Productos</h1>
     <div class="table-responsive">
-      <table class="table">
-        <thead>
+      <table class="table table-hover table-bordered table-striped text-center align-middle">
+        <thead class="table-dark">
           <tr>
             <th scope="col">Nombre producto</th>
             <th scope="col">Categoria</th>
@@ -19,7 +19,7 @@
           <tr v-for="productoInd in productos" :key="productoInd.id">
             <td>{{ productoInd.producto.nombre }}</td>
             <td>{{ productoInd.producto.categoria.nombre }}</td>
-            <td>{{ productoInd.precio }}</td>
+            <td>{{ productoInd.precio }}€</td>
             <td>{{ productoInd.formato.tipo }}</td>
             <td>
               <div>
@@ -58,8 +58,8 @@
             <td>{{ item.producto.nombre }}</td>
             <td>{{ item.formato.tipo }}</td>
             <td>{{ item.cantidad }}</td>
-            <td>{{ item.producto_precio }}</td>
-            <td>{{ item.producto_precio * item.cantidad }}</td>
+            <td>{{ item.producto_precio }}€</td>
+            <td>{{ item.producto_precio * item.cantidad }}€</td>
             <td>
               <button @click="eliminarDelPedido(index)" class="btn btn-danger">Eliminar</button>
             </td>

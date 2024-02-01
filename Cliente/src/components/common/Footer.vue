@@ -1,8 +1,8 @@
 <template>
     <!-- FOOTER -->
-    <div class="row">
+    <div class="row mt-auto">
         <footer class="col d-flex justify-content-between mt-4 bg-light">
-            <p>DevGurus</p>
+            <p>Killer</p>
             <p class="order-2">
                 <a href="">
                     <img src="/src/assets/icons/twitter-icon.svg" alt="Twitter" class="img-fluid">
