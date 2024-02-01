@@ -2,7 +2,7 @@
     <!-- FOOTER -->
     <div class="row mt-auto">
         <footer class="col d-flex justify-content-between mt-4 bg-light">
-            <p>Killer</p>
+            <p>&copy; 2024 Killer. Todos los derechos reservados.</p>
             <p class="order-2">
                 <a href="">
                     <img src="/src/assets/icons/twitter-icon.svg" alt="Twitter" class="img-fluid">

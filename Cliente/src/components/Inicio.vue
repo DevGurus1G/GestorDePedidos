@@ -1,40 +1,44 @@
 <template>
   <!-- Carrousel -->
-  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-        aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-        aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-        aria-label="Slide 3"></button>
+  <div class="row">
+    <div id="carouselInicio" class="carousel slide col-xxl-8 m-auto" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselInicio" data-bs-slide-to="0" class="active" aria-current="true"
+          aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselInicio" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselInicio" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#carouselInicio" data-bs-slide-to="3" aria-label="Slide 4"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="../assets/img/foto_carousel_1.jfif" class="d-block w-100 object-fit-cover" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="../assets/img/foto_carousel_2.jfif" class=" d-block w-100 object-fit-cover" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="../assets/img/foto_carousel_3.jfif" class="d-block w-100 object-fit-cover" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="../assets/img/foto_carousel_4.jfif" class="d-block w-100 object-fit-cover" alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselInicio" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselInicio" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="../assets/img/foto_inicio_1.avif" class="d-block w-100 " alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="../assets/img/foto_inicio_2.png" class="d-block w-100" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="../assets/img/foto_inicio_1.avif" class="d-block w-100" alt="...">
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
   </div>
+
 
 
 
   <!-- Sección de texto e imágenes -->
   <section class="container my-5">
-
     <div class="row featurette">
       <div class="col-md-7">
         <h2 class="featurette-heading">Plataforma Innovadora para la Gestión de Pedidos de Hosteleria</h2>
@@ -48,7 +52,7 @@
       </div>
       <div class="col-md-5">
         <img class="featurette-image img-fluid mx-auto" alt="Imagen bar con gente" style="width: 500px; height: 500px;"
-          src="../assets/img/foto_inicio_1.avif" data-holder-rendered="true">
+          src="../assets/img/foto_inicio_1.jfif" data-holder-rendered="true">
       </div>
     </div>
 
@@ -66,7 +70,7 @@
       </div>
       <div class="col-md-5 order-md-1">
         <img class="featurette-image img-fluid mx-auto" alt="Imagen de la cadena de gestión"
-          style="width: 500px; height: 500px;" src="../assets/img/foto_inicio_2.png" data-holder-rendered="true">
+          style="width: 500px; height: 500px;" src="../assets/img/foto_inicio_2.jfif" data-holder-rendered="true">
       </div>
     </div>
 
@@ -92,7 +96,5 @@ export default {
 };
 </script>
   
-<style scoped>
-/* Estilos específicos del componente, si es necesario */
-</style>
+<style scoped></style>
   
