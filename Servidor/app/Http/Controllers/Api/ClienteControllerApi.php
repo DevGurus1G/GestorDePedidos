@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\RecuperarMail;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ClienteControllerApi extends Controller
 {
@@ -105,11 +106,13 @@ class ClienteControllerApi extends Controller
     }
     public function recuperar(Request $request)
     {
-        $cliente = Cliente::where('dni', $request->input("dni"))->first();
+        $datos = $request->json()->all();
+        $cliente = Cliente::where('dni', $datos["dni"])->first(); // Usar first() para obtener una instancia, no solo el constructor de consulta
+
         if ($cliente) {
             try {
                 $recuperarMail = new RecuperarMail($cliente);
-                \Illuminate\Support\Facades\Mail::to($request->input("email"))->send($recuperarMail);
+                Mail::to($datos["email"])->send($recuperarMail);
 
                 return response()->json([
                     "enviado" => true

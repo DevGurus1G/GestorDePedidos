@@ -42,11 +42,12 @@ Route::controller(ClienteControllerApi::class)->group(function () {
     // Route::get('/login/{codigo}', "show")->name('clienteApi.show');
     // Route::get('/cliente/{codigo}', "show")->name('clienteApi.show');
     // Route::post('/cliente/update/{codigo}', "update");
-    Route::get("recuperar", function () {
-        Mail::to("ikerunai.zambrano@gmail.com")
-            ->send(new RecuperarMail());
-        return response()->json(["mensaje" => "Enviado"]);
-    });
+    Route::post("recuperar", "recuperar");
+    // function () {
+    //     Mail::to("ikerunai.zambrano@gmail.com")
+    //         ->send(new RecuperarMail());
+    //     return response()->json(["mensaje" => "Enviado"]);
+    // }
 });
 
 //Pedidos
