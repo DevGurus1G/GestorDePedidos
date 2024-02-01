@@ -1,6 +1,6 @@
 <template>
   <!-- Carrousel -->
-  <div id="carouselExampleIndicators" class="carousel slide bg-danger" data-bs-ride="carousel">
+  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
         aria-current="true" aria-label="Slide 1"></button>
@@ -11,13 +11,13 @@
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="../assets/icons/facebook-icon.svg" class="d-block w-100" alt="...">
+        <img src="../assets/img/foto_inicio_1.avif" class="d-block w-100 " alt="...">
       </div>
       <div class="carousel-item">
-        <img src="../assets/icons/icono-enlace-roto.png" class="d-block w-100" alt="...">
+        <img src="../assets/img/foto_inicio_2.png" class="d-block w-100" alt="...">
       </div>
       <div class="carousel-item">
-        <img src="../assets/icons/icono-enlace-roto.png" class="d-block w-100" alt="...">
+        <img src="../assets/img/foto_inicio_1.avif" class="d-block w-100" alt="...">
       </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -37,8 +37,8 @@
 
     <div class="row featurette">
       <div class="col-md-7">
-        <h2 class="featurette-heading">Plataforma Innovadora para la Gestión de Pedidos de Hosteleria <span
-            class="text-muted">Transformando la Experiencia Gastronómica con Tecnología Avanzada</span></h2>
+        <h2 class="featurette-heading">Plataforma Innovadora para la Gestión de Pedidos de Hosteleria</h2>
+        <h3 class="text-muted">Transformando la Experiencia Gastronómica con Tecnología Avanzada</h3>
         <p class="lead">En el corazón de la revolución digital en el sector de la hostelería, nuestra empresa se destaca
           como líder en el desarrollo de soluciones innovadoras para la gestión eficiente de pedidos en bares. Con un
           enfoque centrado en la experiencia del cliente y la optimización de los procesos comerciales, estamos marcando
@@ -47,8 +47,8 @@
           clientes.</p>
       </div>
       <div class="col-md-5">
-        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500"
-          style="width: 500px; height: 500px;" src="../assets/img/foto_inicio_1.avif" data-holder-rendered="true">
+        <img class="featurette-image img-fluid mx-auto" alt="Imagen bar con gente" style="width: 500px; height: 500px;"
+          src="../assets/img/foto_inicio_1.avif" data-holder-rendered="true">
       </div>
     </div>
 
@@ -56,8 +56,8 @@
 
     <div class="row featurette">
       <div class="col-md-7 order-md-2">
-        <h2 class="featurette-heading">Potenciando la Eficiencia Operativa<span class="text-muted">Conectando Bares con
-            Tecnología de Vanguardia</span></h2>
+        <h2 class="featurette-heading">Potenciando la Eficiencia Operativa</h2>
+        <h3 class="text-muted">Conectando Bares con Tecnología de Vanguardia</h3>
         <p class="lead">Sumérgete en el futuro de la gestión de pedidos en el mundo de la hostelería con nuestra
           plataforma especializada. Desde la toma de pedidos hasta la entrega eficiente, ofrecemos soluciones integrales
           que aumentan la eficiencia operativa de los bares. Descubre cómo nuestra tecnología está transformando la manera
@@ -65,7 +65,7 @@
           Únete a nosotros en la vanguardia de la innovación gastronómica.</p>
       </div>
       <div class="col-md-5 order-md-1">
-        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500"
+        <img class="featurette-image img-fluid mx-auto" alt="Imagen de la cadena de gestión"
           style="width: 500px; height: 500px;" src="../assets/img/foto_inicio_2.png" data-holder-rendered="true">
       </div>
     </div>
