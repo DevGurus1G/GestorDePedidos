@@ -2,12 +2,17 @@
   <div class="row mt-4">
     <div class="col">
       <h1 class="mb-4">Lista de Pedidos</h1>
+      <!-- Campo de búsqueda -->
+      <div class="mb-3">
+        <label for="buscar" class="form-label">Buscar Pedido</label>
+        <input v-model="busqueda" @input="filtrarPedidos" type="text" class="form-control" id="buscar">
+      </div>
       <!-- Mensaje mientras cargan los datos -->
       <div v-if="cargando" class="alert alert-info">
         <p class="mb-0">Cargando datos de pedidos...</p>
       </div>
       <div v-else>
-        <div v-if="pedidos.length > 0" class="table-responsive">
+        <div v-if="pedidosFiltrados.length > 0" class="table-responsive">
           <table class="table table-hover table-bordered table-striped text-center align-middle">
             <thead class="table-dark">
               <tr>
@@ -19,7 +24,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="pedido in pedidos" :key="pedido.id_pedido">
+              <tr v-for="pedido in pedidosFiltrados" :key="pedido.id_pedido">
                 <td>{{ pedido.id_pedido }}</td>
                 <td>{{ pedido.fecha }}</td>
                 <td>{{ pedido.estado }}</td>
@@ -71,7 +76,9 @@ export default {
     return {
       isAuthenticated: this.autenticacion(),
       pedidos: [],
-      cargando: true, // Para el pequeño intervalo que cargan los datos
+      pedidosFiltrados: [],
+      cargando: true,
+      busqueda: '',
     };
   },
   mounted() {
@@ -88,11 +95,12 @@ export default {
             pedido.precioTotal = this.calcularPrecioTotal(pedido);
             return pedido;
           });
+          this.filtrarPedidos(); // Filtrar pedidos al cargarlos
         } else {
-          console.error('Error al obtener productos:', datos.message);
+          console.error('Error al obtener pedidos:', datos.message);
         }
       } catch (error) {
-        console.error('Error en la solicitud para obtener productos:', error);
+        console.error('Error en la solicitud para obtener pedidos:', error);
       } finally {
         this.cargando = false; // Indicamos que la carga ha finalizado
       }
@@ -105,7 +113,25 @@ export default {
       pedido.detalles.forEach(detalle => {
         total += detalle.precio * detalle.cantidad;
       });
-      return total;
+      return parseFloat(total.toFixed(2));
+    },
+    filtrarPedidos() {
+      const busquedaMinusculas = this.busqueda.toLowerCase().trim();
+
+      this.pedidosFiltrados = this.pedidos.filter(pedido => {
+        return (
+          pedido.id_pedido.toString().includes(busquedaMinusculas) ||
+          pedido.fecha.includes(busquedaMinusculas) ||
+          pedido.estado.toLowerCase().includes(busquedaMinusculas) ||
+          this.productosEnPedido(pedido).toLowerCase().includes(busquedaMinusculas) ||
+          pedido.precioTotal.toString().includes(busquedaMinusculas)
+        );
+      });
+    },
+    productosEnPedido(pedido) {
+      return pedido.detalles
+        .map(detalle => `${detalle.formato || 'N/A'} - ${detalle.producto?.categoria || 'N/A'} - ${detalle.producto?.nombre || 'N/A'} (${detalle.cantidad} unidades)`)
+        .join(', ');
     },
   },
 };
