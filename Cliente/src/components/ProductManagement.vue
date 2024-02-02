@@ -3,7 +3,7 @@
   <div class="row mt-4">
     <div :class="{ 'col-xl-6': pedido.length > 0, 'col-12': pedido.length === 0 }">
       <h1 class="mb-4">Lista de Productos</h1>
-      <div class="table-responsive">
+      <div v-if="productos.length > 0" class="table-responsive">
         <table class="table table-hover table-bordered table-striped text-center align-middle">
           <thead class="table-dark">
             <tr>
@@ -38,6 +38,9 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div v-else class="alert alert-warning">
+        <p class="mb-0">Actualmente no hay productos disponibles</p>
       </div>
     </div>
 
