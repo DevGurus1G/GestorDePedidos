@@ -6,7 +6,8 @@
       <div v-if="actualizado" class="alert alert-success" role="alert">
         ¡Actualización del cliente realizada correctamente!
       </div>
-      <form @submit.prevent="updateCliente" v-if="Object.keys(usuario).length > 0">
+      <div v-if="cargando">Cargando datos del usuario...</div>
+      <form v-else @submit.prevent="updateCliente">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
           <input v-model="usuario.nombre" @input="limpiarErrores('nombre')" type="text" class="form-control" id="nombre">
@@ -25,19 +26,15 @@
         </div>
         <button type="submit" class="btn btn-primary">Actualizar</button>
       </form>
-      <!-- <div v-if="errores.servidor" class="text-danger">{{ errores.servidor }}</div> -->
-      <div v-else>
-        <p>Ha habido algún error con su código, póngase en contacto con un administrador</p>
-      </div>
+      <div v-if="errores.servidor" class="text-danger">{{ errores.servidor }}</div>
     </div>
   </div>
 </template>
-  
+
 <script>
 export default {
   data() {
     return {
-      // Se llama a la función para saber si ese usuario está logeado
       isAuthenticated: this.autenticacion(),
       usuario: {},
       actualizado: false,
@@ -45,14 +42,15 @@ export default {
         nombre: '',
         servidor: '',
       },
+      cargando: true, // Agregamos la bandera de carga
     };
   },
   mounted() {
     this.getCliente();
   },
   methods: {
-    limpiarErrores() {
-      this.errores.nombre = '';
+    limpiarErrores(campo) {
+      this.errores[campo] = '';
       this.errores.servidor = '';
       this.actualizado = false;
     },
@@ -73,20 +71,21 @@ export default {
         const data = await response.json();
 
         if (data.success) {
-          // Actualiza el objeto usuario con los datos del servidor
           this.usuario = data.cliente;
         } else {
           console.error('Error al obtener el usuario:', data.message);
+          this.errores.servidor = 'Error al obtener el usuario: ' + data.message;
         }
       } catch (error) {
         console.error('Error en la solicitud para obtener el usuario:', error);
+        this.errores.servidor = 'Error en la solicitud para obtener el usuario.';
+      } finally {
+        this.cargando = false; // Indicamos que la carga ha finalizado
       }
     },
 
     async updateCliente() {
       try {
-
-        //Validar nombre antes de enviar
         if (!this.validarNombre()) {
           return;
         }
@@ -105,7 +104,6 @@ export default {
 
         if (data.success) {
           this.actualizado = true;
-          //Borra el mensaje de exito a los 2 segundos
           setTimeout(() => {
             this.limpiarErrores();
           }, 2000);
@@ -122,7 +120,7 @@ export default {
   },
 };
 </script>
-  
+
 <style scoped>
 /* Estilos específicos del componente, si es necesario */
 </style>

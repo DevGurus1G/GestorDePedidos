@@ -11,16 +11,19 @@
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="../assets/img/foto_carousel_1.jfif" class="d-block w-100 object-fit-cover" alt="...">
+          <img src="../assets/img/foto_carousel_1.jfif" class="d-block w-100 object-fit-cover" alt="Botellas killer">
         </div>
         <div class="carousel-item">
-          <img src="../assets/img/foto_carousel_2.jfif" class=" d-block w-100 object-fit-cover" alt="...">
+          <img src="../assets/img/foto_carousel_2.jfif" class=" d-block w-100 object-fit-cover"
+            alt="Barril de la marca killer">
         </div>
         <div class="carousel-item">
-          <img src="../assets/img/foto_carousel_3.jfif" class="d-block w-100 object-fit-cover" alt="...">
+          <img src="../assets/img/foto_carousel_3.jfif" class="d-block w-100 object-fit-cover"
+            alt="Agua de la marca killer">
         </div>
         <div class="carousel-item">
-          <img src="../assets/img/foto_carousel_4.jfif" class="d-block w-100 object-fit-cover" alt="...">
+          <img src="../assets/img/foto_carousel_4.jfif" class="d-block w-100 object-fit-cover"
+            alt="Patatas de la marca killer">
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselInicio" data-bs-slide="prev">
