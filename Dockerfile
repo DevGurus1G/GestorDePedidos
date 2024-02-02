@@ -10,3 +10,14 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY ./docker-php.conf /etc/apache2/conf-enabled/docker-php.conf
 # Configure php.ini to display errors:
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+# Install Node.js and npm
+RUN apt-get update \
+    && apt-get install -y nodejs \
+    && apt-get install -y npm
+
+# Copiar tu archivo de configuración como el archivo de configuración predeterminado
+COPY ./laravel.conf /etc/apache2/sites-available/000-default.conf
+
+# Configurar Apache y reiniciar
+RUN a2ensite 000-default.conf && a2dissite 000-default \
+    && service apache2 restart
