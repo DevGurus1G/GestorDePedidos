@@ -9,7 +9,8 @@
       <form @submit.prevent="updateCliente" v-if="Object.keys(usuario).length > 0">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
-          <input v-model="usuario.nombre" type="text" class="form-control" id="nombre">
+          <input v-model="usuario.nombre" @input="limpiarErrores('nombre')" type="text" class="form-control" id="nombre">
+          <div v-if="errores.nombre" class="text-danger">{{ errores.nombre }}</div>
         </div>
         <div class="mb-3">
           <label for="codigo" class="form-label">Codigo</label>
@@ -24,6 +25,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Actualizar</button>
       </form>
+      <!-- <div v-if="errores.servidor" class="text-danger">{{ errores.servidor }}</div> -->
       <div v-else>
         <p>Ha habido algún error con su código, póngase en contacto con un administrador</p>
       </div>
@@ -39,12 +41,32 @@ export default {
       isAuthenticated: this.autenticacion(),
       usuario: {},
       actualizado: false,
+      errores: {
+        nombre: '',
+        servidor: '',
+      },
     };
   },
   mounted() {
     this.getCliente();
   },
   methods: {
+    limpiarErrores() {
+      this.errores.nombre = '';
+      this.errores.servidor = '';
+      this.actualizado = false;
+    },
+
+    validarNombre() {
+      const nombreRegex = /^[A-Z][a-zA-Záéíóúüñ\s']*$/;
+      if (!nombreRegex.test(this.usuario.nombre.trim())) {
+        this.errores.nombre = 'Por favor, ingrese un nombre válido que comience con mayúscula o después de un espacio en blanco.';
+        return false;
+      }
+      this.errores.nombre = '';
+      return true;
+    },
+
     async getCliente() {
       try {
         const response = await fetch('http://127.0.0.1:8000/api/cliente/' + sessionStorage.getItem("codigo"));
@@ -63,6 +85,12 @@ export default {
 
     async updateCliente() {
       try {
+
+        //Validar nombre antes de enviar
+        if (!this.validarNombre()) {
+          return;
+        }
+
         const response = await fetch('http://127.0.0.1:8000/api/cliente/update/' + sessionStorage.getItem("codigo"), {
           method: 'POST',
           headers: {
@@ -76,14 +104,16 @@ export default {
         const data = await response.json();
 
         if (data.success) {
-          console.log("Cliente actualizado con éxito");
           this.actualizado = true;
-          this.$router.push({ name: 'perfil-usuario' })
+          //Borra el mensaje de exito a los 2 segundos
+          setTimeout(() => {
+            this.limpiarErrores();
+          }, 2000);
         } else {
-          console.error('Error al actualizar el cliente:', data.message);
+          this.errores.servidor = 'Error al actualizar el cliente: ' + data.message;
         }
       } catch (error) {
-        console.error('Error en la solicitud para actualizar el cliente:', error);
+        this.errores.servidor = 'Error en la solicitud para actualizar el cliente.';
       }
     },
     autenticacion() {

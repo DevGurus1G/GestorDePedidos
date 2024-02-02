@@ -31,7 +31,58 @@ class ClienteControllerApi extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            //Validacion
+            $validated = $request->validate([
+                "nombre" => "required|max:255",
+                "dni" => "required|max:9",
+                "calle" => "required|max:255",
+                "email" => "required|email",
+            ]);
+
+            function generarCodigo($nombre)
+            {
+                // Obtener las 3 primeras letras del nombre
+                $tresPrimerasLetras = strtoupper(substr($nombre, 0, 3));
+
+                do {
+                    // Generar 4 números aleatorios
+                    $cuatroNumerosAleatorios = mt_rand(1000, 9999);
+
+                    // Combinar las letras y números con un guion
+                    $codigoGenerado = $tresPrimerasLetras . "-" . $cuatroNumerosAleatorios;
+
+                    // Verificar si el código ya existe en la base de datos
+                    $existente = Cliente::where('codigo_acceso', $codigoGenerado)->exists();
+                } while ($existente);
+
+                return $codigoGenerado;
+            }
+
+            $codigo = generarCodigo($validated["nombre"]);
+
+            //Verificar si existe un cliente con ese dni:
+            $clienteExistente = Cliente::where('dni', $validated['dni'])->first();
+
+            if ($clienteExistente) {
+                return response()->json(['success' => false, 'message' => 'Ya existe un cliente con el mismo DNI.']);
+            }
+
+            //Crear el pedido
+            $cliente = Cliente::create([
+                "nombre" => $validated["nombre"],
+                "dni" => $validated["dni"],
+                "codigo_acceso" => $codigo,
+                "calle" => $validated["calle"]
+            ]);
+
+            $recuperarMail = new RecuperarMail($cliente);
+            Mail::to($validated["email"])->send($recuperarMail);
+
+            return response()->json(['success' => true, 'message' => "Creado correctamente"]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => "Error al crear" . $e->getMessage()]);
+        }
     }
 
     /**
@@ -130,5 +181,4 @@ class ClienteControllerApi extends Controller
             "enviado" => false
         ]);
     }
-
 }
