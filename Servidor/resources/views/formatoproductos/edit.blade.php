@@ -21,8 +21,9 @@
                 </div>
             </div>
             <h1>Ver detalles de producto | </h1>
-            <form action="{{route("formatoproductos.store")}}" method="post" class="row mt-2" enctype="multipart/form-data">
+            <form action="{{route("formatoproductos.update", $formatoproducto)}}" method="post" class="row mt-2" enctype="multipart/form-data">
                 @csrf
+                @method("put")
                 @if (session("success"))
                     <div class="col-12 alert alert-success">
                         {{ session('success')}}
@@ -82,7 +83,7 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
             </form>
             {{-- LAS IMAGENES --}}

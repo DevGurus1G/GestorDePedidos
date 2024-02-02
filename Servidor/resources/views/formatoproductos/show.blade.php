@@ -6,40 +6,20 @@
 
 
 @section('content')
-<div class="col-12 mt-4 mx-auto max-w-50" >
-    <div class="row">
-        <div class="col">
-            <div class="d-flex justify-content-between mb-3">
-                <a href="{{route("formatoproductos.index")}}" class="btn btn-secondary">Volver</a>
-                <div class="d-flex gap-2">
-                    <a href="{{route("formatoproductos.edit", $formatoproducto)}}" class="btn btn-warning">Editar</a>
-                    <form action="{{route("formatoproductos.destroy", $formatoproducto)}}" method="post">
-                        @csrf
-                        @method("delete")
-                        <button type="submit" class="btn btn-danger">Borrar</button>
-                    </form>
-                </div>
-            </div>
-            <h1>Ver detalles de producto | </h1>
-            <form action="{{route("formatoproductos.store")}}" method="post" class="row mt-2" enctype="multipart/form-data">
-                @csrf
-                @if (session("success"))
-                    <div class="col-12 alert alert-success">
-                        {{ session('success')}}
-                    </div>
-                @elseif($errors->any())
-                    <div class="col-12 alert alert-danger ">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
     <div class="col-12 mt-4 mx-auto max-w-50" style="max-width: 550px; width: 100%">
         <div class="row">
             <div class="col">
-                <a href="{{ route('formatoproductos.index') }}" class="btn btn-secondary">Volver</a>
+                <div class="d-flex justify-content-between mb-3">
+                    <a href="{{route("formatoproductos.index")}}" class="btn btn-secondary">Volver</a>
+                    <div class="d-flex gap-2">
+                        <a href="{{route("formatoproductos.edit", $formatoproducto)}}" class="btn btn-warning">Editar</a>
+                        <form action="{{route("formatoproductos.destroy", $formatoproducto)}}" method="post">
+                            @csrf
+                            @method("delete")
+                            <button type="submit" class="btn btn-danger">Borrar</button>
+                        </form>
+                    </div>
+                </div>
                 <h1>Ver detalles de producto | </h1>
                 <form action="{{ route('formatoproductos.store') }}" method="post" class="row mt-2"
                     enctype="multipart/form-data">
