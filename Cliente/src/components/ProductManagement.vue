@@ -5,7 +5,7 @@
       <h1 class="mb-4">Lista de Productos</h1>
       <!-- Mensaje mientras cargan los datos -->
       <div v-if="cargando" class="alert alert-info">
-        <p class="mb-0">Cargando datos de pedidos...</p>
+        <p class="mb-0">Cargando datos de los productos...</p>
       </div>
       <div v-else>
         <div v-if="productos.length > 0" class="table-responsive">
