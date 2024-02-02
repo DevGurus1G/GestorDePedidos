@@ -3,44 +3,50 @@
   <div class="row mt-4">
     <div :class="{ 'col-xl-6': pedido.length > 0, 'col-12': pedido.length === 0 }">
       <h1 class="mb-4">Lista de Productos</h1>
-      <div v-if="productos.length > 0" class="table-responsive">
-        <table class="table table-hover table-bordered table-striped text-center align-middle">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col">Nombre producto</th>
-              <th scope="col">Categoria</th>
-              <th scope="col">Precio</th>
-              <th scope="col">Formato</th>
-              <th scope="col">Fotos</th>
-              <th scope="col">Cantidad</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="productoInd in productos" :key="productoInd.id">
-              <td>{{ productoInd.producto.nombre }}</td>
-              <td>{{ productoInd.producto.categoria.nombre }}</td>
-              <td>{{ productoInd.precio }}€</td>
-              <td>{{ productoInd.formato.tipo }}</td>
-              <td>
-                <div>
-                  <img v-if="productoInd.imagenes.length > 0" :src="'data:image/png;base64,' + productoInd.imagenes[0]"
-                    alt="Imagen" height="100" width="100" />
-                  <span v-else>No hay imagen disponible</span>
-                </div>
-              </td>
-              <td>
-                <input type="number" v-model="productoInd.cantidad" min="0" step="1" class="form-control" />
-              </td>
-              <td>
-                <button @click="anadirAlPedido(productoInd)" class="btn btn-primary">Añadir al Pedido</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- Mensaje mientras cargan los datos -->
+      <div v-if="cargando" class="alert alert-info">
+        <p class="mb-0">Cargando datos de pedidos...</p>
       </div>
-      <div v-else class="alert alert-warning">
-        <p class="mb-0">Actualmente no hay productos disponibles</p>
+      <div v-else>
+        <div v-if="productos.length > 0" class="table-responsive">
+          <table class="table table-hover table-bordered table-striped text-center align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">Nombre producto</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Formato</th>
+                <th scope="col">Fotos</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="productoInd in productos" :key="productoInd.id">
+                <td>{{ productoInd.producto.nombre }}</td>
+                <td>{{ productoInd.producto.categoria.nombre }}</td>
+                <td>{{ productoInd.precio }}€</td>
+                <td>{{ productoInd.formato.tipo }}</td>
+                <td>
+                  <div>
+                    <img v-if="productoInd.imagenes.length > 0" :src="'data:image/png;base64,' + productoInd.imagenes[0]"
+                      alt="Imagen" height="100" width="100" />
+                    <span v-else>No hay imagen disponible</span>
+                  </div>
+                </td>
+                <td>
+                  <input type="number" v-model="productoInd.cantidad" min="0" step="1" class="form-control" />
+                </td>
+                <td>
+                  <button @click="anadirAlPedido(productoInd)" class="btn btn-primary">Añadir al Pedido</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-else class="alert alert-warning">
+          <p class="mb-0">Actualmente no hay productos disponibles</p>
+        </div>
       </div>
     </div>
 
@@ -84,6 +90,7 @@ export default {
       isAuthenticated: this.autenticacion(),
       productos: [],
       pedido: [],
+      cargando: true, // Para el pequeño intervalo que cargan los datos
     };
   },
   methods: {
@@ -102,6 +109,8 @@ export default {
         }
       } catch (error) {
         console.error('Error en la solicitud para obtener productos:', error);
+      } finally {
+        this.cargando = false; // Indicamos que la carga ha finalizado
       }
     },
     autenticacion() {

@@ -6,7 +6,9 @@
       <div v-if="actualizado" class="alert alert-success" role="alert">
         ¡Actualización del cliente realizada correctamente!
       </div>
-      <div v-if="cargando">Cargando datos del usuario...</div>
+      <div v-if="cargando" class="alert alert-info">
+        <p class="mb-0">Cargando datos de del usuario...</p>
+      </div>
       <form v-else @submit.prevent="updateCliente">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
@@ -42,7 +44,7 @@ export default {
         nombre: '',
         servidor: '',
       },
-      cargando: true, // Agregamos la bandera de carga
+      cargando: true, // Para el pequeño intervalo que cargan los datos
     };
   },
   mounted() {
