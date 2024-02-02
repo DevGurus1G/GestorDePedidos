@@ -2,21 +2,21 @@
   <div class="row mt-4">
     <div class="col">
       <h1 class="mb-4">Lista de Pedidos</h1>
-      <!-- Campo de búsqueda -->
-      <div class="mb-3">
-        <label for="buscar" class="form-label">Buscar Pedido</label>
-        <input v-model="busqueda" @input="filtrarPedidos" type="text" class="form-control" id="buscar">
-      </div>
+
       <!-- Mensaje mientras cargan los datos -->
       <div v-if="cargando" class="alert alert-info">
         <p class="mb-0">Cargando datos de pedidos...</p>
       </div>
       <div v-else>
         <div v-if="pedidosFiltrados.length > 0" class="table-responsive">
+          <!-- Campo de búsqueda -->
+          <div class="mb-3">
+            <label for="buscar" class="form-label">Buscar Pedido</label>
+            <input v-model="busqueda" @input="filtrarPedidos" type="text" class="form-control" id="buscar">
+          </div>
           <table class="table table-hover table-bordered table-striped text-center align-middle">
             <thead class="table-dark">
               <tr>
-                <th scope="col">ID Pedido</th>
                 <th scope="col">Fecha</th>
                 <th scope="col">Estado</th>
                 <th scope="col">Productos del pedido</th>
@@ -25,7 +25,6 @@
             </thead>
             <tbody>
               <tr v-for="pedido in pedidosFiltrados" :key="pedido.id_pedido">
-                <td>{{ pedido.id_pedido }}</td>
                 <td>{{ pedido.fecha }}</td>
                 <td>{{ pedido.estado }}</td>
                 <td>
