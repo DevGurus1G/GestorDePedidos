@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     autenticacion() {
-      return localStorage.getItem('autenticado');
+      return sessionStorage.getItem('autenticado');
     },
   },
 };

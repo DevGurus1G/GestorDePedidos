@@ -102,7 +102,7 @@ export default {
       }
     },
     autenticacion() {
-      return localStorage.getItem('autenticado');
+      return sessionStorage.getItem('autenticado');
     },
     anadirAlPedido(producto) {
       if (producto.cantidad > 0) {
@@ -143,7 +143,7 @@ export default {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            cliente: localStorage.getItem('codigo'),
+            cliente: sessionStorage.getItem('codigo'),
             productos: this.pedido.map(item => ({
               formato_productos: item.formato_productos,
               cantidad: item.cantidad,

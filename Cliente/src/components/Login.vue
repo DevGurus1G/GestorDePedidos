@@ -29,8 +29,8 @@ export default {
 
         if (data.success) {
           console.log("Autenticación exitosa");
-          localStorage.setItem('autenticado', true);
-          localStorage.setItem('codigo', data.cliente.codigo_acceso);
+          sessionStorage.setItem('autenticado', true);
+          sessionStorage.setItem('codigo', data.cliente.codigo_acceso);
           this.$router.push({ name: "inicio" });
         } else {
           this.loginError = data.message;

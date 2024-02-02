@@ -47,7 +47,7 @@ export default {
   methods: {
     async getCliente() {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/cliente/' + localStorage.getItem("codigo"));
+        const response = await fetch('http://127.0.0.1:8000/api/cliente/' + sessionStorage.getItem("codigo"));
         const data = await response.json();
 
         if (data.success) {
@@ -63,7 +63,7 @@ export default {
 
     async updateCliente() {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/cliente/update/' + localStorage.getItem("codigo"), {
+        const response = await fetch('http://127.0.0.1:8000/api/cliente/update/' + sessionStorage.getItem("codigo"), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ export default {
       }
     },
     autenticacion() {
-      return localStorage.getItem('autenticado');
+      return sessionStorage.getItem('autenticado');
     },
   },
 };

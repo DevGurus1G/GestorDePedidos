@@ -21,7 +21,7 @@ router.beforeEach((to, from, next) => {
 // Función de ejemplo para verificar la autenticación
 function isAuthenticated() {
   // Implementa la lógica de autenticación, en este caso el true de localstorage
-  return localStorage.getItem('autenticado');
+  return sessionStorage.getItem('autenticado');
 }
 
 app.use(router).mount('#app');

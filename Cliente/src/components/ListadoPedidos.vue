@@ -70,7 +70,7 @@ export default {
   methods: {
     async loadPedidos() {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/pedidos/' + localStorage.getItem('codigo'));
+        const response = await fetch('http://127.0.0.1:8000/api/pedidos/' + sessionStorage.getItem('codigo'));
         const datos = await response.json();
 
         if (datos.success) {
@@ -86,7 +86,7 @@ export default {
       }
     },
     autenticacion() {
-      return localStorage.getItem('autenticado');
+      return sessionStorage.getItem('autenticado');
     },
     calcularPrecioTotal(pedido) {
       let total = 0;

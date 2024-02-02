@@ -59,13 +59,13 @@ export default {
     methods: {
         logout() {
             console.log("Sesión cerrada");
-            //Borra el local storage y redirige a inicio
-            localStorage.removeItem('autenticado');
-            localStorage.removeItem('codigo');
+            //Borra la sesion storage y redirige a inicio
+            sessionStorage.removeItem('autenticado');
+            sessionStorage.removeItem('codigo');
             this.$router.push({ name: "login" });
         },
         autenticacion() {
-            return localStorage.getItem('autenticado');
+            return sessionStorage.getItem('autenticado');
         },
     },
 };
