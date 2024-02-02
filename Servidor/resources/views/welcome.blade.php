@@ -33,7 +33,7 @@
 
 
             .area{
-                background: #4e54c8;  
+                background: beige;  
                 background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);  
                 width: 100%;
                 height:100vh;
@@ -56,7 +56,7 @@
                 list-style: none;
                 width: 20px;
                 height: 20px;
-                background: rgba(255, 255, 255, 0.2);
+                background: rgba(25, 24, 24, 0.2);
                 animation: animate 25s linear infinite;
                 bottom: -150px;
                 
@@ -158,7 +158,7 @@
         </style>
     </head>
     <body>
-        <div class="container-fluid g-0 overflow-hidden" style="background-color: #4e54c8">
+        <div class="container-fluid g-0 overflow-hidden" style="background-color: beige">
             <div class="row">
                 <div class="d-none d-lg-block  col-lg-6">
                     <img src="{{ url('img/foto_carousel_2.jfif') }}" class="object-fit-cover vh-100 rounded-end-5 w-100">
