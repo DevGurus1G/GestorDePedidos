@@ -130,6 +130,7 @@ export default {
           this.cliente.dni = "";
           this.cliente.calle = "";
           this.cliente.email = "";
+          this.errores.servidor = '';
         } else {
           this.errores.servidor = 'Error al crear el cliente: ' + data.message;
         }

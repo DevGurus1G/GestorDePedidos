@@ -6,8 +6,6 @@
 
 @section('content')
 
-<div class="col-12">
-    <div class="row" >
         <div class="col-12 form-floating mb-3 mt-3 mx-auto" style="max-width: 50%;">
             <h3>Crear Pedido</h3>
             <form method="POST" action="{{ route('pedidos.store')}}">
@@ -104,9 +102,15 @@
                         </div>
                     </div>
                 </div>
+                @if (isset($pedido))
+                    <div class="col-12 mt-2">
+                        <h2>Productos en el pedido</h2>
+                        @foreach ($pedido->pedidoformatoproducto as $pedidoformatoproducto)
+                            <p>{{$pedidoformatoproducto->formatoproducto->producto->nombre}} - {{$pedidoformatoproducto->formatoproducto->formato->tipo}} x {{$pedidoformatoproducto->cantidad}}</p>
+                        @endforeach
+                    </div>
+                    @endif
             </form>
         </div>
-    </div>
-</div>
 
 @endsection

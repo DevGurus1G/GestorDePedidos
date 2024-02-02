@@ -4,14 +4,14 @@
 @endsection
 
 @section('content')
-<div class="col-12 col-lg-9 min-h-100">
-    <div class="row">
-        <div class="col-12" id="bienvenida">
-            <div class="card mt-3 min-h-100">
+<div class="col-12 col-lg-9 min-h-100 mb-3">
+    
+        <div id="bienvenida" style="height: 100%">
+            <div class="card mt-3 h-100">
                 <div class="card-header d-flex justify-content-center align-items-center">
                     <h3><strong>Bienvenido {{Auth::user()->name}}, esta es la web de Gestión de Killer</strong></h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body h-100">
                   <p>Este panel esta diseñado para realizar todas las tareas correspondientes a tu rol de {{ Auth::user()->rol}}. 
                     Podras realizar todo tipo de gestión sobre la base de datos que se te tenga permitida, 
                     asi como consultas y seguimiento de las diferentes caracteristicas a las que se te haya autorizado. <br>
@@ -20,109 +20,7 @@
                 </div>
             </div>
         </div>
-        {{-- <div class="d-none d-lg-block col-lg-3" id="HoraMadrid">
-            <div class="card mt-3 text-center mx-auto">
-                <div class="card-header d-flex justify-content-center align-items-center">
-                    <h3><strong>Madrid</strong></h3>
-                </div>
-                    <div class="card-body">
-                        <hr>
-                        <div id="horaLocal" class="text-bold" style="font-size: 2em"></div>
-                        <hr>
-                    <script>
-                        function mostrarHoraLocal() {
-
-                            var fechaHora = new Date();
-
-                            var hora = fechaHora.toLocaleTimeString();
-                        
-                            document.getElementById("horaLocal").innerText = hora;
-                        }
-                    
-                        mostrarHoraLocal();
-                    
-                        setInterval(mostrarHoraLocal, 1000);
-                    </script>
-                </div>
-            </div>
-        </div>
-        <div class="d-none d-lg-block col-lg-3" id="HoraLondres">
-            <div class="card mt-3 text-center mx-auto">
-                <div class="card-header d-flex justify-content-center align-items-center">
-                    <h3><strong>Londres</strong></h3>
-                </div>
-                <div class="card-body">
-                    <hr>
-                    <div id="horaLondres" class="text-bold" style="font-size: 2em"></div>
-                    <hr>
-                    <script>
-                        function mostrarHoraLondres() {
-                            var horaLondres = new Date().toLocaleTimeString('en-US', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-        
-                            document.getElementById("horaLondres").innerText = horaLondres;
-                        }
-        
-                        mostrarHoraLondres();
-        
-                        setInterval(mostrarHoraLondres, 1000);
-                    </script>
-                </div>
-            </div>
-        </div>
-        <div class="d-none d-lg-block col-lg-3" id="HoraJapon">
-            <div class="card mt-3 text-center mx-auto">
-                <div class="card-header d-flex justify-content-center align-items-center">
-                    <h3><strong>Japón</strong></h3>
-                </div>
-                <div class="card-body">
-                    <hr>
-                    <div id="horaJapon" class="text-bold" style="font-size: 2em"></div>
-                    <hr>
-                    
-                    <script>
-                        // Función para obtener y actualizar solo la hora local de Japón
-                        function mostrarHoraJapon() {
-                            // Obtener la hora actual en Japón (zona horaria GMT+9)
-                            var horaJapon = new Date().toLocaleTimeString('ja-JP', { timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-        
-                            // Mostrar solo la hora de Japón en el elemento con el ID "horaJapon"
-                            document.getElementById("horaJapon").innerText = horaJapon;
-                        }
-        
-                        // Llamar a la función inicialmente
-                        mostrarHoraJapon();
-        
-                        // Actualizar la hora cada segundo (1000 milisegundos)
-                        setInterval(mostrarHoraJapon, 1000);
-                    </script>
-                </div>
-            </div>
-        </div>
-        <div class="d-none d-lg-block col-lg-3" id="HoraEstadosUnidos">
-            <div class="card mt-3 text-center mx-auto">
-                <div class="card-header d-flex justify-content-center align-items-center">
-                    <h3><strong>USA</strong></h3>
-                </div>
-                <div class="card-body">
-                    <hr>
-                    <div id="horaEstadosUnidos" class="text-bold" style="font-size: 2em"></div>
-                    <hr>
-                    <script>
-                        function mostrarHoraEstadosUnidos() {
-
-                            var horaEstadosUnidos = new Date().toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-        
-                            document.getElementById("horaEstadosUnidos").innerText = horaEstadosUnidos;
-                        }
-        
-                        mostrarHoraEstadosUnidos();
-        
-                        setInterval(mostrarHoraEstadosUnidos, 1000);
-                    </script>
-                </div>
-            </div>
-        </div> --}}
-    </div>
+    
 </div>
 <div class="d-none d-lg-block col-lg-3" id="viajeRapido">
     <div class="card mt-3 text-center mx-auto">

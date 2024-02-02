@@ -3,41 +3,71 @@
   <div class="row mt-4">
     <div :class="{ 'col-xl-6': pedido.length > 0, 'col-12': pedido.length === 0 }">
       <h1 class="mb-4">Lista de Productos</h1>
-      <div class="table-responsive">
-        <table class="table table-hover table-bordered table-striped text-center align-middle">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col">Nombre producto</th>
-              <th scope="col">Categoria</th>
-              <th scope="col">Precio</th>
-              <th scope="col">Formato</th>
-              <th scope="col">Fotos</th>
-              <th scope="col">Cantidad</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="productoInd in productos" :key="productoInd.id">
-              <td>{{ productoInd.producto.nombre }}</td>
-              <td>{{ productoInd.producto.categoria.nombre }}</td>
-              <td>{{ productoInd.precio }}€</td>
-              <td>{{ productoInd.formato.tipo }}</td>
-              <td>
-                <div>
-                  <img v-if="productoInd.imagenes.length > 0" :src="'data:image/png;base64,' + productoInd.imagenes[0]"
-                    alt="Imagen" height="100" width="100" />
-                  <span v-else>No hay imagen disponible</span>
-                </div>
-              </td>
-              <td>
-                <input type="number" v-model="productoInd.cantidad" min="0" step="1" class="form-control" />
-              </td>
-              <td>
-                <button @click="anadirAlPedido(productoInd)" class="btn btn-primary">Añadir al Pedido</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- Campo de búsqueda -->
+      <div class="mb-3">
+        <label for="buscar" class="form-label">Buscar Producto</label>
+        <input v-model="busqueda" @input="filtrarProductos" type="text" class="form-control" id="buscar">
+      </div>
+      <!-- Mensaje mientras cargan los datos -->
+      <div v-if="cargando" class="alert alert-info">
+        <p class="mb-0">Cargando datos de los productos...</p>
+      </div>
+      <div v-else>
+        <div v-if="productosFiltrados.length > 0" class="table-responsive">
+          <table class="table table-hover table-bordered table-striped text-center align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col" @click="ordenar('nombre')">
+                  Nombre producto
+                  <span v-if="orden === 'asc:nombre'">↑</span>
+                  <span v-if="orden === 'desc:nombre'">↓</span>
+                </th>
+                <th scope="col" @click="ordenar('categoria')">
+                  Categoria
+                  <span v-if="orden === 'asc:categoria'">↑</span>
+                  <span v-if="orden === 'desc:categoria'">↓</span>
+                </th>
+                <th scope="col" @click="ordenar('precio')">
+                  Precio
+                  <span v-if="orden === 'asc:precio'">↑</span>
+                  <span v-if="orden === 'desc:precio'">↓</span>
+                </th>
+                <th scope="col" @click="ordenar('formato')">
+                  Formato
+                  <span v-if="orden === 'asc:formato'">↑</span>
+                  <span v-if="orden === 'desc:formato'">↓</span>
+                </th>
+                <th scope="col">Fotos</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="productoInd in productosFiltrados" :key="productoInd.id">
+                <td>{{ productoInd.producto.nombre }}</td>
+                <td>{{ productoInd.producto.categoria.nombre }}</td>
+                <td>{{ productoInd.precio }}€</td>
+                <td>{{ productoInd.formato.tipo }}</td>
+                <td>
+                  <div>
+                    <img v-if="productoInd.imagenes.length > 0" :src="'data:image/png;base64,' + productoInd.imagenes[0]"
+                      alt="Imagen" height="100" width="100" />
+                    <span v-else>No hay imagen disponible</span>
+                  </div>
+                </td>
+                <td>
+                  <input type="number" v-model="productoInd.cantidad" min="0" step="1" class="form-control" />
+                </td>
+                <td>
+                  <button @click="anadirAlPedido(productoInd)" class="btn btn-primary">Añadir al Pedido</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-else class="alert alert-warning">
+          <p class="mb-0">No hay productos disponibles con el criterio de búsqueda.</p>
+        </div>
       </div>
     </div>
 
@@ -80,10 +110,43 @@ export default {
     return {
       isAuthenticated: this.autenticacion(),
       productos: [],
+      productosFiltrados: [],
       pedido: [],
+      cargando: true,
+      busqueda: '',
+      orden: null,
     };
   },
   methods: {
+    ordenar(columna) {
+      if (this.orden && this.orden.includes(columna)) {
+        // Cambiar el tipo de orden si ya está ordenado por la misma columna
+        this.orden = this.orden.startsWith('asc') ? `desc:${columna}` : `asc:${columna}`;
+      } else {
+        // Ordenar de forma ascendente por defecto
+        this.orden = `asc:${columna}`;
+      }
+
+      // Volver a aplicar el filtrado y ordenamiento
+      this.filtrarProductos();
+    },
+
+    obtenerValorOrdenamiento(item, columna) {
+      // Manejar el ordenamiento según la columna
+      switch (columna) {
+        case 'nombre':
+          return item.producto.nombre.toLowerCase();
+        case 'categoria':
+          return item.producto.categoria.nombre.toLowerCase();
+        case 'precio':
+          return item.precio;
+        case 'formato':
+          return item.formato.tipo.toLowerCase();
+        default:
+          return '';
+      }
+    },
+
     async loadProducts() {
       try {
         const response = await fetch('http://127.0.0.1:8000/api/productos');
@@ -94,11 +157,14 @@ export default {
             producto.cantidad = 0;
             return producto;
           });
+          this.filtrarProductos(); // Filtrar productos al cargarlos
         } else {
           console.error('Error al obtener productos:', datos.message);
         }
       } catch (error) {
         console.error('Error en la solicitud para obtener productos:', error);
+      } finally {
+        this.cargando = false; // Indicamos que la carga ha finalizado
       }
     },
     autenticacion() {
@@ -163,11 +229,42 @@ export default {
         console.error('Error en la solicitud para enviar el pedido:', error);
       }
     },
+    filtrarProductos() {
+      const busquedaMinusculas = this.busqueda.toLowerCase().trim();
+
+      this.productosFiltrados = this.productos.filter(producto => {
+        return (
+          producto.producto.nombre.toLowerCase().includes(busquedaMinusculas) ||
+          producto.producto.categoria.nombre.toLowerCase().includes(busquedaMinusculas) ||
+          producto.precio.toString().includes(busquedaMinusculas) ||
+          producto.formato.tipo.toLowerCase().includes(busquedaMinusculas)
+        );
+      });
+
+      // Aplicar ordenamiento
+      if (this.orden) {
+        const [orden, columna] = this.orden.split(':');
+        const ordenMultiplier = orden === 'asc' ? 1 : -1;
+
+        this.productosFiltrados.sort((a, b) => {
+          const valorA = this.obtenerValorOrdenamiento(a, columna);
+          const valorB = this.obtenerValorOrdenamiento(b, columna);
+
+          return valorA > valorB ? 1 * ordenMultiplier : valorA < valorB ? -1 * ordenMultiplier : 0;
+        });
+      }
+    },
+  },
+  watch: {
+    busqueda() {
+      this.filtrarProductos();
+    },
   },
   mounted() {
     this.loadProducts();
   },
 };
 </script>
+
 
 <style scoped></style>
