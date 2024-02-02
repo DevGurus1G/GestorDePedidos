@@ -145,7 +145,7 @@ export default {
           body: JSON.stringify({
             cliente: localStorage.getItem('codigo'),
             productos: this.pedido.map(item => ({
-              formato_productos: item.producto_id,
+              formato_productos: item.formato_productos,
               cantidad: item.cantidad,
             })),
           }),

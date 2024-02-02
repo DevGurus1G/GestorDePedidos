@@ -41,7 +41,7 @@
                             @else
                             <option value="solicitado">Solicitado</option>
                         @endif
-                        @if ($pedido->estado == 'en_preparación')
+                        @if ($pedido->estado == 'en_preparacion')
                             <option value="en_preparacion" selected>En Preparación</option>
                             @else
                             <option value="en_preparacion">En Preparación</option>
