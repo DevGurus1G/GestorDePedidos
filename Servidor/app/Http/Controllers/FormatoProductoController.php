@@ -115,9 +115,31 @@ class FormatoProductoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, FormatoProducto $formatoproducto)
     {
         //
+        $validated = $request->validate([
+            "producto_id" => "required|exists:productos,id",
+            "formato_id" => "required|exists:formatos,id",
+            "precio" => "required|numeric",
+        ]);
+        if ($request->input("disponibilidad") == true) {
+            $formatoprod = [
+                'producto_id' => $request->input("producto_id"),
+                'formato_id' => $request->input("formato_id"),
+                'precio' => $request->input('precio'),
+                'disponibilidad' => $request->input('disponibilidad')
+            ];
+        } else {
+            $formatoprod = [
+                'producto_id' => $request->input("producto_id"),
+                'formato_id' => $request->input("formato_id"),
+                'precio' => $request->input('precio'),
+                'disponibilidad' => false
+            ];
+        }
+        $formatoproducto->update($formatoprod);
+        return redirect()->back()->with("success", "Producto actualizado correctamente");
     }
 
     /**

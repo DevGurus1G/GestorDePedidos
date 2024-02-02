@@ -1,7 +1,7 @@
 @section("nav")
 <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src="{{url("img/logo_empresa.png")}}" class="rounded-circle " width="48" height="48" alt=""></a>
+        <a class="navbar-brand" href="{{ route('home') }}"><img src="{{url("img/logo_empresa.png")}}" class="rounded-circle " width="48" height="48" alt=""></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -161,6 +161,27 @@
                 @endcan
 
             </ul>
+            <div class="nav item ">
+                <hr>
+                <div id="horaNavBar" style="font-size: 1.5em; color:white"></div>
+                <hr>
+                <script>
+                    function mostrarHoraLocal() {
+                        var fechaHora = new Date();
+            
+                        // Formato sin segundos
+                        var opcionesDeFormato = { hour: 'numeric', minute: 'numeric' };
+                        var hora = fechaHora.toLocaleTimeString(undefined, opcionesDeFormato);
+                    
+                        document.getElementById("horaNavBar").innerText = hora;
+                    }
+                
+                    mostrarHoraLocal();
+                
+                    setInterval(mostrarHoraLocal, 1000);
+                </script>
+            </div>
+            
             <div class="nav item dropdown">
                 <a class="nav-link text-white dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {{Auth::user()->name}}

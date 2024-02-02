@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="d-none d-lg-block col-lg-3" id="HoraMadrid">
+        {{-- <div class="d-none d-lg-block col-lg-3" id="HoraMadrid">
             <div class="card mt-3 text-center mx-auto">
                 <div class="card-header d-flex justify-content-center align-items-center">
                     <h3><strong>Madrid</strong></h3>
@@ -121,7 +121,7 @@
                     </script>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 <div class="d-none d-lg-block col-lg-3" id="viajeRapido">
@@ -466,10 +466,10 @@
         @break
     @case('responsable')
         <div class="row mb-3">
-            <div class="col-12 d-lg-block col-lg-4" id="PedidoProducto">
+            <div class="col-12 d-lg-block col-lg-4" id="ProductoPedido">
                 <div class="card mt-3 text-center mx-auto">
                     <div class="card-header d-flex justify-content-center align-items-center">
-                        <h3><strong>Pedido - Producto</strong></h3>
+                        <h3><strong>Producto - Pedido</strong></h3>
                     </div>
                     <div class="card-body d-flex justify-content-center align-items-center">
                         
