@@ -11,7 +11,8 @@ class Cliente extends Model
     protected $fillable = [
         "nombre",
         "codigo_acceso",
-        "dni"
+        "dni",
+        "calle"
     ];
     public function pedidos()
     {
