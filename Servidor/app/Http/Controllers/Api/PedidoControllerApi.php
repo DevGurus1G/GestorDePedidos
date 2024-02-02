@@ -63,7 +63,6 @@ class PedidoControllerApi extends Controller
                 ]);
             }
 
-
             return response()->json(['success' => true, 'message' => "Creado correctamente"]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => "Error al crear"]);
