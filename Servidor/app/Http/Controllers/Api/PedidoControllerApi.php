@@ -34,17 +34,16 @@ class PedidoControllerApi extends Controller
     {
         try {
             //Validacion
-            // $validated = $request->validate([
-            //     'formato_productos' => 'required',
-            //     'cliente' => 'required',
-            //     'cantidad' => 'required',
-            // ]);
+            $validated = $request->validate([
+                'productos' => 'required',
+                'cliente' => 'required',
+            ]);
 
 
             $estado = 'solicitado';
 
             // Obtener el cliente por código
-            $cliente = Cliente::where('codigo_acceso', $request["cliente"])->firstOrFail();
+            $cliente = Cliente::where('codigo_acceso', $validated["cliente"])->firstOrFail();
 
 
             //Crear el pedido
@@ -55,7 +54,7 @@ class PedidoControllerApi extends Controller
             ]);
 
             // Crear los PedidoFormatoProducto, bucle porque pueden ser varios productos para el mismo pedido
-            foreach ($request["productos"] as $prod) {
+            foreach ($validated["productos"] as $prod) {
                 PedidoFormatoProducto::create([
                     "pedido_id" => $pedido->id,
                     "formato_producto_id" => $prod["formato_productos"],
@@ -65,7 +64,7 @@ class PedidoControllerApi extends Controller
 
             return response()->json(['success' => true, 'message' => "Creado correctamente"]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => "Error al crear"]);
+            return response()->json(['success' => false, 'message' => "Error al crear" . $e->getMessage()]);
         }
     }
 
