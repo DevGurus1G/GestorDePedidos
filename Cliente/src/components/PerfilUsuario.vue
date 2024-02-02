@@ -6,10 +6,12 @@
       <div v-if="actualizado" class="alert alert-success" role="alert">
         ¡Actualización del cliente realizada correctamente!
       </div>
-      <form @submit.prevent="updateCliente" v-if="Object.keys(usuario).length > 0">
+      <div v-if="cargando">Cargando datos del usuario...</div>
+      <form v-else @submit.prevent="updateCliente">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
-          <input v-model="usuario.nombre" type="text" class="form-control" id="nombre">
+          <input v-model="usuario.nombre" @input="limpiarErrores('nombre')" type="text" class="form-control" id="nombre">
+          <div v-if="errores.nombre" class="text-danger">{{ errores.nombre }}</div>
         </div>
         <div class="mb-3">
           <label for="codigo" class="form-label">Codigo</label>
@@ -24,45 +26,70 @@
         </div>
         <button type="submit" class="btn btn-primary">Actualizar</button>
       </form>
-      <div v-else>
-        <p>Ha habido algún error con su código, póngase en contacto con un administrador</p>
-      </div>
+      <div v-if="errores.servidor" class="text-danger">{{ errores.servidor }}</div>
     </div>
   </div>
 </template>
-  
+
 <script>
 export default {
   data() {
     return {
-      // Se llama a la función para saber si ese usuario está logeado
       isAuthenticated: this.autenticacion(),
       usuario: {},
       actualizado: false,
+      errores: {
+        nombre: '',
+        servidor: '',
+      },
+      cargando: true, // Agregamos la bandera de carga
     };
   },
   mounted() {
     this.getCliente();
   },
   methods: {
+    limpiarErrores(campo) {
+      this.errores[campo] = '';
+      this.errores.servidor = '';
+      this.actualizado = false;
+    },
+
+    validarNombre() {
+      const nombreRegex = /^[A-Z][a-zA-Záéíóúüñ\s']*$/;
+      if (!nombreRegex.test(this.usuario.nombre.trim())) {
+        this.errores.nombre = 'Por favor, ingrese un nombre válido que comience con mayúscula o después de un espacio en blanco.';
+        return false;
+      }
+      this.errores.nombre = '';
+      return true;
+    },
+
     async getCliente() {
       try {
         const response = await fetch('http://127.0.0.1:8000/api/cliente/' + sessionStorage.getItem("codigo"));
         const data = await response.json();
 
         if (data.success) {
-          // Actualiza el objeto usuario con los datos del servidor
           this.usuario = data.cliente;
         } else {
           console.error('Error al obtener el usuario:', data.message);
+          this.errores.servidor = 'Error al obtener el usuario: ' + data.message;
         }
       } catch (error) {
         console.error('Error en la solicitud para obtener el usuario:', error);
+        this.errores.servidor = 'Error en la solicitud para obtener el usuario.';
+      } finally {
+        this.cargando = false; // Indicamos que la carga ha finalizado
       }
     },
 
     async updateCliente() {
       try {
+        if (!this.validarNombre()) {
+          return;
+        }
+
         const response = await fetch('http://127.0.0.1:8000/api/cliente/update/' + sessionStorage.getItem("codigo"), {
           method: 'POST',
           headers: {
@@ -76,14 +103,15 @@ export default {
         const data = await response.json();
 
         if (data.success) {
-          console.log("Cliente actualizado con éxito");
           this.actualizado = true;
-          this.$router.push({ name: 'perfil-usuario' })
+          setTimeout(() => {
+            this.limpiarErrores();
+          }, 2000);
         } else {
-          console.error('Error al actualizar el cliente:', data.message);
+          this.errores.servidor = 'Error al actualizar el cliente: ' + data.message;
         }
       } catch (error) {
-        console.error('Error en la solicitud para actualizar el cliente:', error);
+        this.errores.servidor = 'Error en la solicitud para actualizar el cliente.';
       }
     },
     autenticacion() {
@@ -92,7 +120,7 @@ export default {
   },
 };
 </script>
-  
+
 <style scoped>
 /* Estilos específicos del componente, si es necesario */
 </style>

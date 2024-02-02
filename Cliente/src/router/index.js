@@ -5,6 +5,7 @@ import ListadoPedidos from '@/components/ListadoPedidos.vue';
 import PerfilUsuario from '@/components/PerfilUsuario.vue';
 import Inicio from '@/components/Inicio.vue';
 import RecuperarUsuario from '@/components/RecuperarUsuario.vue';
+import Contacto from '@/components/Contacto.vue';
 
 
 const routes = [
@@ -42,6 +43,12 @@ const routes = [
     path: '/recuperar',
     name: 'recuperar',
     component: RecuperarUsuario,
+  },
+  {
+    path: '/contacto',
+    name: 'contacto',
+    component: Contacto,
+    meta: { showFooter: true, showNav: true },
   },
 ];
 

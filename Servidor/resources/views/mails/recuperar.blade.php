@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,14 +18,17 @@
         align-items: center;
         padding: 1em;
     }
+
     .header img {
         height: 80px;
         width: 80px;
         border-radius: 50%;
     }
+
     p {
         font-family: Arial, Helvetica, sans-serif
     }
+
     p span {
         padding: .25em;
         border-radius: .125em;
@@ -32,6 +36,7 @@
         color: #ececec
     }
 </style>
+
 <body>
     <div class="header">
         <img src="{{ url('img/logo_empresa.png') }}" alt="logo">
@@ -39,4 +44,5 @@
     </div>
     <p>Su clave de acceso es <span>{{ $cliente->codigo_acceso }}</span></p>
 </body>
+
 </html>

@@ -2,7 +2,7 @@
   <div class="row mt-4">
     <div class="col">
       <h1 class="mb-4">Lista de Pedidos</h1>
-      <div class="table-responsive">
+      <div v-if="pedidos.length > 0" class="table-responsive">
         <table class="table table-hover table-bordered table-striped text-center align-middle">
           <thead class="table-dark">
             <tr>
@@ -51,6 +51,9 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div v-else class="alert alert-warning">
+        <p class="mb-0">Este cliente no ha realizado ningún pedido aún.</p>
       </div>
     </div>
   </div>

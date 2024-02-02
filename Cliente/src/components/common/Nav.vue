@@ -5,7 +5,11 @@
             <!-- NAVBAR ================================================== -->
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
-                    <router-link to="/" class="navbar-brand">Killer</router-link>
+                    <router-link to="/" class="navbar-brand">
+                        <img id="logo" src="../../assets/img/logo_empresa.png" class="img-thumbnai" alt="Patatas de
+                        la marca killer">
+                        Killer
+                    </router-link>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -23,6 +27,9 @@
                             <li class="nav-item">
                                 <router-link to="/perfil-usuario" class=" nav-link">Perfil de usuario</router-link>
                             </li>
+                            <li class="nav-item ">
+                                <router-link to="/contacto" class="nav-link">¿Quieres trabajar con nosotros?</router-link>
+                            </li>
                             <li class="nav-item">
                                 <button @click="logout" class="nav-link" type="button">Cerrar
                                     Sesión</button>
@@ -35,6 +42,9 @@
                         <ul class="navbar-nav">
                             <li class="nav-item ">
                                 <router-link to="/login" class="nav-link">Iniciar sesión</router-link>
+                            </li>
+                            <li class="nav-item ">
+                                <router-link to="/contacto" class="nav-link">¿Quieres trabajar con nosotros?</router-link>
                             </li>
                         </ul>
 
@@ -73,5 +83,9 @@ export default {
     
 <style scoped>
 /* Estilos específicos del componente, si es necesario */
+#logo {
+    width: 50px;
+    height: 50px;
+}
 </style>
     
