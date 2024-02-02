@@ -27,7 +27,6 @@
                 @endif
                 <div class="form-floating">
                     <select class="form-select" name="formato_producto_id" aria-label="Floating label select example">
-                        <option selected>Seleccione un Producto</option>
                         @foreach ($formatoproductos as $formatoproducto)
                         <option value="{{ $formatoproducto->id }}">{{ $formatoproducto->producto->nombre}} - {{$formatoproducto->formato->tipo}}</option>
                         @endforeach
@@ -47,12 +46,10 @@
                         <label for="fecha">Fecha de entrega</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <select class="form-select" name="cliente_id" readonly>
+                        <select class="form-select" name="cliente_id" id="cliente_id">
                             @foreach ($clientes as $cliente)
                                 @if ($pedido->cliente->id == $cliente->id)
                                     <option value="{{ $cliente->id }}" selected>{{ $cliente->nombre }}</option>
-                                @else 
-                                    <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
                                 @endif
                             @endforeach
                         </select>
@@ -66,7 +63,6 @@
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select" name="cliente_id">
-                            <option hidden selected>Seleccione un cliente</option>
                             @foreach ($clientes as $cliente)
                                 <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
                             @endforeach

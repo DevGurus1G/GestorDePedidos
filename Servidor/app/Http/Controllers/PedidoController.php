@@ -7,7 +7,7 @@ use App\Models\FormatoProducto;
 use App\Models\Pedido;
 use App\Models\PedidoFormatoProducto;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
@@ -104,11 +104,11 @@ class PedidoController extends Controller
         }
 
         if ($validated["mas_productos"] == "true") {
+            $pedido = Pedido::latest()->first();
             return redirect(route("pedidos.create"))->with("pedido", $pedido);
         } else {
             return redirect(route("pedidos.index"));
         }
-
     }
 
     /**
