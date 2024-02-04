@@ -12,7 +12,13 @@
           <!-- Campo de búsqueda -->
           <div class="mb-3">
             <label for="buscar" class="form-label">Buscar Pedido</label>
-            <input v-model="busqueda" @input="filtrarPedidos" type="text" class="form-control" id="buscar">
+            <input
+              v-model="busqueda"
+              @input="filtrarPedidos"
+              type="text"
+              class="form-control"
+              id="buscar"
+            />
           </div>
           <table class="table table-hover table-bordered table-striped text-center align-middle">
             <thead class="table-dark">
@@ -28,9 +34,14 @@
                 <td>{{ pedido.fecha }}</td>
                 <td>{{ pedido.estado }}</td>
                 <td>
-                  <button class="btn btn-link" type="button" data-bs-toggle="collapse"
-                    :data-bs-target="'#detallesCollapse' + pedido.id_pedido" aria-expanded="false"
-                    aria-controls="detallesCollapse">
+                  <button
+                    class="btn btn-link"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    :data-bs-target="'#detallesCollapse' + pedido.id_pedido"
+                    aria-expanded="false"
+                    aria-controls="detallesCollapse"
+                  >
                     Ver los productos del pedido
                   </button>
                   <div class="collapse" :id="'detallesCollapse' + pedido.id_pedido">
@@ -69,71 +80,75 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      isAuthenticated: this.autenticacion(),
-      pedidos: [],
-      pedidosFiltrados: [],
-      cargando: true,
-      busqueda: '',
-    };
-  },
-  mounted() {
-    this.loadPedidos();
-  },
-  methods: {
-    async loadPedidos() {
-      try {
-        const response = await fetch('http://127.0.0.1:8000/api/pedidos/' + sessionStorage.getItem('codigo'));
-        const datos = await response.json();
+<script setup>
+import { ref, onMounted } from 'vue'
 
-        if (datos.success) {
-          this.pedidos = datos.data.map(pedido => {
-            pedido.precioTotal = this.calcularPrecioTotal(pedido);
-            return pedido;
-          });
-          this.filtrarPedidos(); // Filtrar pedidos al cargarlos
-        } else {
-          console.error('Error al obtener pedidos:', datos.message);
-        }
-      } catch (error) {
-        console.error('Error en la solicitud para obtener pedidos:', error);
-      } finally {
-        this.cargando = false; // Indicamos que la carga ha finalizado
-      }
-    },
-    autenticacion() {
-      return sessionStorage.getItem('autenticado');
-    },
-    calcularPrecioTotal(pedido) {
-      let total = 0;
-      pedido.detalles.forEach(detalle => {
-        total += detalle.precio * detalle.cantidad;
-      });
-      return parseFloat(total.toFixed(2));
-    },
-    filtrarPedidos() {
-      const busquedaMinusculas = this.busqueda.toLowerCase().trim();
+const autenticacion = () => {
+  return sessionStorage.getItem('autenticado')
+}
 
-      this.pedidosFiltrados = this.pedidos.filter(pedido => {
-        return (
-          pedido.id_pedido.toString().includes(busquedaMinusculas) ||
-          pedido.fecha.includes(busquedaMinusculas) ||
-          pedido.estado.toLowerCase().includes(busquedaMinusculas) ||
-          this.productosEnPedido(pedido).toLowerCase().includes(busquedaMinusculas) ||
-          pedido.precioTotal.toString().includes(busquedaMinusculas)
-        );
-      });
-    },
-    productosEnPedido(pedido) {
-      return pedido.detalles
-        .map(detalle => `${detalle.formato || 'N/A'} - ${detalle.producto?.categoria || 'N/A'} - ${detalle.producto?.nombre || 'N/A'} (${detalle.cantidad} unidades)`)
-        .join(', ');
-    },
-  },
-};
+const pedidos = ref([])
+const pedidosFiltrados = ref([])
+const cargando = ref(true)
+const busqueda = ref('')
+
+onMounted(() => {
+  loadPedidos()
+})
+
+const loadPedidos = async () => {
+  try {
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/pedidos/${sessionStorage.getItem('codigo')}`
+    )
+    const datos = await response.json()
+
+    if (datos.success) {
+      pedidos.value = datos.data.map((pedido) => {
+        pedido.precioTotal = calcularPrecioTotal(pedido)
+        return pedido
+      })
+      filtrarPedidos() // Filtrar pedidos al cargarlos
+    } else {
+      console.error('Error al obtener pedidos:', datos.message)
+    }
+  } catch (error) {
+    console.error('Error en la solicitud para obtener pedidos:', error)
+  } finally {
+    cargando.value = false // Indicamos que la carga ha finalizado
+  }
+}
+
+const calcularPrecioTotal = (pedido) => {
+  let total = 0
+  pedido.detalles.forEach((detalle) => {
+    total += detalle.precio * detalle.cantidad
+  })
+  return parseFloat(total.toFixed(2))
+}
+
+const filtrarPedidos = () => {
+  const busquedaMinusculas = busqueda.value.toLowerCase().trim()
+
+  pedidosFiltrados.value = pedidos.value.filter((pedido) => {
+    return (
+      pedido.id_pedido.toString().includes(busquedaMinusculas) ||
+      pedido.fecha.includes(busquedaMinusculas) ||
+      pedido.estado.toLowerCase().includes(busquedaMinusculas) ||
+      productosEnPedido(pedido).toLowerCase().includes(busquedaMinusculas) ||
+      pedido.precioTotal.toString().includes(busquedaMinusculas)
+    )
+  })
+}
+
+const productosEnPedido = (pedido) => {
+  return pedido.detalles
+    .map(
+      (detalle) =>
+        `${detalle.formato || 'N/A'} - ${detalle.producto?.categoria || 'N/A'} - ${detalle.producto?.nombre || 'N/A'} (${detalle.cantidad} unidades)`
+    )
+    .join(', ')
+}
 </script>
 
 <style scoped>

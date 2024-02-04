@@ -12,19 +12,42 @@
       <form v-else @submit.prevent="updateCliente">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
-          <input v-model="usuario.nombre" @input="limpiarErrores('nombre')" type="text" class="form-control" id="nombre">
+          <input
+            v-model="usuario.nombre"
+            @input="limpiarErrores('nombre')"
+            type="text"
+            class="form-control"
+            id="nombre"
+          />
           <div v-if="errores.nombre" class="text-danger">{{ errores.nombre }}</div>
         </div>
         <div class="mb-3">
           <label for="codigo" class="form-label">Codigo</label>
-          <input v-model="usuario.codigo_acceso" type="text" class="form-control" id="codigo" readonly>
-          <div id="ayudaCodigo" class="form-text">Si desea cambiar su código de acceso, póngase en contacto con el
-            administrador</div>
+          <input
+            v-model="usuario.codigo_acceso"
+            type="text"
+            class="form-control"
+            id="codigo"
+            readonly
+            disabled
+          />
+          <div id="ayudaCodigo" class="form-text">
+            Si desea cambiar su código de acceso, póngase en contacto con el administrador
+          </div>
         </div>
         <div class="mb-3">
           <label for="dni" class="form-label">DNI</label>
-          <input v-model="usuario.dni" type="text" class="form-control" id="dni" readonly>
-          <div id="ayudaDni" class="form-text">Si desea cambiar su DNI, póngase en contacto con el administrador</div>
+          <input
+            v-model="usuario.dni"
+            type="text"
+            class="form-control"
+            id="dni"
+            readonly
+            disabled
+          />
+          <div id="ayudaDni" class="form-text">
+            Si desea cambiar su DNI, póngase en contacto con el administrador
+          </div>
         </div>
         <button type="submit" class="btn btn-primary">Actualizar</button>
       </form>
@@ -33,94 +56,91 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      isAuthenticated: this.autenticacion(),
-      usuario: {},
-      actualizado: false,
-      errores: {
-        nombre: '',
-        servidor: '',
-      },
-      cargando: true, // Para el pequeño intervalo que cargan los datos
-    };
-  },
-  mounted() {
-    this.getCliente();
-  },
-  methods: {
-    limpiarErrores(campo) {
-      this.errores[campo] = '';
-      this.errores.servidor = '';
-      this.actualizado = false;
-    },
+<script setup>
+import { onMounted, ref } from 'vue'
 
-    validarNombre() {
-      const nombreRegex = /^[A-Z][a-zA-Záéíóúüñ\s']*$/;
-      if (!nombreRegex.test(this.usuario.nombre.trim())) {
-        this.errores.nombre = 'Por favor, ingrese un nombre válido que comience con mayúscula o después de un espacio en blanco.';
-        return false;
+const isAuthenticated = () => sessionStorage.getItem('autenticado')
+const usuario = ref({})
+const actualizado = ref(false)
+const errores = ref({
+  nombre: '',
+  servidor: ''
+})
+const cargando = ref(true)
+
+const limpiarErrores = (campo) => {
+  errores.value[campo] = ''
+  errores.value.servidor = ''
+  actualizado.value = false
+}
+
+const validarNombre = () => {
+  const nombreRegex = /^[A-Z][a-zA-Záéíóúüñ\s']*$/
+  if (!nombreRegex.test(usuario.value.nombre.trim())) {
+    errores.value.nombre =
+      'Por favor, ingrese un nombre válido que comience con mayúscula o después de un espacio en blanco.'
+    return false
+  }
+  errores.value.nombre = ''
+  return true
+}
+
+const getCliente = async () => {
+  try {
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/cliente/${sessionStorage.getItem('codigo')}`
+    )
+    const data = await response.json()
+
+    if (data.success) {
+      usuario.value = data.cliente
+    } else {
+      console.error('Error al obtener el usuario:', data.message)
+      errores.value.servidor = 'Error al obtener el usuario: ' + data.message
+    }
+  } catch (error) {
+    console.error('Error en la solicitud para obtener el usuario:', error)
+    errores.value.servidor = 'Error en la solicitud para obtener el usuario.'
+  } finally {
+    cargando.value = false // Indicamos que la carga ha finalizado
+  }
+}
+onMounted(getCliente)
+const updateCliente = async () => {
+  try {
+    if (!validarNombre()) {
+      return
+    }
+
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/cliente/update/${sessionStorage.getItem('codigo')}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nombre: usuario.value.nombre
+        })
       }
-      this.errores.nombre = '';
-      return true;
-    },
+    )
 
-    async getCliente() {
-      try {
-        const response = await fetch('http://127.0.0.1:8000/api/cliente/' + sessionStorage.getItem("codigo"));
-        const data = await response.json();
+    const data = await response.json()
 
-        if (data.success) {
-          this.usuario = data.cliente;
-        } else {
-          console.error('Error al obtener el usuario:', data.message);
-          this.errores.servidor = 'Error al obtener el usuario: ' + data.message;
-        }
-      } catch (error) {
-        console.error('Error en la solicitud para obtener el usuario:', error);
-        this.errores.servidor = 'Error en la solicitud para obtener el usuario.';
-      } finally {
-        this.cargando = false; // Indicamos que la carga ha finalizado
-      }
-    },
+    if (data.success) {
+      actualizado.value = true
+      setTimeout(() => {
+        limpiarErrores()
+      }, 2000)
+    } else {
+      errores.value.servidor = 'Error al actualizar el cliente: ' + data.message
+    }
+  } catch (error) {
+    errores.value.servidor = 'Error en la solicitud para actualizar el cliente.'
+  }
+}
 
-    async updateCliente() {
-      try {
-        if (!this.validarNombre()) {
-          return;
-        }
-
-        const response = await fetch('http://127.0.0.1:8000/api/cliente/update/' + sessionStorage.getItem("codigo"), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            nombre: this.usuario.nombre,
-          }),
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          this.actualizado = true;
-          setTimeout(() => {
-            this.limpiarErrores();
-          }, 2000);
-        } else {
-          this.errores.servidor = 'Error al actualizar el cliente: ' + data.message;
-        }
-      } catch (error) {
-        this.errores.servidor = 'Error en la solicitud para actualizar el cliente.';
-      }
-    },
-    autenticacion() {
-      return sessionStorage.getItem('autenticado');
-    },
-  },
-};
+const autenticacion = isAuthenticated
 </script>
 
 <style scoped>
