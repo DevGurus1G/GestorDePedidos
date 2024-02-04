@@ -49,7 +49,8 @@ class ClienteController extends Controller
         $validated = $request->validate([
             "nombre" => "required|max:255",
             "dni" => "required|max:9",
-            "codigo_acceso" => "required|max:8"
+            "codigo_acceso" => "required|max:8",
+            "calle" => "required|max:255"
         ]);
         Cliente::create($validated);
         return redirect(route("clientes.create"))->with("success", "Cliente creado correctamente");
@@ -81,7 +82,9 @@ class ClienteController extends Controller
         $validated = $request->validate([
             "nombre" => "required|max:255",
             "dni" => "required|min:9|max:9",
-            "codigo_acceso" => "required|max:8"
+            "codigo_acceso" => "required|max:8",
+            "calle" => "required|max:255"
+
         ]);
         $cliente->update($validated);
         return redirect(route("clientes.create"))->with("success", "Cliente actualizado correctamente");

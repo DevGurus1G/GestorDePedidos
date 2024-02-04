@@ -29,6 +29,7 @@
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>DNI</th>
+                <th>Calle</th>
                 <th>codigo_acceso</th>
                 <th>Acciones</th>
             </tr>
@@ -45,6 +46,9 @@
                     </td>
                     <td>
                         {{$cliente->dni}}
+                    </td>
+                    <td>
+                        {{$cliente->calle}}
                     </td>
                     <td>
                         {{$cliente->codigo_acceso}}

@@ -39,6 +39,12 @@
                         <label for="nombre">DNI</label>
                     </div>
                 </div>
+                <div class="col-12 form-floating mb-3">
+                    <div class="form-floating ">
+                        <input type="text" class="form-control" id="calle" name="calle" readonly placeholder="calle" value="{{$cliente->calle}}">
+                        <label for="dni">Establecimiento(Calle)</label>
+                    </div>
+                </div>
                 <div class="col-12 input-group">
                     <input type="text" class="form-control" readonly name="codigo_acceso" id="codigo_acceso" placeholder="Codigo de acceso" value="{{$cliente->codigo_acceso}}" >
                     <button class="btn btn-outline-primary" disabled  id="generar_codigo" onclick="generarCodigo()" type="button">Generar</button>

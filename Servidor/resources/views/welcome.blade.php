@@ -179,15 +179,16 @@
                                     <li></li>
                                     <li></li>
                             </ul>
-                            <div class="card mt-3 text-center d-flex flex-column align-items-center">
-                                <div class="card-header w-100">
-                                    <h1 class="fw-bold">Bienvenido a Killer</h1>
+                            <div class="card border-secondary" style="max-width: 18rem;">
+                                <div class="card-header bg-transparent border-secondary">Bienvenido a Killer Cervezas</div>
+                                <div class="card-body">
+                                  <h5 class="card-title">¿Como quiere entrar?</h5>
+                                  <p class="card-text">Clique en la opcion que necesite para loguearse.</p>
                                 </div>
-                                <div class="card-body d-flex justify-content-center align-items-center">
-                                        <div class="col-12 d-flex gap-4 justify-content-center align-items-center">
-                                            <a href="#" class="btn btn-outline-primary fs-2">Cliente</a>
-                                            <a href="{{route("login")}}" class="btn btn-outline-primary fs-2">Empleado</a>
-                                        </div>
+                                <div class="card-footer bg-transparent border-success d-flex justify-content-center gap-2">
+                                    <a href="{{route("login")}}" class="btn btn-primary">Empleado</a>
+                                    <div class="vr"></div>
+                                    <a href="#" class="btn btn-primary">Cliente</a>
                                 </div>
                             </div>
                     </div >

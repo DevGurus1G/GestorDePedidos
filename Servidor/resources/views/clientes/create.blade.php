@@ -27,8 +27,14 @@
                 </div>
                 <div class="col-12 form-floating mb-3">
                     <div class="form-floating ">
-                        <input type="text" class="form-control" id="dni" name="dni" name="dni" placeholder="dni">
+                        <input type="text" class="form-control" id="dni" name="dni" placeholder="dni">
                         <label for="dni">DNI</label>
+                    </div>
+                </div>
+                <div class="col-12 form-floating mb-3">
+                    <div class="form-floating ">
+                        <input type="text" class="form-control" id="calle" name="calle" placeholder="calle">
+                        <label for="dni">Establecimiento(Calle)</label>
                     </div>
                 </div>
                 <div class="col-12 input-group">
