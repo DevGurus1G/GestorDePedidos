@@ -3887,6 +3887,8 @@ textarea.form-control-lg {
   align-items: center;
   justify-content: space-between;
   padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
 }
 .navbar > .container,
 .navbar > .container-fluid,
@@ -4300,8 +4302,8 @@ textarea.form-control-lg {
   --bs-card-inner-border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
   --bs-card-cap-padding-y: 0.5rem;
   --bs-card-cap-padding-x: 1rem;
-  --bs-card-cap-bg: black;
-  --bs-card-cap-color: ;
+  --bs-card-cap-bg: #2b3035;
+  --bs-card-cap-color: white;
   --bs-card-height: ;
   --bs-card-color: ;
   --bs-card-bg: var(--bs-body-bg);
@@ -4317,6 +4319,7 @@ textarea.form-control-lg {
   background-color: var(--bs-card-bg);
   background-clip: border-box;
   border: var(--bs-card-border-width) solid var(--bs-card-border-color);
+  box-shadow: 0 0.5rem 0.5rem rgba(0, 0, 0, 0.175);
   border-radius: var(--bs-card-border-radius);
 }
 .card > hr {
