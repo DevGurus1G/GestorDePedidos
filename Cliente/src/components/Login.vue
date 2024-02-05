@@ -1,15 +1,14 @@
 <template>
-  <div class="d-flex align-items-center justify-content-center" style="height: 100vh">
-    <div>
-      <h1 class="text-center">Login</h1>
+  <div class="d-flex align-items-center justify-content-center row" style="height: 100vh">
+    <div class="col-md-6"> <!-- Ajusta la anchura de la columna según tus necesidades -->
+      <h1 class="text-center mb-4">Bienvenido a Killer</h1>
       <form @submit.prevent="login" class="text-center">
-        <input
-          v-model="code"
-          type="text"
-          class="form-control"
-          placeholder="Código de 8 dígitos"
-          @input="clearError"
-        />
+        <div class="mb-3">
+          <input v-model="code" type="text" class="form-control" placeholder="Código de 8 dígitos" @input="clearError" />
+        </div>
+        <div>
+          <router-link to="/recuperar" class="link">¿Has olvidado tu código?</router-link>
+        </div>
         <button type="submit" class="btn btn-primary mt-3">Iniciar sesión</button>
       </form>
       <p v-if="loginError" class="text-danger mt-2">{{ loginError }}</p>
