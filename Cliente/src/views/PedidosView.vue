@@ -45,7 +45,7 @@ onMounted(() => {
 const loadPedidos = async () => {
   try {
     const response = await fetch(
-      `http://killercervezas.blog/api/pedidos/${sessionStorage.getItem('codigo')}`
+      `https://killercervezas.blog/api/pedidos/${sessionStorage.getItem('codigo')}`
     )
     const datos = await response.json()
 
