@@ -6,7 +6,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ps-2 ps-lg-0">
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{{route("home")}}">Home</a>
                 </li>
@@ -161,7 +161,7 @@
                 @endcan
 
             </ul>
-            <div class="nav item ">
+            <div class=" d-none d-lg-flex nav item ">
                 <hr>
                 <div id="horaNavBar" style="font-size: 1.5em; color:white"></div>
                 <hr>
@@ -178,15 +178,15 @@
                 
                     mostrarHoraLocal();
                 
-                    setInterval(mostrarHoraLocal, 1000);
+                    setInterval(mostrarHoraLocal, 60000);
                 </script>
             </div>
             
-            <div class="nav item dropdown">
+            <div class="nav-item dropdown pb-2 pb-lg-0 ps-2 ps-lg-3 pe-lg-2">
                 <a class="nav-link text-white dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {{Auth::user()->name}}
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end ">
+                <ul class="dropdown-menu dropdown-menu-lg-end ">
                     {{-- No se donde llevara perfil --}}
                     <li><a class="dropdown-item" href="{{ route('perfil.index')}}">Perfil</a></li>
                     <li><hr class="dropdown-divider"></li>

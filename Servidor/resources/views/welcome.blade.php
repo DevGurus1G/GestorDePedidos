@@ -180,14 +180,14 @@
                                     <li></li>
                             </ul>
                             <div class="card border-secondary" style="max-width: 18rem;">
-                                <div class="card-header bg-transparent border-secondary">Bienvenido a Killer Cervezas</div>
+                                <div class="card-header border-secondary">Bienvenido a Killer Cervezas</div>
                                 <div class="card-body">
                                   <h5 class="card-title">¿Como quiere entrar?</h5>
                                   <p class="card-text">Clique en la opcion que necesite para loguearse.</p>
                                 </div>
                                 <div class="card-footer bg-transparent border-success d-flex justify-content-center gap-2">
                                     <a href="{{route("login")}}" class="btn btn-primary">Empleado</a>
-                                    <div class="vr"></div>
+                                    <div class="vr" style="color: black"></div>
                                     <a href="#" class="btn btn-primary">Cliente</a>
                                 </div>
                             </div>

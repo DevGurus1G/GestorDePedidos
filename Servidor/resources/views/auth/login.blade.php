@@ -13,7 +13,7 @@
         <div class="row justify-content-center align-items-center min-vh-100">
             <div class="col" style="width: 100%; max-width: 550px">
                 <div class="card shadow">
-                    <div class="card-header bg-primary text-white">Entrar en la Gestion de Pedidos</div>
+                    <div class="card-header text-white">Entrar en la Gestion de Pedidos</div>
     
                     <div class="card-body">
                         <form method="POST" action="{{ route('login') }}">

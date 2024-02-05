@@ -17,7 +17,7 @@
                 <div class="row">
                     @yield("nav")
                 </div>
-                <div class="row">
+                <div class="row pb-3">
                 <!-- Contenido de la página aquí -->
                   @yield("content")
                 </div>

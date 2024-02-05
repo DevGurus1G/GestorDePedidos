@@ -6,8 +6,8 @@
 
 
 @section('content')
-<div class="col-12 mt-4 mx-auto max-w-50" >
-    <div class="row">
+<div class="col-12 mt-42" >
+    <div class="row w-100 mx-auto" style="max-width: 550px">
         <div class="col">
             <div class="d-flex justify-content-between mb-3">
                 <a href="{{route("formatoproductos.index")}}" class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#ffffff" d="M20 11H7.83l5.59-5.59L12 4l-8 8l8 8l1.41-1.41L7.83 13H20z"/></svg></a>
@@ -20,7 +20,7 @@
                     </form>
                 </div>
             </div>
-            <h1>Ver detalles de producto | {{ $formatoproducto->producto->nombre}} - {{ $formatoproducto->formato->tipo }}</h1>
+            <h1 class="MT-2">Ver detalles de producto | {{ $formatoproducto->producto->nombre}} - {{ $formatoproducto->formato->tipo }}</h1>
             <form action="{{route("formatoproductos.update", $formatoproducto)}}" method="post" class="row mt-2" enctype="multipart/form-data">
                 @csrf
                 @method("put")

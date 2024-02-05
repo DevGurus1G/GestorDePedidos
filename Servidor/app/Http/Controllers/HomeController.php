@@ -66,7 +66,7 @@ class HomeController extends Controller
 
                 $chartPP = new Estadistica;
 
-                $pedidoProducto = DB::table('VistaEstadisticaPedidosPorProductoFormato')->limit(10)->get();
+                $pedidoProducto = DB::table('VistaProductosPorPedido')->limit(10)->get();
 
                 $etiquetas = $pedidoProducto->map(function ($item) {
                     return '';
