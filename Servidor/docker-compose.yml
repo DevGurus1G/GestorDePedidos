@@ -1,4 +1,24 @@
+version: '3'
+
 services:
+  nginx:
+    image: 'nginx:latest'
+    ports:
+      - '${HTTP_PORT:-8000}:80'
+      - '${SSL_PORT:-443}:443'
+    environment:
+      - SSL_PORT=${SSL_PORT:-443}
+      - APP_SERVICE=${APP_SERVICE:-laravel.test}
+      - SERVER_NAME=${SERVER_NAME:-localhost}
+    volumes:
+      - 'sail-nginx:/etc/nginx/certs'
+      - './vendor/ryoluo/sail-ssl/nginx/templates:/etc/nginx/templates'
+      - './vendor/ryoluo/sail-ssl/nginx/generate-ssl-cert.sh:/docker-entrypoint.d/99-generate-ssl-cert.sh'
+    depends_on:
+      - ${APP_SERVICE:-laravel.test}
+    networks:
+      - sail
+
   laravel.test:
     build:
       context: ./vendor/laravel/sail/runtimes/8.3
@@ -23,6 +43,7 @@ services:
       - sail
     depends_on:
       - mysql
+
   mysql:
     image: "mysql"
     ports:
@@ -36,7 +57,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - "sail-mysql:/var/lib/mysql"
-      - "./vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing>"
+      - "./vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh"
     networks:
       - sail
     healthcheck:
@@ -47,21 +68,12 @@ services:
         - "-p${DB_PASSWORD}"
       retries: 3
       timeout: 5s
-    vue:
-      build:
-        context: ../
-        dockerfile: Dockerfile
-      ports:
-        - "80:80"
-      volumes:
-        - ./Cliente:/var/www/html/cliente
-      depends_on:
-        - database
-      networks:
-        - default
+
 networks:
   sail:
-    driver: bridge
+
 volumes:
+  sail-nginx:
+    driver: local
   sail-mysql:
     driver: local
