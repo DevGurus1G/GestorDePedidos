@@ -18,21 +18,30 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router' // Asegúrate de importar 'useRouter' desde 'vue-router'
+import { useRouter } from 'vue-router'
+import { useClienteStore } from '@/store/clienteStore';
+
 const code = ref('')
 const loginError = ref('')
-const router = useRouter() // Asegúrate de inicializar el router
+const router = useRouter()
+const clienteStore = useClienteStore(); // Asegúrate de inicializar la tienda
 
 const login = async () => {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/login/${code.value}`)
+    const response = await fetch(`http://killercervezas.blog/api/login/${code.value}`)
     const data = await response.json()
 
     if (data.success) {
       console.log('Autenticación exitosa')
       sessionStorage.setItem('autenticado', true)
       sessionStorage.setItem('codigo', data.cliente.codigo_acceso)
+
+      // Almacena toda la información del cliente en Pinia
+      clienteStore.setCliente(data.cliente);
+
+
       router.push({ name: 'inicio' })
+      console.log(clienteStore.getCliente)
     } else {
       loginError.value = data.message
       console.error('Autenticación fallida')

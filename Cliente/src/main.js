@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -23,5 +24,9 @@ function isAuthenticated() {
   // Implementa la lógica de autenticación, en este caso el true de localstorage
   return sessionStorage.getItem('autenticado');
 }
+
+// Configura Pinia
+const pinia = createPinia();
+app.use(pinia);
 
 app.use(router).mount('#app');

@@ -17,6 +17,11 @@
           <div v-if="errores.nombre" class="text-danger">{{ errores.nombre }}</div>
         </div>
         <div class="mb-3">
+          <label for="calle" class="form-label">Calle</label>
+          <input v-model="usuario.calle" @input="limpiarErrores('calle')" type="text" class="form-control" id="calle" />
+          <div v-if="errores.calle" class="text-danger">{{ errores.calle }}</div>
+        </div>
+        <div class="mb-3">
           <label for="codigo" class="form-label">Codigo</label>
           <input v-model="usuario.codigo_acceso" type="text" class="form-control" id="codigo" readonly disabled />
           <div id="ayudaCodigo" class="form-text">
@@ -39,15 +44,48 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
+import { useClienteStore } from '@/store/clienteStore';
 
+const clienteStore = useClienteStore(); // Asegúrate de inicializar la tienda
 const isAuthenticated = () => sessionStorage.getItem('autenticado')
 const usuario = ref({})
 const actualizado = ref(false)
 const errores = ref({
   nombre: '',
+  calle: '',
   servidor: ''
 })
 const cargando = ref(true)
+
+onMounted(() => {
+  const cliente = clienteStore.getCliente();
+  if (cliente.nombre !== "") {
+    usuario.value = cliente;
+    cargando.value = false;
+  } else {
+    //Cuando no lo encuentra en pinia hace una peticion al servidor
+    (async () => {
+      try {
+        const response = await fetch(
+          `http://killercervezas.blog/api/cliente/${sessionStorage.getItem('codigo')}`
+        );
+        const data = await response.json();
+
+        if (data.success) {
+          usuario.value = data.cliente;
+        } else {
+          console.error('Error al obtener el usuario:', data.message);
+          errores.value.servidor = 'Error al obtener el usuario: ' + data.message;
+        }
+      } catch (error) {
+        console.error('Error en la solicitud para obtener el usuario:', error);
+        errores.value.servidor = 'Error en la solicitud para obtener el usuario.';
+      } finally {
+        cargando.value = false; // Indicamos que la carga ha finalizado
+      }
+    })();  // Añade paréntesis de ejecución aquí
+  }
+});
 
 const limpiarErrores = (campo) => {
   errores.value[campo] = ''
@@ -66,35 +104,23 @@ const validarNombre = () => {
   return true
 }
 
-const getCliente = async () => {
-  try {
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/cliente/${sessionStorage.getItem('codigo')}`
-    )
-    const data = await response.json()
-
-    if (data.success) {
-      usuario.value = data.cliente
-    } else {
-      console.error('Error al obtener el usuario:', data.message)
-      errores.value.servidor = 'Error al obtener el usuario: ' + data.message
-    }
-  } catch (error) {
-    console.error('Error en la solicitud para obtener el usuario:', error)
-    errores.value.servidor = 'Error en la solicitud para obtener el usuario.'
-  } finally {
-    cargando.value = false // Indicamos que la carga ha finalizado
+const validarCalle = () => {
+  if (usuario.value.calle.trim() !== '') {
+    errores.value.calle = 'La calle no puede estar vacia';
+    return false;
   }
-}
-onMounted(getCliente)
+  errores.value.calle = '';
+  return true;
+};
+
 const updateCliente = async () => {
   try {
-    if (!validarNombre()) {
-      return
+    if (!validarNombre() || !validarCalle()) {
+      return;
     }
 
     const response = await fetch(
-      `http://127.0.0.1:8000/api/cliente/update/${sessionStorage.getItem('codigo')}`,
+      `http://killercervezas.blog/api/cliente/update/${sessionStorage.getItem('codigo')}`,
       {
         method: 'POST',
         headers: {
@@ -123,6 +149,7 @@ const updateCliente = async () => {
 
 const autenticacion = isAuthenticated
 </script>
+
 
 <style scoped>
 /* Estilos específicos del componente, si es necesario */

@@ -44,7 +44,7 @@ async function enviarCorreo() {
   }
   console.log(JSON.stringify(datos))
   try {
-    const response = await fetch('http://127.0.0.1:8000/api/recuperar', {
+    const response = await fetch('http://killercervezas.blog/api/recuperar', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -142,7 +142,7 @@ const obtenerValorOrdenamiento = (item, columna) => {
 
 const loadProducts = async () => {
   try {
-    const response = await fetch('http://127.0.0.1:8000/api/productos');
+    const response = await fetch('http://killercervezas.blog/api/productos');
     const datos = await response.json();
 
     if (datos.success) {
@@ -200,7 +200,7 @@ const enviarPedido = async () => {
       return;
     }
 
-    const response = await fetch('http://127.0.0.1:8000/api/pedidos/crear', {
+    const response = await fetch('http://killercervezas.blog/api/pedidos/crear', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
