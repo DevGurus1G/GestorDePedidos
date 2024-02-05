@@ -104,167 +104,162 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      isAuthenticated: this.autenticacion(),
-      productos: [],
-      productosFiltrados: [],
-      pedido: [],
-      cargando: true,
-      busqueda: '',
-      orden: null,
-    };
-  },
-  methods: {
-    ordenar(columna) {
-      if (this.orden && this.orden.includes(columna)) {
-        // Cambiar el tipo de orden si ya está ordenado por la misma columna
-        this.orden = this.orden.startsWith('asc') ? `desc:${columna}` : `asc:${columna}`;
-      } else {
-        // Ordenar de forma ascendente por defecto
-        this.orden = `asc:${columna}`;
-      }
+<script setup>
+import { ref, watch, onMounted } from 'vue';
 
-      // Volver a aplicar el filtrado y ordenamiento
-      this.filtrarProductos();
-    },
+const isAuthenticated = sessionStorage.getItem('autenticado');
+const productos = ref([]);
+const productosFiltrados = ref([]);
+const pedido = ref([]);
+const cargando = ref(true);
+const busqueda = ref('');
+const orden = ref(null);
 
-    obtenerValorOrdenamiento(item, columna) {
-      // Manejar el ordenamiento según la columna
-      switch (columna) {
-        case 'nombre':
-          return item.producto.nombre.toLowerCase();
-        case 'categoria':
-          return item.producto.categoria.nombre.toLowerCase();
-        case 'precio':
-          return item.precio;
-        case 'formato':
-          return item.formato.tipo.toLowerCase();
-        default:
-          return '';
-      }
-    },
+const ordenar = (columna) => {
+  if (orden.value && orden.value.includes(columna)) {
+    orden.value = orden.value.startsWith('asc') ? `desc:${columna}` : `asc:${columna}`;
+  } else {
+    orden.value = `asc:${columna}`;
+  }
 
-    async loadProducts() {
-      try {
-        const response = await fetch('http://127.0.0.1:8000/api/productos');
-        const datos = await response.json();
-
-        if (datos.success) {
-          this.productos = datos.data.map(producto => {
-            producto.cantidad = 0;
-            return producto;
-          });
-          this.filtrarProductos(); // Filtrar productos al cargarlos
-        } else {
-          console.error('Error al obtener productos:', datos.message);
-        }
-      } catch (error) {
-        console.error('Error en la solicitud para obtener productos:', error);
-      } finally {
-        this.cargando = false; // Indicamos que la carga ha finalizado
-      }
-    },
-    autenticacion() {
-      return sessionStorage.getItem('autenticado');
-    },
-    anadirAlPedido(producto) {
-      if (producto.cantidad > 0) {
-        const index = this.pedido.findIndex(
-          item => item.producto.id === producto.producto.id && item.formato.id === producto.formato.id
-        );
-
-        if (index !== -1) {
-          this.pedido[index].cantidad += producto.cantidad;
-        } else {
-          this.pedido.push({
-            producto_id: producto.producto.id,
-            formato_id: producto.formato.id,
-            formato_productos: producto.id,
-            cantidad: producto.cantidad,
-            producto: producto.producto,
-            formato: producto.formato,
-            producto_precio: producto.precio,
-          });
-        }
-
-        producto.cantidad = 0;
-      }
-    },
-    eliminarDelPedido(index) {
-      this.pedido.splice(index, 1);
-    },
-    async enviarPedido() {
-      try {
-        if (this.pedido.length === 0) {
-          console.warn('No hay productos en el pedido.');
-          return;
-        }
-
-        const response = await fetch('http://127.0.0.1:8000/api/pedidos/crear', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            cliente: sessionStorage.getItem('codigo'),
-            productos: this.pedido.map(item => ({
-              formato_productos: item.formato_productos,
-              cantidad: item.cantidad,
-            })),
-          }),
-        });
-
-        const datos = await response.json();
-
-        if (datos.success) {
-          console.log('Pedido enviado correctamente:', datos.message);
-          this.pedido = [];
-        } else {
-          console.error('Error al enviar el pedido:', datos.message);
-        }
-      } catch (error) {
-        console.error('Error en la solicitud para enviar el pedido:', error);
-      }
-    },
-    filtrarProductos() {
-      const busquedaMinusculas = this.busqueda.toLowerCase().trim();
-
-      this.productosFiltrados = this.productos.filter(producto => {
-        return (
-          producto.producto.nombre.toLowerCase().includes(busquedaMinusculas) ||
-          producto.producto.categoria.nombre.toLowerCase().includes(busquedaMinusculas) ||
-          producto.precio.toString().includes(busquedaMinusculas) ||
-          producto.formato.tipo.toLowerCase().includes(busquedaMinusculas)
-        );
-      });
-
-      // Aplicar ordenamiento
-      if (this.orden) {
-        const [orden, columna] = this.orden.split(':');
-        const ordenMultiplier = orden === 'asc' ? 1 : -1;
-
-        this.productosFiltrados.sort((a, b) => {
-          const valorA = this.obtenerValorOrdenamiento(a, columna);
-          const valorB = this.obtenerValorOrdenamiento(b, columna);
-
-          return valorA > valorB ? 1 * ordenMultiplier : valorA < valorB ? -1 * ordenMultiplier : 0;
-        });
-      }
-    },
-  },
-  watch: {
-    busqueda() {
-      this.filtrarProductos();
-    },
-  },
-  mounted() {
-    this.loadProducts();
-  },
+  filtrarProductos();
 };
-</script>
 
+const obtenerValorOrdenamiento = (item, columna) => {
+  switch (columna) {
+    case 'nombre':
+      return item.producto.nombre.toLowerCase();
+    case 'categoria':
+      return item.producto.categoria.nombre.toLowerCase();
+    case 'precio':
+      return item.precio;
+    case 'formato':
+      return item.formato.tipo.toLowerCase();
+    default:
+      return '';
+  }
+};
+
+const loadProducts = async () => {
+  try {
+    const response = await fetch('http://127.0.0.1:8000/api/productos');
+    const datos = await response.json();
+
+    if (datos.success) {
+      productos.value = datos.data.map(producto => {
+        producto.cantidad = 0;
+        return producto;
+      });
+      filtrarProductos(); // Filtrar productos al cargarlos
+    } else {
+      console.error('Error al obtener productos:', datos.message);
+    }
+  } catch (error) {
+    console.error('Error en la solicitud para obtener productos:', error);
+  } finally {
+    cargando.value = false; // Indicamos que la carga ha finalizado
+  }
+};
+
+const autenticacion = () => {
+  return isAuthenticated;
+};
+
+const anadirAlPedido = (producto) => {
+  if (producto.cantidad > 0) {
+    const index = pedido.value.findIndex(
+      item => item.producto.id === producto.producto.id && item.formato.id === producto.formato.id
+    );
+
+    if (index !== -1) {
+      pedido.value[index].cantidad += producto.cantidad;
+    } else {
+      pedido.value.push({
+        producto_id: producto.producto.id,
+        formato_id: producto.formato.id,
+        formato_productos: producto.id,
+        cantidad: producto.cantidad,
+        producto: producto.producto,
+        formato: producto.formato,
+        producto_precio: producto.precio,
+      });
+    }
+
+    producto.cantidad = 0;
+  }
+};
+
+const eliminarDelPedido = (index) => {
+  pedido.value.splice(index, 1);
+};
+
+const enviarPedido = async () => {
+  try {
+    if (pedido.value.length === 0) {
+      console.warn('No hay productos en el pedido.');
+      return;
+    }
+
+    const response = await fetch('http://127.0.0.1:8000/api/pedidos/crear', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        cliente: sessionStorage.getItem('codigo'),
+        productos: pedido.value.map(item => ({
+          formato_productos: item.formato_productos,
+          cantidad: item.cantidad,
+        })),
+      }),
+    });
+
+    const datos = await response.json();
+
+    if (datos.success) {
+      console.log('Pedido enviado correctamente:', datos.message);
+      pedido.value = [];
+    } else {
+      console.error('Error al enviar el pedido:', datos.message);
+    }
+  } catch (error) {
+    console.error('Error en la solicitud para enviar el pedido:', error);
+  }
+};
+
+const filtrarProductos = () => {
+  const busquedaMinusculas = busqueda.value.toLowerCase().trim();
+
+  productosFiltrados.value = productos.value.filter(producto => {
+    return (
+      producto.producto.nombre.toLowerCase().includes(busquedaMinusculas) ||
+      producto.producto.categoria.nombre.toLowerCase().includes(busquedaMinusculas) ||
+      producto.precio.toString().includes(busquedaMinusculas) ||
+      producto.formato.tipo.toLowerCase().includes(busquedaMinusculas)
+    );
+  });
+
+  // Aplicar ordenamiento
+  if (orden.value) {
+    const [ordenamiento, columna] = orden.value.split(':');
+    const ordenMultiplier = ordenamiento === 'asc' ? 1 : -1;
+
+    productosFiltrados.value.sort((a, b) => {
+      const valorA = obtenerValorOrdenamiento(a, columna);
+      const valorB = obtenerValorOrdenamiento(b, columna);
+
+      return valorA > valorB ? 1 * ordenMultiplier : valorA < valorB ? -1 * ordenMultiplier : 0;
+    });
+  }
+};
+
+watch(busqueda, () => {
+  filtrarProductos();
+});
+
+onMounted(() => {
+  loadProducts();
+});
+</script>
 
 <style scoped></style>
