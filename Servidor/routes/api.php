@@ -4,9 +4,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\Api\ClienteControllerApi;
 use App\Http\Controllers\Api\FormatoProductoControllerApi;
 use App\Http\Controllers\Api\PedidoControllerApi;
-use App\Mail\RecuperarMail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Clientes ----------------------------------------------------------------
+// Clientes
 Route::controller(ClienteController::class)->group(function () {
     Route::post('clientes', "store")->name('clientes.store');
     Route::get('clientes/{cliente}', "show")->name('clientes.show');
@@ -44,11 +42,6 @@ Route::controller(ClienteControllerApi::class)->group(function () {
     Route::post('/cliente/update/{codigo}', "update");
     Route::post("recuperar", "recuperar");
     Route::post('/cliente/registrar', "store");
-    // function () {
-    //     Mail::to("ikerunai.zambrano@gmail.com")
-    //         ->send(new RecuperarMail());
-    //     return response()->json(["mensaje" => "Enviado"]);
-    // }
 });
 
 //Pedidos

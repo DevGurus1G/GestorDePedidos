@@ -8,53 +8,53 @@ use Illuminate\Http\Request;
 class FormatoProductoImagenController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Listar FormatoProductoImagenes.
      */
     public function index()
     {
-        //
+        //Vacío.
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar formulario de crear nuevo FormatoProductoImagen.
      */
     public function create()
     {
-        //
+        //Vacío.
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Realizar la create de el nuevo FormatoProductoImagen.
      */
     public function store(Request $request)
     {
-        //
+        //Vacío.
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar la información de un FormatoProductoimagen en especifico.
      */
     public function show(string $id)
     {
-        //
+        //Vacío.
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Mostrar formulario de actualizar FormatoProductoImagen.
      */
     public function edit(string $id)
     {
-        //
+        //Vacío.
     }
 
     /**
-     * Update the specified resource in storage.
+     * Realizar el update de el FormatoProductoImagen seleccionado.
      */
     public function update(Request $request, string $formatoProductImagen)
     {
-        //
-
         $imagen = FormatoProductoImagen::find($formatoProductImagen);
+
+        //Validación de datos.
         $validated = $request->validate([
             "imagen" => "required"
         ]);
@@ -67,11 +67,10 @@ class FormatoProductoImagenController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar el FormatoProductoImagen seleccionado.
      */
     public function destroy(string $formatoProductoImagen)
     {
-        //
         FormatoProductoImagen::destroy($formatoProductoImagen);
         return redirect(route("formatoproductos.index"));
     }

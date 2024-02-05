@@ -187,7 +187,6 @@
                     {{Auth::user()->name}}
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg-end ">
-                    {{-- No se donde llevara perfil --}}
                     <li><a class="dropdown-item" href="{{ route('perfil.index')}}">Perfil</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li>

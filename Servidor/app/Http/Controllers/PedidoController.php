@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class PedidoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Listar Pedidos.
      */
     public function index(Request $request)
     {
@@ -33,16 +33,14 @@ class PedidoController extends Controller
         }
 
         $pedidos = $query->with(['cliente', 'pedidoformatoproducto.formatoproducto.producto'])->simplePaginate(10);
-
         return view('pedidos.index', compact('pedidos'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar formulario de crear nuevo Pedido.
      */
     public function create()
     {
-        //
         $formatoproductos = FormatoProducto::all();
         $clientes = Cliente::all();
         if (session("pedido")) {
@@ -61,7 +59,7 @@ class PedidoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Realizar la create de el nuevo Pedido.
      */
     public function store(Request $request)
     {
@@ -87,7 +85,6 @@ class PedidoController extends Controller
         }
 
         // Crear los PedidoFormatoProducto
-
         $formatoproducto = FormatoProducto::find($validated["formato_producto_id"]);
         if (isset($validated["pedido_id"])) {
             PedidoFormatoProducto::create([
@@ -112,7 +109,7 @@ class PedidoController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar la información de un Pedido en especifico.
      */
     public function show(Pedido $pedido)
     {
@@ -120,35 +117,33 @@ class PedidoController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Mostrar formulario de actualizar Pedido.
      */
     public function edit(Pedido $pedido)
     {
-        //
         return view("pedidos.edit", ['pedido' => $pedido]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Realizar el update de el Pedido seleccionado.
      */
     public function update(Request $request, Pedido $pedido)
     {
+        //Validación de datos.
         $validated = $request->validate([
             'fecha' => 'required',
             'estado' => 'required'
         ]);
 
         $pedido->update($validated);
-
         return redirect(route("pedidos.show", ["pedido" => $pedido]))->with("success", "Pedido actualizado correctamente");
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar el FormatoProductoImagen seleccionado.
      */
     public function destroy(Pedido $pedido)
     {
-        //
         $pedido->delete();
         return redirect()->route('pedidos.index');
     }

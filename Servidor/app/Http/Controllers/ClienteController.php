@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ClienteController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Listar Clientes.
      */
     public function index(Request $request)
     {
@@ -25,39 +25,37 @@ class ClienteController extends Controller
 
         $clientes = $query->simplePaginate(10);
 
-        // Pasa los productos a la vista
         return view('clientes.index', compact('clientes'));
     }
 
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar formulario de crear nuevo Cliente.
      */
     public function create()
     {
-        //
         return view("clientes.create");
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Realizar la create de el nuevo Cliente.
      */
     public function store(Request $request)
     {
-        //
-
+        //Validación de datos.
         $validated = $request->validate([
             "nombre" => "required|max:255",
             "dni" => "required|max:9",
             "codigo_acceso" => "required|max:8",
             "calle" => "required|max:255"
         ]);
+
         Cliente::create($validated);
         return redirect(route("clientes.create"))->with("success", "Cliente creado correctamente");
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar la información de un Cliente en especifico.
      */
     public function show(Cliente $cliente)
     {
@@ -65,20 +63,19 @@ class ClienteController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Mostrar formulario de actualizar Cliente.
      */
     public function edit(Cliente $cliente)
     {
-        //
         return view("clientes.edit", ["cliente" => $cliente]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Realizar el update de el Cliente seleccionado.
      */
     public function update(Request $request, Cliente $cliente)
     {
-        //
+        //Validación de datos.
         $validated = $request->validate([
             "nombre" => "required|max:255",
             "dni" => "required|min:9|max:9",
@@ -86,16 +83,16 @@ class ClienteController extends Controller
             "calle" => "required|max:255"
 
         ]);
+
         $cliente->update($validated);
         return redirect(route("clientes.create"))->with("success", "Cliente actualizado correctamente");
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar el Cliente seleccionado.
      */
     public function destroy(Cliente $cliente)
     {
-        //
         $cliente->delete();
         return redirect(route("clientes.index"));
     }

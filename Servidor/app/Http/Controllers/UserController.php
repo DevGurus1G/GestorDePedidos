@@ -10,31 +10,29 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * * Listar Usuarios.
      */
     public function index()
     {
-        //
         $users = User::all();
         return view('users.index', ["users" => $users]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar formulario de crear nuevo Usuario.
      */
     public function create()
     {
-        //
         $roles = ["responsable", "comercial", "administrativo"];
         return view('users.create', ["roles" => $roles]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Realizar la create de el nuevo Usuario.
      */
     public function store(Request $request)
     {
-        //
+        //Validación de datos.
         $validated = $request->validate([
             "name" => "required|max:255",
             "email" => "required|unique:users|max:255",
@@ -42,6 +40,7 @@ class UserController extends Controller
             "rol" => "required|string|max:255"
         ]);
 
+        //Sentencia Create.
         User::create([
             "name" => $validated["name"],
             "email" => $validated["email"],
@@ -53,30 +52,29 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar la información de un Usuario en especifico.
      */
     public function show(User $user)
     {
-        //
         $roles = ["responsable", "comercial", "administrativo"];
         return view('users.show', ["user" => $user, "roles" => $roles]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Mostrar formulario de actualizar Usuario.
      */
     public function edit(User $user)
     {
-        //
         $roles = ["responsable", "comercial", "administrativo"];
         return view("users.edit", ["user" => $user, "roles" => $roles]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Realizar el update del Usuario seleccionado.
      */
     public function update(Request $request, User $user)
     {
+        //Validación de datos.
         $validated = $request->validate([
             "name" => "required|max:255",
             "email" => "required|unique:users,email," . $user->id . "|max:255",
@@ -86,6 +84,7 @@ class UserController extends Controller
         ]);
 
         if ($request->filled("password") && strlen($request->input("password")) >= 8) {
+            //Update de los datos + contraseña.
             $user->update([
                 "name" => $validated["name"],
                 "email" => $validated["email"],
@@ -93,6 +92,7 @@ class UserController extends Controller
                 "rol" => $validated["rol"],
             ]);
         } else {
+            //Update de solo los datos.
             $user->update([
                 "name" => $validated["name"],
                 "email" => $validated["email"],
@@ -104,15 +104,15 @@ class UserController extends Controller
         return redirect(route("users.show", ["user" => $user]))->with("success", "Usuario actualizado correctamente");
     }
 
-
     /**
-     * Remove the specified resource from storage.
+     * Eliminar el Usuario seleccionado.
      */
     public function destroy(Request $request, User $user)
     {
 
         $user->delete();
 
+        //If para determinar si estas borrando un Usuario o tu Usuario y elegir la ruta de redirección.
         if ($request->filled('perfil')) {
             return redirect(route("home"));
         } else {
@@ -120,6 +120,9 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * * Mostrar datos del Perfil de Usuario.
+     */
     public function indexPerfil()
     {
         //
@@ -131,6 +134,9 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Mostrar formulario de actualizar el Perfil del Usuario.
+     */
     public function editPerfil(User $user)
     {
         //
@@ -138,8 +144,12 @@ class UserController extends Controller
         return view("perfil.edit", ["user" => $user, "roles" => $roles]);
     }
 
+    /**
+     * Realizar el update del Perfil del Usuario.
+     */
     public function updatePerfil(Request $request, User $user)
     {
+        //Validación de datos.
         $validated = $request->validate([
             "name" => "min:1|max:255",
             "email" => "min:1|unique:users,email," . $user->id . "|max:255",
@@ -149,10 +159,11 @@ class UserController extends Controller
             "confirmNP" => "nullable|min:8"
         ]);
 
-
         if ($request->filled("passwordA") && strlen($request->input("passwordA")) >= 8) {
 
             if ($request->filled("passwordN") && $request->filled("confirmNP") && $request->input("passwordN") == $request->input("confirmNP")) {
+
+                //Update de la contraseña.
                 if (Hash::check($request->input('passwordA'), $user->password)) {
                     $user->update([
                         "password" => Hash::make($validated["passwordN"]),
@@ -164,6 +175,7 @@ class UserController extends Controller
                 return redirect()->back()->withInput()->withErrors(['error' => 'Introduzca la misma nueva contraseña en los dos campos.']);
             }
         } else {
+            //Update de los datos personales.
             $user->update([
                 "name" => $validated["name"],
                 "email" => $validated["email"],

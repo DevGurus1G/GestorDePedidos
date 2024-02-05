@@ -23,7 +23,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * * Mostrar el Home de la pagina.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -62,7 +62,7 @@ class HomeController extends Controller
 
                 DB::statement("SET lc_time_names = 'es_ES'");
 
-                // Productos Pedido
+                // Mostrar estadisticas  de Productos por Pedido
 
                 $chartPP = new Estadistica;
 
@@ -79,7 +79,7 @@ class HomeController extends Controller
                 $chartPP->dataset("Productos más Pedido", "bar", $datos)->color('black');
 
 
-                // Ingresos Mes
+                // Mostrar estadisticas de Ingresos por Mes
 
                 $chartIM = new Estadistica;
 
@@ -95,7 +95,7 @@ class HomeController extends Controller
 
                 $chartIM->dataset("Ingresos por Mes", "line", $datos)->color('black');
 
-                // Pedidos Mes
+                // Mostrar estadisticas de Pedidos por Mes
 
                 $chartPM = new Estadistica;
 

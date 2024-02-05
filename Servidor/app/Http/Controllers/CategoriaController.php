@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class CategoriaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Listar Categorías.
      */
     public function index(Request $request)
     {
@@ -21,26 +21,23 @@ class CategoriaController extends Controller
 
         $categorias = $query->simplePaginate(10);
 
-        // Pasa los productos a la vista
         return view('categorias.index', compact('categorias'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar formulario de crear nueva Categoría.
      */
     public function create()
     {
-        //
         return view('categorias.create');
-
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Realizar la create de la nueva Categoría.
      */
     public function store(Request $request)
     {
-        //
+        //Validación de datos.
         $validated = $request->validate([
             "nombre" => "required|max:255",
         ]);
@@ -50,29 +47,27 @@ class CategoriaController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar la información de una Categoría en especifico.
      */
     public function show(Categoria $categoria)
     {
-        //
         return view("categorias.show", ["categoria" => $categoria]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Mostrar formulario de actualizar Categoría.
      */
     public function edit(Categoria $categoria)
     {
-        //
         return view('categorias.edit', ["categoria" => $categoria]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Realizar el update de la Categoría seleccionada.
      */
     public function update(Request $request, Categoria $categoria)
     {
-        //
+        //Validación de datos.
         $validated = $request->validate([
             "nombre" => "required|max:255",
         ]);
@@ -82,11 +77,10 @@ class CategoriaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar la Categoría seleccionada.
      */
     public function destroy(Categoria $categoria)
     {
-        //
         $categoria->delete();
         return redirect(route('categorias.index'));
     }

@@ -13,11 +13,14 @@ class PedidoFormatoProducto extends Model
         'formato_producto_id',
         "cantidad"
     ];
+
+    //Asocia PedidoFormatoProducto con Pedidos.
     public function pedido()
     {
         return $this->belongsTo(Pedido::class, "id");
     }
 
+    //Asocia PedidoFormatoProducto con FormatoProductos.
     public function formatoproducto()
     {
         return $this->belongsTo(FormatoProducto::class, 'formato_producto_id');

@@ -8,30 +8,28 @@ use Illuminate\Http\Request;
 class FormatoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Listar Formatos.
      */
     public function index()
     {
-        //
         $formatos = Formato::all();
         return view('formatos.index', ["formatos" => $formatos]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar formulario de crear nuevo Formato.
      */
     public function create()
     {
-        //
         return view('formatos.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Realizar la create de el nuevo Formato.
      */
     public function store(Request $request)
     {
-        //
+        //Validación de datos.
         $validated = $request->validate([
             "tipo" => "required|max:255",
         ]);
@@ -41,30 +39,27 @@ class FormatoController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar la información de un Cliente en especifico.
      */
     public function show(Formato $formato)
     {
-        //
         return view('formatos.show', ["formato" => $formato]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Mostrar formulario de actualizar Cliente.
      */
     public function edit(Formato $formato)
     {
-        //
         return view('formatos.edit', ["formato" => $formato]);
-
     }
 
     /**
-     * Update the specified resource in storage.
+     * Realizar el update de el Cliente seleccionado.
      */
     public function update(Request $request, Formato $formato)
     {
-        //
+        //Validación de datos.
         $validated = $request->validate([
             "tipo" => "required|max:255",
         ]);
@@ -74,11 +69,10 @@ class FormatoController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar el Cliente seleccionado.
      */
     public function destroy(Formato $formato)
     {
-        //
         $formato->delete();
         return redirect(route("formatos.index"));
     }

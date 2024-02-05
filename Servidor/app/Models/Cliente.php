@@ -14,6 +14,8 @@ class Cliente extends Model
         "dni",
         "calle"
     ];
+
+    //Asocia los Clientes con los Productos.
     public function pedidos()
     {
         return $this->hasMany(Pedido::class);

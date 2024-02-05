@@ -12,6 +12,8 @@ class FormatoProductoImagen extends Model
         "imagen",
         "formato_producto_id"
     ];
+
+    //Asocia FormatoProductosImagenes con los FormatosProductos.
     public function formatoproducto()
     {
         return $this->belongsTo(FormatoProducto::class);

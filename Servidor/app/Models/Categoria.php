@@ -11,6 +11,8 @@ class Categoria extends Model
     protected $fillable = [
         "nombre"
     ];
+
+    //Asocia la Categoría con los Productos.
     public function productos()
     {
         return $this->hasMany(Producto::class);

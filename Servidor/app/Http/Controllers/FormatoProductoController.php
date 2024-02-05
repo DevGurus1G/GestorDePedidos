@@ -11,32 +11,39 @@ use Illuminate\Http\Request;
 class FormatoProductoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Listar FormatosProducto.
      */
     public function index(Request $request)
     {
-        //
-        // $query = FormatoProducto::query();
 
-        // if ($request->filled('formato')) {
-        //     $query->where('formato_id', 'like', '%' . $request->input('formato') . '%');
-        // }
+        $query = FormatoProducto::query();
 
-        // if ($request->filled('producto')) {
-        //     $query->where('producto_id', 'like', '%' . $request->input('producto') . '%');
-        // }
+        //Filtros.
+        if ($request->filled('formato')) {
+            $query->where(function ($subquery) use ($request) {
+                $subquery->whereHas('formato', function ($q) use ($request) {
+                    $q->where('tipo', 'like', '%' . $request->input('formato') . '%');
+                });
+            });
+        }
 
+        if ($request->filled('producto')) {
+            $query->where(function ($subquery) use ($request) {
+                $subquery->whereHas('producto', function ($q) use ($request) {
+                    $q->where('nombre', 'like', '%' . $request->input('producto') . '%');
+                });
+            });
+        }
 
-        $formatoproductos = FormatoProducto::simplePaginate(8);
+        $formatoproductos = $query->simplePaginate(10);
         return view("formatoproductos.index", compact("formatoproductos"));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar formulario de crear nuevo FormatoProducto.
      */
     public function create()
     {
-        //
         $productos = Producto::all();
         $formatos = Formato::all();
         return view("formatoproductos.create", [
@@ -46,11 +53,11 @@ class FormatoProductoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Realizar la create de el nuevo FormatoProducto.
      */
     public function store(Request $request)
     {
-        //
+        //Validación de datos.
         $validated = $request->validate([
             "producto_id" => "required|exists:productos,id",
             "formato_id" => "required|exists:formatos,id",
@@ -59,12 +66,12 @@ class FormatoProductoController extends Controller
         ]);
         if ($request->input("disponibilidad") == true) {
             $formatoproducto = new FormatoProducto([
-                'precio' => $request->input('precio'),
+                'precio' => $validated['precio'],
                 'disponibilidad' => $request->input('disponibilidad')
             ]);
         } else {
             $formatoproducto = new FormatoProducto([
-                'precio' => $request->input('precio'),
+                'precio' => $validated['precio'],
                 'disponibilidad' => false
             ]);
         }
@@ -76,7 +83,7 @@ class FormatoProductoController extends Controller
         $formatoproducto->formato()->associate($formato);
 
         $formatoproducto->save();
-        // dd($request->file("imagenes"));
+
         if ($request->hasFile('imagenes')) {
             foreach ($request->file('imagenes') as $imagen) {
                 $binaryData = file_get_contents($imagen);
@@ -91,33 +98,31 @@ class FormatoProductoController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar la información de un FormatoProducto en especifico.
      */
     public function show(FormatoProducto $formatoproducto)
     {
-        //
         $productos = Producto::all();
         $formatos = Formato::all();
         return view('formatoproductos.show', ["formatoproducto" => $formatoproducto, "formatos" => $formatos, "productos" => $productos]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     *  Mostrar formulario de actualizar FormatoProducto.
      */
     public function edit(FormatoProducto $formatoproducto)
     {
-        //
         $productos = Producto::all();
         $formatos = Formato::all();
         return view('formatoproductos.edit', ["formatoproducto" => $formatoproducto, "formatos" => $formatos, "productos" => $productos]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Realizar el update de el FormatoProducto seleccionado.
      */
     public function update(Request $request, FormatoProducto $formatoproducto)
     {
-        //
+        //Validación de datos.
         $validated = $request->validate([
             "producto_id" => "required|exists:productos,id",
             "formato_id" => "required|exists:formatos,id",
@@ -125,29 +130,29 @@ class FormatoProductoController extends Controller
         ]);
         if ($request->input("disponibilidad") == true) {
             $formatoprod = [
-                'producto_id' => $request->input("producto_id"),
-                'formato_id' => $request->input("formato_id"),
-                'precio' => $request->input('precio'),
+                'producto_id' => $validated['producto_id'],
+                'formato_id' => $validated['formato_id'],
+                'precio' => $validated['precio'],
                 'disponibilidad' => $request->input('disponibilidad')
             ];
         } else {
             $formatoprod = [
-                'producto_id' => $request->input("producto_id"),
-                'formato_id' => $request->input("formato_id"),
-                'precio' => $request->input('precio'),
+                'producto_id' => $validated['producto_id'],
+                'formato_id' => $validated['formato_id'],
+                'precio' => $validated['precio'],
                 'disponibilidad' => false
             ];
         }
+
         $formatoproducto->update($formatoprod);
         return redirect()->back()->with("success", "Producto actualizado correctamente");
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar el FormatoProducto seleccionado.
      */
     public function destroy(FormatoProducto $formatoproducto)
     {
-        //
         $formatoproducto->delete();
         return redirect(route('formatoproductos.index'));
     }

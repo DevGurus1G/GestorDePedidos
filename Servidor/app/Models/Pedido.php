@@ -14,11 +14,13 @@ class Pedido extends Model
         "cliente_id"
     ];
 
+    //Asocia Pedidos con Clientes.
     public function cliente()
     {
         return $this->belongsTo(Cliente::class);
     }
 
+    //Asocia Pedidos con PedidosFormatosProductos.
     public function pedidoformatoproducto()
     {
         return $this->hasMany(PedidoFormatoProducto::class, "pedido_id");

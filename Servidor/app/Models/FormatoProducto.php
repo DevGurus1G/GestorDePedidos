@@ -14,39 +14,28 @@ class FormatoProducto extends Model
         "precio",
         "disponibilidad"
     ];
+
+    //Asocia FormatoProducto con las Imagenes.
     public function imagenes()
     {
         return $this->hasMany(FormatoProductoImagen::class, 'formato_producto_id');
     }
 
+    //Asocia FormatoProductos con los Productos.
     public function producto()
     {
         return $this->belongsTo(Producto::class);
     }
 
+    //Asocia FormatoProductos con los Formatos.
     public function formato()
     {
         return $this->belongsTo(Formato::class, 'formato_id');
     }
+
+    //Asocia Formatoproductois con los Pedidos.
     public function pedidos()
     {
         return $this->belongsToMany(PedidoFormatoProducto::class, 'pedido_formato_producto', 'formato_producto_id', 'pedido_id');
     }
 }
-
-
-// Para cuando haya que agregar
-
-// $producto = Producto::find(1);
-// $formato = Formato::find(1);
-
-// $imagenesPaths = ['ruta/del/archivo/imagen1.jpg', 'ruta/del/archivo/imagen2.jpg', 'ruta/del/archivo/imagen3.jpg'];
-
-// $formatoProducto = $producto->formatos()->attach($formato, [
-//     'precio' => 19.99,
-//     'disponibilidad' => 50,
-// ]);
-
-// foreach ($imagenesPaths as $imagenPath) {
-//     $formatoProducto->imagenes()->create(['imagen_path' => $imagenPath]);
-// }
