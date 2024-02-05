@@ -10,24 +10,47 @@
       <form @submit.prevent="nuevoCliente">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
-          <input v-model="cliente.nombre" @input="limpiarErrores('nombre')" type="text" class="form-control"
-            id="nombre" />
+          <input
+            v-model="cliente.nombre"
+            @input="limpiarErrores('nombre')"
+            type="text"
+            class="form-control"
+            id="nombre"
+          />
           <div v-if="errores.nombre" class="text-danger">{{ errores.nombre }}</div>
         </div>
         <div class="mb-3">
           <label for="dni" class="form-label">DNI</label>
-          <input v-model="cliente.dni" @input="limpiarErrores('dni')" type="text" class="form-control" id="dni" />
+          <input
+            v-model="cliente.dni"
+            @input="limpiarErrores('dni')"
+            type="text"
+            class="form-control"
+            id="dni"
+          />
           <div v-if="errores.dni" class="text-danger">{{ errores.dni }}</div>
         </div>
         <div class="mb-3">
           <label for="calle" class="form-label">Calle</label>
-          <input v-model="cliente.calle" @input="limpiarErrores('calle')" type="text" class="form-control" id="calle" />
+          <input
+            v-model="cliente.calle"
+            @input="limpiarErrores('calle')"
+            type="text"
+            class="form-control"
+            id="calle"
+          />
           <div v-if="errores.calle" class="text-danger">{{ errores.calle }}</div>
         </div>
 
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
-          <input v-model="cliente.email" @input="limpiarErrores('email')" type="email" class="form-control" id="email" />
+          <input
+            v-model="cliente.email"
+            @input="limpiarErrores('email')"
+            type="email"
+            class="form-control"
+            id="email"
+          />
           <div v-if="errores.email" class="text-danger">{{ errores.email }}</div>
         </div>
 
@@ -111,7 +134,7 @@ const nuevoCliente = async () => {
       return
     }
 
-    const response = await fetch('http://killercervezas.blog/api/cliente/registrar/', {
+    const response = await fetch('https://killercervezas.blog/api/cliente/registrar/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

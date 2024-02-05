@@ -6,7 +6,13 @@
       <!-- Campo de búsqueda -->
       <div class="mb-3">
         <label for="buscar" class="form-label">Buscar Producto</label>
-        <input v-model="busqueda" @input="filtrarProductos" type="text" class="form-control" id="buscar">
+        <input
+          v-model="busqueda"
+          @input="filtrarProductos"
+          type="text"
+          class="form-control"
+          id="buscar"
+        />
       </div>
       <!-- Mensaje mientras cargan los datos -->
       <div v-if="cargando" class="alert alert-info">
@@ -50,16 +56,29 @@
                 <td>{{ productoInd.formato.tipo }}</td>
                 <td>
                   <div>
-                    <img v-if="productoInd.imagenes.length > 0" :src="'data:image/png;base64,' + productoInd.imagenes[0]"
-                      alt="Imagen" height="100" width="100" />
+                    <img
+                      v-if="productoInd.imagenes.length > 0"
+                      :src="'data:image/png;base64,' + productoInd.imagenes[0]"
+                      alt="Imagen"
+                      height="100"
+                      width="100"
+                    />
                     <span v-else>No hay imagen disponible</span>
                   </div>
                 </td>
                 <td>
-                  <input type="number" v-model="productoInd.cantidad" min="0" step="1" class="form-control" />
+                  <input
+                    type="number"
+                    v-model="productoInd.cantidad"
+                    min="0"
+                    step="1"
+                    class="form-control"
+                  />
                 </td>
                 <td>
-                  <button @click="anadirAlPedido(productoInd)" class="btn btn-primary">Añadir al Pedido</button>
+                  <button @click="anadirAlPedido(productoInd)" class="btn btn-primary">
+                    Añadir al Pedido
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -105,74 +124,74 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted } from 'vue'
 
-const isAuthenticated = sessionStorage.getItem('autenticado');
-const productos = ref([]);
-const productosFiltrados = ref([]);
-const pedido = ref([]);
-const cargando = ref(true);
-const busqueda = ref('');
-const orden = ref(null);
+const isAuthenticated = sessionStorage.getItem('autenticado')
+const productos = ref([])
+const productosFiltrados = ref([])
+const pedido = ref([])
+const cargando = ref(true)
+const busqueda = ref('')
+const orden = ref(null)
 
 const ordenar = (columna) => {
   if (orden.value && orden.value.includes(columna)) {
-    orden.value = orden.value.startsWith('asc') ? `desc:${columna}` : `asc:${columna}`;
+    orden.value = orden.value.startsWith('asc') ? `desc:${columna}` : `asc:${columna}`
   } else {
-    orden.value = `asc:${columna}`;
+    orden.value = `asc:${columna}`
   }
 
-  filtrarProductos();
-};
+  filtrarProductos()
+}
 
 const obtenerValorOrdenamiento = (item, columna) => {
   switch (columna) {
     case 'nombre':
-      return item.producto.nombre.toLowerCase();
+      return item.producto.nombre.toLowerCase()
     case 'categoria':
-      return item.producto.categoria.nombre.toLowerCase();
+      return item.producto.categoria.nombre.toLowerCase()
     case 'precio':
-      return item.precio;
+      return item.precio
     case 'formato':
-      return item.formato.tipo.toLowerCase();
+      return item.formato.tipo.toLowerCase()
     default:
-      return '';
+      return ''
   }
-};
+}
 
 const loadProducts = async () => {
   try {
-    const response = await fetch('http://killercervezas.blog/api/productos');
-    const datos = await response.json();
+    const response = await fetch('https://killercervezas.blog/api/productos')
+    const datos = await response.json()
 
     if (datos.success) {
-      productos.value = datos.data.map(producto => {
-        producto.cantidad = 0;
-        return producto;
-      });
-      filtrarProductos(); // Filtrar productos al cargarlos
+      productos.value = datos.data.map((producto) => {
+        producto.cantidad = 0
+        return producto
+      })
+      filtrarProductos() // Filtrar productos al cargarlos
     } else {
-      console.error('Error al obtener productos:', datos.message);
+      console.error('Error al obtener productos:', datos.message)
     }
   } catch (error) {
-    console.error('Error en la solicitud para obtener productos:', error);
+    console.error('Error en la solicitud para obtener productos:', error)
   } finally {
-    cargando.value = false; // Indicamos que la carga ha finalizado
+    cargando.value = false // Indicamos que la carga ha finalizado
   }
-};
+}
 
 const autenticacion = () => {
-  return isAuthenticated;
-};
+  return isAuthenticated
+}
 
 const anadirAlPedido = (producto) => {
   if (producto.cantidad > 0) {
     const index = pedido.value.findIndex(
-      item => item.producto.id === producto.producto.id && item.formato.id === producto.formato.id
-    );
+      (item) => item.producto.id === producto.producto.id && item.formato.id === producto.formato.id
+    )
 
     if (index !== -1) {
-      pedido.value[index].cantidad += producto.cantidad;
+      pedido.value[index].cantidad += producto.cantidad
     } else {
       pedido.value.push({
         producto_id: producto.producto.id,
@@ -181,85 +200,85 @@ const anadirAlPedido = (producto) => {
         cantidad: producto.cantidad,
         producto: producto.producto,
         formato: producto.formato,
-        producto_precio: producto.precio,
-      });
+        producto_precio: producto.precio
+      })
     }
 
-    producto.cantidad = 0;
+    producto.cantidad = 0
   }
-};
+}
 
 const eliminarDelPedido = (index) => {
-  pedido.value.splice(index, 1);
-};
+  pedido.value.splice(index, 1)
+}
 
 const enviarPedido = async () => {
   try {
     if (pedido.value.length === 0) {
-      console.warn('No hay productos en el pedido.');
-      return;
+      console.warn('No hay productos en el pedido.')
+      return
     }
 
-    const response = await fetch('http://killercervezas.blog/api/pedidos/crear', {
+    const response = await fetch('https://killercervezas.blog/api/pedidos/crear', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         cliente: sessionStorage.getItem('codigo'),
-        productos: pedido.value.map(item => ({
+        productos: pedido.value.map((item) => ({
           formato_productos: item.formato_productos,
-          cantidad: item.cantidad,
-        })),
-      }),
-    });
+          cantidad: item.cantidad
+        }))
+      })
+    })
 
-    const datos = await response.json();
+    const datos = await response.json()
 
     if (datos.success) {
-      console.log('Pedido enviado correctamente:', datos.message);
-      pedido.value = [];
+      console.log('Pedido enviado correctamente:', datos.message)
+      pedido.value = []
     } else {
-      console.error('Error al enviar el pedido:', datos.message);
+      console.error('Error al enviar el pedido:', datos.message)
     }
   } catch (error) {
-    console.error('Error en la solicitud para enviar el pedido:', error);
+    console.error('Error en la solicitud para enviar el pedido:', error)
   }
-};
+}
 
 const filtrarProductos = () => {
-  const busquedaMinusculas = busqueda.value.toLowerCase().trim();
+  const busquedaMinusculas = busqueda.value.toLowerCase().trim()
 
-  productosFiltrados.value = productos.value.filter(producto => {
+  productosFiltrados.value = productos.value.filter((producto) => {
     return (
       producto.producto.nombre.toLowerCase().includes(busquedaMinusculas) ||
       producto.producto.categoria.nombre.toLowerCase().includes(busquedaMinusculas) ||
       producto.precio.toString().includes(busquedaMinusculas) ||
       producto.formato.tipo.toLowerCase().includes(busquedaMinusculas)
-    );
-  });
+    )
+  })
 
   // Aplicar ordenamiento
   if (orden.value) {
-    const [ordenamiento, columna] = orden.value.split(':');
-    const ordenMultiplier = ordenamiento === 'asc' ? 1 : -1;
+    const [ordenamiento, columna] = orden.value.split(':')
+    const ordenMultiplier = ordenamiento === 'asc' ? 1 : -1
 
     productosFiltrados.value.sort((a, b) => {
-      const valorA = obtenerValorOrdenamiento(a, columna);
-      const valorB = obtenerValorOrdenamiento(b, columna);
+      const valorA = obtenerValorOrdenamiento(a, columna)
+      const valorB = obtenerValorOrdenamiento(b, columna)
 
-      return valorA > valorB ? 1 * ordenMultiplier : valorA < valorB ? -1 * ordenMultiplier : 0;
-    });
+      return valorA > valorB ? 1 * ordenMultiplier : valorA < valorB ? -1 * ordenMultiplier : 0
+    })
   }
-};
+}
 
 watch(busqueda, () => {
-  filtrarProductos();
-});
+  filtrarProductos()
+})
 
 onMounted(() => {
-  loadProducts();
-});
+  loadProducts()
+})
 </script>
 
 <style scoped></style>

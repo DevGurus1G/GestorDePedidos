@@ -12,25 +12,50 @@
       <form v-else @submit.prevent="updateCliente">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
-          <input v-model="usuario.nombre" @input="limpiarErrores('nombre')" type="text" class="form-control"
-            id="nombre" />
+          <input
+            v-model="usuario.nombre"
+            @input="limpiarErrores('nombre')"
+            type="text"
+            class="form-control"
+            id="nombre"
+          />
           <div v-if="errores.nombre" class="text-danger">{{ errores.nombre }}</div>
         </div>
         <div class="mb-3">
           <label for="calle" class="form-label">Calle</label>
-          <input v-model="usuario.calle" @input="limpiarErrores('calle')" type="text" class="form-control" id="calle" />
+          <input
+            v-model="usuario.calle"
+            @input="limpiarErrores('calle')"
+            type="text"
+            class="form-control"
+            id="calle"
+          />
           <div v-if="errores.calle" class="text-danger">{{ errores.calle }}</div>
         </div>
         <div class="mb-3">
           <label for="codigo" class="form-label">Codigo</label>
-          <input v-model="usuario.codigo_acceso" type="text" class="form-control" id="codigo" readonly disabled />
+          <input
+            v-model="usuario.codigo_acceso"
+            type="text"
+            class="form-control"
+            id="codigo"
+            readonly
+            disabled
+          />
           <div id="ayudaCodigo" class="form-text">
             Si desea cambiar su código de acceso, póngase en contacto con el administrador
           </div>
         </div>
         <div class="mb-3">
           <label for="dni" class="form-label">DNI</label>
-          <input v-model="usuario.dni" type="text" class="form-control" id="dni" readonly disabled />
+          <input
+            v-model="usuario.dni"
+            type="text"
+            class="form-control"
+            id="dni"
+            readonly
+            disabled
+          />
           <div id="ayudaDni" class="form-text">
             Si desea cambiar su DNI, póngase en contacto con el administrador
           </div>
@@ -44,9 +69,9 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useClienteStore } from '@/store/clienteStore';
+import { useClienteStore } from '@/store/clienteStore'
 
-const clienteStore = useClienteStore(); // Asegúrate de inicializar la tienda
+const clienteStore = useClienteStore() // Asegúrate de inicializar la tienda
 const isAuthenticated = () => sessionStorage.getItem('autenticado')
 const usuario = ref({})
 const actualizado = ref(false)
@@ -58,34 +83,34 @@ const errores = ref({
 const cargando = ref(true)
 
 onMounted(() => {
-  const cliente = clienteStore.getCliente();
-  if (cliente.nombre !== "") {
-    usuario.value = cliente;
-    cargando.value = false;
+  const cliente = clienteStore.getCliente()
+  if (cliente.nombre !== '') {
+    usuario.value = cliente
+    cargando.value = false
   } else {
     //Cuando no lo encuentra en pinia hace una peticion al servidor
-    (async () => {
+    ;(async () => {
       try {
         const response = await fetch(
-          `http://killercervezas.blog/api/cliente/${sessionStorage.getItem('codigo')}`
-        );
-        const data = await response.json();
+          `https://killercervezas.blog/api/cliente/${sessionStorage.getItem('codigo')}`
+        )
+        const data = await response.json()
 
         if (data.success) {
-          usuario.value = data.cliente;
+          usuario.value = data.cliente
         } else {
-          console.error('Error al obtener el usuario:', data.message);
-          errores.value.servidor = 'Error al obtener el usuario: ' + data.message;
+          console.error('Error al obtener el usuario:', data.message)
+          errores.value.servidor = 'Error al obtener el usuario: ' + data.message
         }
       } catch (error) {
-        console.error('Error en la solicitud para obtener el usuario:', error);
-        errores.value.servidor = 'Error en la solicitud para obtener el usuario.';
+        console.error('Error en la solicitud para obtener el usuario:', error)
+        errores.value.servidor = 'Error en la solicitud para obtener el usuario.'
       } finally {
-        cargando.value = false; // Indicamos que la carga ha finalizado
+        cargando.value = false // Indicamos que la carga ha finalizado
       }
-    })();  // Añade paréntesis de ejecución aquí
+    })() // Añade paréntesis de ejecución aquí
   }
-});
+})
 
 const limpiarErrores = (campo) => {
   errores.value[campo] = ''
@@ -106,21 +131,21 @@ const validarNombre = () => {
 
 const validarCalle = () => {
   if (usuario.value.calle.trim() !== '') {
-    errores.value.calle = 'La calle no puede estar vacia';
-    return false;
+    errores.value.calle = 'La calle no puede estar vacia'
+    return false
   }
-  errores.value.calle = '';
-  return true;
-};
+  errores.value.calle = ''
+  return true
+}
 
 const updateCliente = async () => {
   try {
     if (!validarNombre() || !validarCalle()) {
-      return;
+      return
     }
 
     const response = await fetch(
-      `http://killercervezas.blog/api/cliente/update/${sessionStorage.getItem('codigo')}`,
+      `https://killercervezas.blog/api/cliente/update/${sessionStorage.getItem('codigo')}`,
       {
         method: 'POST',
         headers: {
@@ -149,7 +174,6 @@ const updateCliente = async () => {
 
 const autenticacion = isAuthenticated
 </script>
-
 
 <style scoped>
 /* Estilos específicos del componente, si es necesario */

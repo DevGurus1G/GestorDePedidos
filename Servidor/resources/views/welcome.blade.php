@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        @vite(['resources/sass/app.scss', 'resources/js/app.js', "resources/js/cliente.js"])
+        @vite(['resources/sass/app.scss', 'resources/js/app.js'])
         <title>Killer - Home</title>
         <style>
             @import url('https://fonts.googleapis.com/css?family=Exo:400,700');
@@ -188,7 +188,7 @@
                                 <div class="card-footer bg-transparent border-success d-flex justify-content-center gap-2">
                                     <a href="{{route("login")}}" class="btn btn-primary">Empleado</a>
                                     <div class="vr" style="color: black"></div>
-                                    <a href="#" class="btn btn-primary">Cliente</a>
+                                    <a href="https://cliente.killercervezas.blog" class="btn btn-primary">Cliente</a>
                                 </div>
                             </div>
                     </div >
