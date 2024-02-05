@@ -1,29 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '@/components/Login.vue'
-import ProductManagement from '@/components/ProductManagement.vue'
-import ListadoPedidos from '@/components/ListadoPedidos.vue'
-import PerfilUsuario from '@/components/PerfilUsuario.vue'
-import Inicio from '@/components/Inicio.vue'
-import RecuperarUsuario from '@/components/RecuperarUsuario.vue'
-import Contacto from '@/components/Contacto.vue'
 
 const routes = [
   {
     path: '/',
     name: 'inicio',
-    component: Inicio,
+    component: () => import('../views/InicioView.vue'),
     meta: { showFooter: true, showNav: true }
   },
   {
     path: '/login',
     name: 'login',
-    component: Login,
+    component: () => import('../views/LoginView.vue'),
     meta: { showFooter: false, showNav: false } // Para no ver el footer y el nav en el login
   },
   {
     path: '/product-management',
     name: 'product-management',
-    component: ProductManagement,
+    component: () => import('../views/ProductManagementView.vue'),
     meta: { requiresAuth: true, showFooter: true, showNav: true } // Asegura que solo usuarios autenticados pueden acceder y que se vea el footer y el nav
   },
   {
@@ -35,18 +28,18 @@ const routes = [
   {
     path: '/perfil-usuario',
     name: 'perfil-usuario',
-    component: PerfilUsuario,
+    component: () => import('../views/PerfilUsuarioView.vue'),
     meta: { requiresAuth: true, showFooter: true, showNav: true }
   },
   {
     path: '/recuperar',
     name: 'recuperar',
-    component: RecuperarUsuario
+    component: () => import('../views/RecuperarUsuarioView.vue'),
   },
   {
     path: '/contacto',
     name: 'contacto',
-    component: Contacto,
+    component: () => import('../views/ContactoView.vue'),
     meta: { showFooter: true, showNav: true }
   }
 ]

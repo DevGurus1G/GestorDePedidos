@@ -12,39 +12,20 @@
       <form v-else @submit.prevent="updateCliente">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
-          <input
-            v-model="usuario.nombre"
-            @input="limpiarErrores('nombre')"
-            type="text"
-            class="form-control"
-            id="nombre"
-          />
+          <input v-model="usuario.nombre" @input="limpiarErrores('nombre')" type="text" class="form-control"
+            id="nombre" />
           <div v-if="errores.nombre" class="text-danger">{{ errores.nombre }}</div>
         </div>
         <div class="mb-3">
           <label for="codigo" class="form-label">Codigo</label>
-          <input
-            v-model="usuario.codigo_acceso"
-            type="text"
-            class="form-control"
-            id="codigo"
-            readonly
-            disabled
-          />
+          <input v-model="usuario.codigo_acceso" type="text" class="form-control" id="codigo" readonly disabled />
           <div id="ayudaCodigo" class="form-text">
             Si desea cambiar su código de acceso, póngase en contacto con el administrador
           </div>
         </div>
         <div class="mb-3">
           <label for="dni" class="form-label">DNI</label>
-          <input
-            v-model="usuario.dni"
-            type="text"
-            class="form-control"
-            id="dni"
-            readonly
-            disabled
-          />
+          <input v-model="usuario.dni" type="text" class="form-control" id="dni" readonly disabled />
           <div id="ayudaDni" class="form-text">
             Si desea cambiar su DNI, póngase en contacto con el administrador
           </div>

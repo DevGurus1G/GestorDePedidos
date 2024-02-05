@@ -11,27 +11,13 @@
     <form class="row" @submit.prevent="enviarCorreo">
       <div class="col-12 my-2">
         <div class="form-floating">
-          <input
-            type="text"
-            name="dni"
-            id="dni"
-            class="form-control"
-            placeholder="email"
-            v-model="dni"
-          />
+          <input type="text" name="dni" id="dni" class="form-control" placeholder="email" v-model="dni" />
           <label for="dni" class="">DNI</label>
         </div>
       </div>
       <div class="col-12">
         <div class="form-floating">
-          <input
-            type="text"
-            name="email"
-            id="email"
-            class="form-control"
-            placeholder="email"
-            v-model="email"
-          />
+          <input type="text" name="email" id="email" class="form-control" placeholder="email" v-model="email" />
           <label for="email" class="">Correo electronico</label>
         </div>
       </div>
