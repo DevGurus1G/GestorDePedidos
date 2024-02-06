@@ -1,5 +1,5 @@
 # GestorDePedidos
-Reto 3
+Se nos ha pedido realizar 2 aplicacion para la gestion de pedidos de una empresa que se llama Killer.
 # Para los profesores
 # Maider:
 - Puedes acceder al sass editado en [documentacion](documentacion/)
